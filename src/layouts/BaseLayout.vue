@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <AppHeader />
 
     <main class="flex-1">
@@ -13,9 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import AppHeader from '../components/pagination/AppHeader.vue'
 import AppFooter from '../components/pagination/AppFooter.vue'
-
-const currentYear = computed(() => new Date().getFullYear())
 </script>
