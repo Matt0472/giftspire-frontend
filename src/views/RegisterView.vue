@@ -5,29 +5,18 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import RegisterForm from '@/components/auth/RegisterForm.vue'
+import type { RegisterRequest } from '@/types/auth'
 
-const router = useRouter()
-const authStore = useAuthStore()
+const { register } = useAuth()
 
-const handleRegister = (data: { name: string; email: string; password: string }) => {
-  console.log('Register data:', data)
-
-  // TODO: Replace with actual API call
-  // For now, simulate successful registration
-  const mockUser = {
-    id: '123',
-    name: data.name,
-    email: data.email,
+const handleRegister = async (data: RegisterRequest) => {
+  try {
+    await register(data)
+  } catch (error) {
+    console.error('Registration failed:', error)
   }
-  const mockToken = 'mock-jwt-token-' + Date.now()
-
-  authStore.register(mockUser, mockToken)
-
-  // Redirect to dashboard
-  router.push('/dashboard')
 }
 
 const handleSocialLogin = (provider: 'google' | 'apple') => {

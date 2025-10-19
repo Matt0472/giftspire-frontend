@@ -5,31 +5,18 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import LoginForm from '@/components/auth/LoginForm.vue'
+import type { LoginRequest } from '@/types/auth'
 
-const router = useRouter()
-const route = useRoute()
-const authStore = useAuthStore()
+const { login } = useAuth()
 
-const handleLogin = (data: { email: string; password: string }) => {
-  console.log('Login data:', data)
-
-  // TODO: Replace with actual API call
-  // For now, simulate successful login
-  const mockUser = {
-    id: '123',
-    name: 'Demo User',
-    email: data.email,
+const handleLogin = async (data: LoginRequest) => {
+  try {
+    await login(data)
+  } catch (error) {
+    console.error('Login failed:', error)
   }
-  const mockToken = 'mock-jwt-token-' + Date.now()
-
-  authStore.login(mockUser, mockToken)
-
-  // Redirect to intended page or dashboard
-  const redirect = route.query.redirect as string || '/dashboard'
-  router.push(redirect)
 }
 
 const handleSocialLogin = (provider: 'google' | 'apple') => {

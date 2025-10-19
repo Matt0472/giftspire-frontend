@@ -58,16 +58,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { User, BarChart, Settings } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
-const router = useRouter()
 const authStore = useAuthStore()
+const { logout } = useAuth()
 
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/login')
+const handleLogout = async () => {
+  await logout()
 }
 </script>

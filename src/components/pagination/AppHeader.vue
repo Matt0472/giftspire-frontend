@@ -2,11 +2,13 @@
 import { useRouter } from 'vue-router'
 import { LogOut, LayoutDashboard } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
+import { useAuth } from '@/composables/useAuth'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import BaseButton from '../ui/BaseButton.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { logout } = useAuth()
 
 const handleLogin = () => {
   router.push('/login')
@@ -16,9 +18,8 @@ const handleSignup = () => {
   router.push('/register')
 }
 
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/')
+const handleLogout = async () => {
+  await logout()
 }
 
 const goToDashboard = () => {

@@ -28,13 +28,19 @@ apiClient.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => {
+  async (error) => {
     if (error.response) {
       // Handle specific error codes
       switch (error.response.status) {
         case 401:
-          // Unauthorized - clear auth and redirect to login
+          // Unauthorized - try to logout from backend, clear auth and redirect to login
           const authStore = useAuthStore()
+          try {
+            // Attempt to call backend logout endpoint (may fail if token is invalid)
+            await apiClient.post('/auth/logout')
+          } catch (logoutError) {
+            console.error('Backend logout failed:', logoutError)
+          }
           authStore.logout()
           window.location.href = '/login'
           break
