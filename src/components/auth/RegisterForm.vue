@@ -156,19 +156,29 @@ const emit = defineEmits<{
 
 const handleSubmit = async () => {
   // Clear previous errors
-  Object.keys(errors).forEach((key) => {
-    delete errors[key as keyof RegisterFormData]
-  })
+  errors.name = undefined
+  errors.email = undefined
+  errors.password = undefined
+  errors.confirmPassword = undefined
 
   // Validate form
   const result = registerSchema.safeParse(formData)
 
   if (!result.success) {
-    result.error.errors.forEach((error) => {
-      if (error.path[0]) {
-        errors[error.path[0] as keyof RegisterFormData] = error.message
-      }
-    })
+    // Map validation errors to form fields
+    const zodErrors = result.error.flatten().fieldErrors
+    if (zodErrors.name?.[0]) {
+      errors.name = zodErrors.name[0]
+    }
+    if (zodErrors.email?.[0]) {
+      errors.email = zodErrors.email[0]
+    }
+    if (zodErrors.password?.[0]) {
+      errors.password = zodErrors.password[0]
+    }
+    if (zodErrors.confirmPassword?.[0]) {
+      errors.confirmPassword = zodErrors.confirmPassword[0]
+    }
     return
   }
 
