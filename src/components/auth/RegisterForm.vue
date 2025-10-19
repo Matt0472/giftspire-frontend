@@ -14,6 +14,7 @@
           placeholder="Enter your full name"
           :error="errors.name"
           autocomplete="name"
+          @input="errors.name = undefined"
         />
 
         <BaseInput
@@ -24,6 +25,7 @@
           placeholder="Enter your email"
           :error="errors.email"
           autocomplete="email"
+          @input="errors.email = undefined"
         />
 
         <BaseInput
@@ -35,6 +37,7 @@
           :error="errors.password"
           hint="Must contain: 8+ characters, one capital letter, one number, one special character"
           autocomplete="new-password"
+          @input="errors.password = undefined"
         />
 
         <BaseInput
@@ -45,6 +48,7 @@
           placeholder="Confirm your password"
           :error="errors.confirmPassword"
           autocomplete="new-password"
+          @input="errors.confirmPassword = undefined"
         />
 
         <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting">

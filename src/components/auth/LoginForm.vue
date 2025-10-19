@@ -14,6 +14,7 @@
           placeholder="Enter your email"
           :error="errors.email"
           autocomplete="email"
+          @input="errors.email = undefined"
         />
 
         <BaseInput
@@ -24,6 +25,7 @@
           placeholder="Enter your password"
           :error="errors.password"
           autocomplete="current-password"
+          @input="errors.password = undefined"
         />
 
         <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting">
