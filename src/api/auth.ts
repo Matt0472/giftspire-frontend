@@ -24,7 +24,7 @@ export const authAPI = {
    * Backend returns: { "id": "...", "display_name": "...", "email": "..." }
    */
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get<UserResponse>('/api/init')
+    const response = await apiClient.get<UserResponse>('/init')
 
     // Map backend response to frontend User type
     return {
@@ -39,10 +39,18 @@ export const authAPI = {
   },
 
   /**
-   * Resend email verification notification
+   * Resend email verification notification (authenticated users)
    * Backend returns: 204 No Content
    */
   async resendVerificationEmail(): Promise<void> {
     await apiClient.post('/auth/send_verification_email')
+  },
+
+  /**
+   * Resend email verification by email address (unauthenticated users)
+   * Backend returns: 204 No Content
+   */
+  async resendVerificationEmailByEmail(email: string): Promise<void> {
+    await apiClient.post('/auth/resend_verification_email', { email })
   }
 }

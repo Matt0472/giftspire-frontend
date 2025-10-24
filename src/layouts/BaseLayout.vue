@@ -9,10 +9,14 @@
     </main>
 
     <AppFooter />
+
+    <!-- Toast Container -->
+    <ToastContainer />
   </div>
 </template>
 
 <script setup lang="ts">
 import AppHeader from '../components/pagination/AppHeader.vue'
 import AppFooter from '../components/pagination/AppFooter.vue'
+import ToastContainer from '../components/ui/ToastContainer.vue'
 </script>

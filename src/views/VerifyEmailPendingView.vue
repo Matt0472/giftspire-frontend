@@ -50,6 +50,17 @@
 
         <!-- Resend Button -->
         <div class="space-y-3">
+          <!-- Email Input for Unauthenticated Users -->
+          <div v-if="!isAuthenticated" class="mb-4">
+            <BaseInput
+              v-model="email"
+              type="email"
+              placeholder="Enter your email address"
+              label="Email Address"
+              :disabled="isResending || countdown > 0"
+            />
+          </div>
+
           <BaseButton
             variant="primary"
             size="lg"
@@ -91,14 +102,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { authAPI } from '@/api/auth'
+import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import BaseInput from '@/components/ui/BaseInput.vue'
+
+const authStore = useAuthStore()
+const isAuthenticated = computed(() => authStore.isAuthenticated)
 
 const isResending = ref(false)
 const countdown = ref(0)
 const successMessage = ref('')
 const errorMessage = ref('')
+const email = ref('')
 
 let countdownInterval: NodeJS.Timeout | null = null
 
@@ -121,12 +138,27 @@ const handleResendEmail = async () => {
   errorMessage.value = ''
 
   try {
-    await authAPI.resendVerificationEmail()
-    successMessage.value = 'Verification email sent! Please check your inbox.'
-    startCountdown()
+    if (isAuthenticated.value) {
+      // Authenticated user - use token-based endpoint
+      await authAPI.resendVerificationEmail()
+      successMessage.value = 'Verification email sent! Please check your inbox.'
+      startCountdown()
+    } else {
+      // Unauthenticated user - need email address
+      if (!email.value) {
+        errorMessage.value = 'Please enter your email address.'
+        return
+      }
+
+      await authAPI.resendVerificationEmailByEmail(email.value)
+      successMessage.value = 'If your email is registered, you will receive a verification link shortly.'
+      startCountdown()
+    }
   } catch (error: any) {
     if (error.response?.status === 401) {
       errorMessage.value = 'Please log in first to resend verification email.'
+    } else if (error.response?.status === 422) {
+      errorMessage.value = 'Please enter a valid email address.'
     } else {
       errorMessage.value =
         error.response?.data?.message || 'Failed to resend email. Please try again.'

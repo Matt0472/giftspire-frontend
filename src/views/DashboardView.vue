@@ -16,11 +16,8 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Profile</h3>
           <User class="w-6 h-6 text-blue-500" />
         </div>
-        <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">
-          Email: {{ authStore.user?.email }}
-        </p>
         <p class="text-gray-600 dark:text-gray-300 text-sm">
-          User ID: {{ authStore.user?.id }}
+          Email: {{ authStore.user?.email }}
         </p>
       </div>
 
