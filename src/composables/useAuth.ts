@@ -15,12 +15,35 @@ export function useAuth() {
     error.value = null
 
     try {
-      const response = await authAPI.login(credentials)
-      authStore.login(response.user, response.token)
-      await router.push('/dashboard')
-      return response
+      // Step 1: Get access token from login
+      const token = await authAPI.login(credentials)
+
+      // Step 2: Fetch current user data using the token
+      // First, temporarily store token so the API client can use it
+      authStore.login({ id: '', name: '', email: '' }, token)
+
+      try {
+        // Step 3: Get user data (requires verified email)
+        const user = await authAPI.getCurrentUser()
+
+        // Step 4: Store complete auth data
+        authStore.login(user, token)
+
+        await router.push('/dashboard')
+        return { user, token }
+      } catch (userErr: any) {
+        // If getCurrentUser fails (likely due to unverified email)
+        // Keep the token but redirect to verification page
+        if (userErr.response?.status === 403 || userErr.response?.status === 401) {
+          error.value = 'Please verify your email address to continue.'
+          await router.push('/verify-email-pending')
+          return { user: null, token }
+        }
+        throw userErr
+      }
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Login failed. Please try again.'
+      authStore.logout() // Clear any partial data on error
       throw err
     } finally {
       isLoading.value = false
@@ -32,10 +55,15 @@ export function useAuth() {
     error.value = null
 
     try {
-      const response = await authAPI.register(userData)
-      authStore.register(response.user, response.token)
-      await router.push('/dashboard')
-      return response
+      // Backend returns 204 No Content on successful registration
+      // and sends verification email to the user
+      await authAPI.register(userData)
+
+      // Registration successful - redirect to verification pending page
+      // User needs to check email and verify before logging in
+      await router.push('/verify-email-pending')
+
+      return { success: true }
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Registration failed. Please try again.'
       throw err

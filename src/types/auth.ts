@@ -7,6 +7,7 @@ export interface User {
 export interface LoginRequest {
   email: string
   password: string
+  remember_me?: boolean
 }
 
 export interface RegisterRequest {
@@ -15,17 +16,14 @@ export interface RegisterRequest {
   password: string
 }
 
-export interface AuthResponse {
-  user: User
-  token: string
+// Backend login response: only returns access_token
+export interface LoginResponse {
+  access_token: string
 }
 
-export interface LoginResponse {
-  data: {
-    access_token: string
-    access_token_type: string
-    display_name: string
-    email: string
-    id: string
-  }
+// Backend /api/init response: returns user data
+export interface UserResponse {
+  id: string
+  display_name: string
+  email: string
 }

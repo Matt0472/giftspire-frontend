@@ -1,41 +1,48 @@
 import apiClient from '@/config/api'
-import type { User, LoginRequest, RegisterRequest, AuthResponse, LoginResponse } from '@/types/auth'
+import type { User, LoginRequest, RegisterRequest, LoginResponse, UserResponse } from '@/types/auth'
 
 export const authAPI = {
-  async login(data: LoginRequest): Promise<AuthResponse> {
+  /**
+   * Login user and return access token
+   * Backend returns: { "access_token": "..." }
+   */
+  async login(data: LoginRequest): Promise<string> {
     const response = await apiClient.post<LoginResponse>('/auth/login', data)
-
-    // Map backend response to frontend format
-    return {
-      user: {
-        id: response.data.data.id,
-        name: response.data.data.display_name,
-        email: response.data.data.email
-      },
-      token: response.data.data.access_token
-    }
+    return response.data.access_token
   },
 
-  async register(data: RegisterRequest): Promise<AuthResponse> {
-    const response = await apiClient.post<LoginResponse>('/auth/register', data)
-
-    // Map backend response to frontend format
-    return {
-      user: {
-        id: response.data.data.id,
-        name: response.data.data.display_name,
-        email: response.data.data.email
-      },
-      token: response.data.data.access_token
-    }
+  /**
+   * Register a new user
+   * Backend returns: 204 No Content
+   */
+  async register(data: RegisterRequest): Promise<void> {
+    await apiClient.post('/auth/register', data)
   },
 
+  /**
+   * Get current authenticated user
+   * Backend returns: { "id": "...", "display_name": "...", "email": "..." }
+   */
   async getCurrentUser(): Promise<User> {
-    const response = await apiClient.get<User>('/auth/me')
-    return response.data
+    const response = await apiClient.get<UserResponse>('/api/init')
+
+    // Map backend response to frontend User type
+    return {
+      id: response.data.id,
+      name: response.data.display_name,
+      email: response.data.email
+    }
   },
 
   async logout(): Promise<void> {
     await apiClient.post('/auth/logout')
+  },
+
+  /**
+   * Resend email verification notification
+   * Backend returns: 204 No Content
+   */
+  async resendVerificationEmail(): Promise<void> {
+    await apiClient.post('/auth/send_verification_email')
   }
 }
