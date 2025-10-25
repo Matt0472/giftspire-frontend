@@ -8,6 +8,8 @@ export default {
     register: 'Registrati',
     dashboard: 'Dashboard',
     goToDashboard: 'Vai alla Dashboard',
+    language: 'Lingua',
+    theme: 'Tema',
     or: 'OPPURE',
     backToLogin: 'Torna al Login',
   },
