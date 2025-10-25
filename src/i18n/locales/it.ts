@@ -14,8 +14,8 @@ export default {
     backToLogin: 'Torna al Login',
   },
   home: {
-    heroTitle: 'Trova il Regalo Perfetto,',
-    heroTitleLine2: 'Ogni Volta',
+    heroTitle: 'Un Universo di Regali',
+    heroTitleLine2: 'Per ogni occasione',
     heroSubtitle: 'Lascia che GiftSpire ispiri i tuoi regali con consigli personalizzati per ogni occasione',
     getStartedFree: 'Inizia Gratis',
     welcome: 'Benvenuto su GiftSpire',
@@ -79,6 +79,12 @@ export default {
   },
   footer: {
     copyright: '© {0} GiftSpire. Tutti i diritti riservati.',
+    aboutTitle: 'Chi Siamo',
+    aboutDescription: 'Ti aiutiamo a trovare il regalo perfetto per ogni occasione con raccomandazioni personalizzate basate sull\'intelligenza artificiale. Rendi i tuoi regali più facili e significativi.',
+    followInstagram: 'Seguici su Instagram',
+    transparencyTitle: 'Trasparenza per i nostri utenti',
+    transparencyText: 'Alcuni dei siti partner ci riconoscono una piccola quota dei ricavi ogni volta che un utente acquista un prodotto sul loro sito.',
+    amazonDisclosure: 'Inoltre GiftSpire è un membro del Programma di affiliazione Amazon UE, un programma pubblicitario di affiliazione pensato per fornire ai siti un metodo per ottenere commissioni pubblicitarie mediante la creazione di pubblicità e link a Amazon.it',
   },
   validation: {
     emailRequired: 'Inserisci un indirizzo email valido',

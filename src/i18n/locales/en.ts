@@ -14,8 +14,8 @@ export default {
     backToLogin: 'Back to Login',
   },
   home: {
-    heroTitle: 'Find the Perfect Gift,',
-    heroTitleLine2: 'Every Time',
+    heroTitle: 'A Sky Full of gifts',
+    heroTitleLine2: 'For every occasion',
     heroSubtitle: 'Let GiftSpire inspire your gift-giving with personalized recommendations for every occasion',
     getStartedFree: 'Get Started Free',
     welcome: 'Welcome to GiftSpire',
@@ -79,6 +79,12 @@ export default {
   },
   footer: {
     copyright: '© {0} GiftSpire. All rights reserved.',
+    aboutTitle: 'About GiftSpire',
+    aboutDescription: 'We help you find the perfect gift for every occasion with personalized recommendations powered by AI. Make gift-giving easier and more meaningful.',
+    followInstagram: 'Follow us on Instagram',
+    transparencyTitle: 'Transparency for our users',
+    transparencyText: 'Some of our partner sites recognize us a small share of revenue each time a user purchases a product on their site.',
+    amazonDisclosure: 'Additionally, GiftSpire is a member of the Amazon EU Affiliate Program, an affiliate advertising program designed to provide sites with a method to earn advertising commissions through the creation of advertisements and links to Amazon.it',
   },
   validation: {
     emailRequired: 'Please enter a valid email address',

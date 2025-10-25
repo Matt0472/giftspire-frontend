@@ -12,7 +12,12 @@
     <!-- Content -->
     <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
       <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-        {{ t('home.heroTitle') }}<br>{{ t('home.heroTitleLine2') }}
+        <template v-if="locale === 'en'">
+          A Sky Full of <span class="gradient-text">gifts</span><br>{{ t('home.heroTitleLine2') }}
+        </template>
+        <template v-else>
+          Un Universo di <span class="gradient-text">Regali</span><br>{{ t('home.heroTitleLine2') }}
+        </template>
       </h1>
       <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
         {{ t('home.heroSubtitle') }}
@@ -62,5 +67,30 @@ import StarryBackground from '@/components/ui/StarryBackground.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 </script>
+
+<style scoped>
+.gradient-text {
+  background: linear-gradient(90deg, #a8c0ff, #7c9fe8, #ffd1ff, #a8c0ff, #7c9fe8);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
