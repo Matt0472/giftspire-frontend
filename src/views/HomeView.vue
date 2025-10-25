@@ -1,17 +1,16 @@
 <template>
   <!-- Hero/Jumbotron Section -->
   <div class="relative min-h-[600px] flex items-center justify-center overflow-hidden">
-    <!-- Background Image with Overlay -->
-    <div
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-      style="background-image: url('/hero-bg.jpg')"
-    >
-      <!-- Dark overlay for better text readability -->
-      <div class="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-pink-900/80 dark:from-purple-950/90 dark:to-pink-950/90"></div>
-    </div>
+    <!-- Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#4b6cb7] to-[#182848]"></div>
+
+    <!-- Starry Background Animation -->
+    <StarryBackground :star-count="150" color="#7c9fe8" speed="slow" :size="{ min: 1, max: 2 }" />
+    <StarryBackground :star-count="100" color="#a8c0ff" speed="normal" :size="{ min: 1, max: 3 }" />
+    <StarryBackground :star-count="80" color="#6b8dd6" speed="fast" :size="{ min: 0.5, max: 1.5 }" />
 
     <!-- Content -->
-    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+    <div class="relative z-20 text-center px-4 max-w-4xl mx-auto">
       <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
         {{ t('home.heroTitle') }}<br>{{ t('home.heroTitleLine2') }}
       </h1>
@@ -44,7 +43,7 @@
             variant="outline"
             size="lg"
             @click="router.push('/login')"
-            class="w-full sm:w-auto px-8 py-4 text-lg bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-sm"
+            class="w-full sm:w-auto px-8 py-4 text-lg !bg-white/10 hover:!bg-white/20 !text-white backdrop-blur-sm"
           >
             {{ t('common.signIn') }}
           </BaseButton>
@@ -59,6 +58,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import StarryBackground from '@/components/ui/StarryBackground.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
