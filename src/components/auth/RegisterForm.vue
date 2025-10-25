@@ -2,7 +2,7 @@
   <div class="w-full max-w-md mx-auto">
     <div class="bg-white dark:bg-gray-800 rounded-lg p-8" style="box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.1);">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-        Create Account
+        {{ t('auth.createAccount') }}
       </h2>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
@@ -10,8 +10,8 @@
           id="name"
           v-model="formData.name"
           type="text"
-          label="Full Name"
-          placeholder="Enter your full name"
+          :label="t('auth.name')"
+          :placeholder="t('auth.enterFullName')"
           :error="errors.name"
           autocomplete="name"
           @input="errors.name = undefined"
@@ -21,8 +21,8 @@
           id="email"
           v-model="formData.email"
           type="email"
-          label="Email"
-          placeholder="Enter your email"
+          :label="t('auth.email')"
+          :placeholder="t('auth.enterEmail')"
           :error="errors.email"
           autocomplete="email"
           @input="errors.email = undefined"
@@ -32,10 +32,10 @@
           id="password"
           v-model="formData.password"
           type="password"
-          label="Password"
-          placeholder="Enter your password"
+          :label="t('auth.password')"
+          :placeholder="t('auth.enterPassword')"
           :error="errors.password"
-          hint="Must contain: 8+ characters, one capital letter, one number, one special character"
+          :hint="t('auth.passwordHint')"
           autocomplete="new-password"
           @input="errors.password = undefined"
         />
@@ -44,15 +44,15 @@
           id="confirmPassword"
           v-model="formData.confirmPassword"
           type="password"
-          label="Confirm Password"
-          placeholder="Confirm your password"
+          :label="t('auth.confirmPassword')"
+          :placeholder="t('auth.confirmPasswordPlaceholder')"
           :error="errors.confirmPassword"
           autocomplete="new-password"
           @input="errors.confirmPassword = undefined"
         />
 
         <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting">
-          {{ isSubmitting ? 'Creating account...' : 'Sign Up' }}
+          {{ isSubmitting ? t('auth.creatingAccount') : t('common.signUp') }}
         </BaseButton>
       </form>
 
@@ -61,7 +61,7 @@
           <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">OR</span>
+          <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">{{ t('common.or') }}</span>
         </div>
       </div>
 
@@ -90,28 +90,14 @@
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          <span class="text-gray-700 dark:text-gray-200 font-medium">Continue with Google</span>
-        </button>
-
-        <button
-          type="button"
-          @click="emit('socialLogin', 'apple')"
-          class="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              class="text-gray-900 dark:text-white"
-              d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
-            />
-          </svg>
-          <span class="text-gray-700 dark:text-gray-200 font-medium">Continue with Apple</span>
+          <span class="text-gray-700 dark:text-gray-200 font-medium">{{ t('auth.continueWithGoogle') }}</span>
         </button>
       </div>
 
       <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-        Already have an account?
+        {{ t('auth.alreadyHaveAccount') }}
         <router-link to="/login" class="text-blue-600 dark:text-blue-400 hover:underline">
-          Sign in
+          {{ t('common.signIn') }}
         </router-link>
       </p>
     </div>
@@ -121,23 +107,26 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { z } from 'zod'
+import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 
+const { t } = useI18n()
+
 const registerSchema = z
   .object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Please enter a valid email address'),
+    name: z.string().min(2, t('validation.nameMinLength')),
+    email: z.string().email(t('validation.emailRequired')),
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters')
-      .regex(/[A-Z]/, 'Password must contain at least one capital letter')
-      .regex(/[0-9]/, 'Password must contain at least one number')
-      .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+      .min(8, t('validation.passwordMinLength8'))
+      .regex(/[A-Z]/, t('validation.passwordCapital'))
+      .regex(/[0-9]/, t('validation.passwordNumber'))
+      .regex(/[^A-Za-z0-9]/, t('validation.passwordSpecial')),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
+    message: t('validation.passwordsMismatch'),
     path: ['confirmPassword'],
   })
 

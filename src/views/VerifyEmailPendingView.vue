@@ -25,13 +25,12 @@
         <h1
           class="text-2xl font-bold text-gray-900 dark:text-white mb-3"
         >
-          Verify Your Email
+          {{ t('verifyEmail.title') }}
         </h1>
 
         <!-- Description -->
         <p class="text-gray-600 dark:text-gray-300 mb-6">
-          We've sent a verification link to your email address. Please check your inbox and click
-          the link to activate your account.
+          {{ t('verifyEmail.description') }}
         </p>
 
         <!-- Info Box -->
@@ -39,12 +38,12 @@
           class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6 text-left"
         >
           <p class="text-sm text-blue-800 dark:text-blue-200">
-            <strong>Didn't receive the email?</strong>
+            <strong>{{ t('verifyEmail.didntReceive') }}</strong>
           </p>
           <ul class="text-sm text-blue-700 dark:text-blue-300 mt-2 list-disc list-inside space-y-1">
-            <li>Check your spam or junk folder</li>
-            <li>Make sure you entered the correct email address</li>
-            <li>Wait a few minutes for the email to arrive</li>
+            <li>{{ t('verifyEmail.checkSpam') }}</li>
+            <li>{{ t('verifyEmail.checkCorrectEmail') }}</li>
+            <li>{{ t('verifyEmail.waitFewMinutes') }}</li>
           </ul>
         </div>
 
@@ -55,8 +54,8 @@
             <BaseInput
               v-model="email"
               type="email"
-              placeholder="Enter your email address"
-              label="Email Address"
+              :placeholder="t('verifyEmail.enterEmailAddress')"
+              :label="t('verifyEmail.emailAddressLabel')"
               :disabled="isResending || countdown > 0"
             />
           </div>
@@ -68,9 +67,9 @@
             :disabled="isResending || countdown > 0"
             @click="handleResendEmail"
           >
-            <span v-if="countdown > 0">Resend in {{ countdown }}s</span>
-            <span v-else-if="isResending">Sending...</span>
-            <span v-else>Resend Verification Email</span>
+            <span v-if="countdown > 0">{{ t('verifyEmail.resendIn', [countdown]) }}</span>
+            <span v-else-if="isResending">{{ t('auth.sending') }}</span>
+            <span v-else>{{ t('verifyEmail.resendButton') }}</span>
           </BaseButton>
 
           <!-- Success Message -->
@@ -92,7 +91,7 @@
               to="/login"
               class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
             >
-              ← Back to Login
+              ← {{ t('common.backToLogin') }}
             </router-link>
           </div>
         </div>
@@ -103,11 +102,13 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { authAPI } from '@/api/auth'
 import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 
+const { t } = useI18n()
 const authStore = useAuthStore()
 const isAuthenticated = computed(() => authStore.isAuthenticated)
 
@@ -141,27 +142,27 @@ const handleResendEmail = async () => {
     if (isAuthenticated.value) {
       // Authenticated user - use token-based endpoint
       await authAPI.resendVerificationEmail()
-      successMessage.value = 'Verification email sent! Please check your inbox.'
+      successMessage.value = t('verifyEmail.emailSent')
       startCountdown()
     } else {
       // Unauthenticated user - need email address
       if (!email.value) {
-        errorMessage.value = 'Please enter your email address.'
+        errorMessage.value = t('verifyEmail.pleaseEnterEmail')
         return
       }
 
       await authAPI.resendVerificationEmailByEmail(email.value)
-      successMessage.value = 'If your email is registered, you will receive a verification link shortly.'
+      successMessage.value = t('verifyEmail.emailSentGeneric')
       startCountdown()
     }
   } catch (error: any) {
     if (error.response?.status === 401) {
-      errorMessage.value = 'Please log in first to resend verification email.'
+      errorMessage.value = t('verifyEmail.pleaseLogin')
     } else if (error.response?.status === 422) {
-      errorMessage.value = 'Please enter a valid email address.'
+      errorMessage.value = t('verifyEmail.invalidEmail')
     } else {
       errorMessage.value =
-        error.response?.data?.message || 'Failed to resend email. Please try again.'
+        error.response?.data?.message || t('verifyEmail.resendFailed')
     }
   } finally {
     isResending.value = false

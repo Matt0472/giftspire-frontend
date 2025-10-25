@@ -3,7 +3,10 @@
     <AppHeader />
 
     <main class="flex-1">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div v-if="route.name === 'home'">
+        <slot />
+      </div>
+      <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <slot />
       </div>
     </main>
@@ -16,7 +19,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import AppHeader from '../components/pagination/AppHeader.vue'
 import AppFooter from '../components/pagination/AppFooter.vue'
 import ToastContainer from '../components/ui/ToastContainer.vue'
+
+const route = useRoute()
 </script>

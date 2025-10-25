@@ -25,13 +25,12 @@
 
           <!-- Title -->
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-            Email Verified Successfully!
+            {{ t('emailVerified.successTitle') }}
           </h1>
 
           <!-- Description -->
           <p class="text-gray-600 dark:text-gray-300 mb-6">
-            Your email has been verified. You can now log in to your account and start using all
-            features.
+            {{ t('emailVerified.successDescription') }}
           </p>
 
           <!-- Auto redirect message -->
@@ -39,13 +38,13 @@
             class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6"
           >
             <p class="text-sm text-green-800 dark:text-green-200">
-              Redirecting to login page in {{ countdown }} seconds...
+              {{ t('emailVerified.redirecting', [countdown]) }}
             </p>
           </div>
 
           <!-- Login Button -->
           <BaseButton variant="primary" size="lg" class="w-full" @click="goToLogin">
-            Go to Login
+            {{ t('emailVerified.goToLogin') }}
           </BaseButton>
         </div>
 
@@ -70,7 +69,7 @@
 
           <!-- Title -->
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-            Verification Failed
+            {{ t('emailVerified.failedTitle') }}
           </h1>
 
           <!-- Description -->
@@ -83,23 +82,23 @@
             class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6 text-left"
           >
             <p class="text-sm text-red-800 dark:text-red-200">
-              <strong>What can you do?</strong>
+              <strong>{{ t('emailVerified.whatCanYouDo') }}</strong>
             </p>
             <ul class="text-sm text-red-700 dark:text-red-300 mt-2 list-disc list-inside space-y-1">
-              <li>Request a new verification email</li>
-              <li>Contact support if the issue persists</li>
-              <li>Try registering again with a different email</li>
+              <li>{{ t('emailVerified.requestNewEmail') }}</li>
+              <li>{{ t('emailVerified.contactSupport') }}</li>
+              <li>{{ t('emailVerified.tryDifferentEmail') }}</li>
             </ul>
           </div>
 
           <!-- Action Buttons -->
           <div class="space-y-3">
             <BaseButton variant="primary" size="lg" class="w-full" @click="goToResendPage">
-              Request New Verification Email
+              {{ t('emailVerified.requestNewButton') }}
             </BaseButton>
 
             <BaseButton variant="outline" size="lg" class="w-full" @click="goToLogin">
-              Back to Login
+              {{ t('emailVerified.backToLogin') }}
             </BaseButton>
           </div>
         </div>
@@ -111,8 +110,10 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 
@@ -139,19 +140,16 @@ onMounted(() => {
 const setErrorMessage = (error: string) => {
   switch (error) {
     case 'user_not_found':
-      errorMessage.value =
-        'We could not find your account. The verification link may be invalid or expired.'
+      errorMessage.value = t('emailVerified.errors.userNotFound')
       break
     case 'invalid_link':
-      errorMessage.value =
-        'The verification link is invalid or has expired. Please request a new verification email.'
+      errorMessage.value = t('emailVerified.errors.invalidLink')
       break
     case 'already_verified':
-      errorMessage.value = 'Your email has already been verified. You can log in to your account.'
+      errorMessage.value = t('emailVerified.errors.alreadyVerified')
       break
     default:
-      errorMessage.value =
-        'Something went wrong during verification. Please try again or contact support.'
+      errorMessage.value = t('emailVerified.errors.default')
   }
 }
 

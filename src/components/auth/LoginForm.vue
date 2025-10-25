@@ -2,7 +2,7 @@
   <div class="w-full max-w-md mx-auto">
     <div class="bg-white dark:bg-gray-800 rounded-lg p-8" style="box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.1);">
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-        Sign In
+        {{ t('common.signIn') }}
       </h2>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
@@ -10,8 +10,8 @@
           id="email"
           v-model="formData.email"
           type="email"
-          label="Email"
-          placeholder="Enter your email"
+          :label="t('auth.email')"
+          :placeholder="t('auth.enterEmail')"
           :error="errors.email"
           autocomplete="email"
           @input="errors.email = undefined"
@@ -21,15 +21,15 @@
           id="password"
           v-model="formData.password"
           type="password"
-          label="Password"
-          placeholder="Enter your password"
+          :label="t('auth.password')"
+          :placeholder="t('auth.enterPassword')"
           :error="errors.password"
           autocomplete="current-password"
           @input="errors.password = undefined"
         />
 
         <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting">
-          {{ isSubmitting ? 'Signing in...' : 'Sign In' }}
+          {{ isSubmitting ? t('auth.signingIn') : t('common.signIn') }}
         </BaseButton>
       </form>
 
@@ -38,7 +38,7 @@
           <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">OR</span>
+          <span class="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">{{ t('common.or') }}</span>
         </div>
       </div>
 
@@ -67,28 +67,14 @@
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          <span class="text-gray-700 dark:text-gray-200 font-medium">Continue with Google</span>
-        </button>
-
-        <button
-          type="button"
-          @click="emit('socialLogin', 'apple')"
-          class="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-        >
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              class="text-gray-900 dark:text-white"
-              d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"
-            />
-          </svg>
-          <span class="text-gray-700 dark:text-gray-200 font-medium">Continue with Apple</span>
+          <span class="text-gray-700 dark:text-gray-200 font-medium">{{ t('auth.continueWithGoogle') }}</span>
         </button>
       </div>
 
       <p class="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-        Don't have an account?
+        {{ t('auth.dontHaveAccount') }}
         <router-link to="/register" class="text-blue-600 dark:text-blue-400 hover:underline">
-          Sign up
+          {{ t('common.signUp') }}
         </router-link>
       </p>
     </div>
@@ -98,12 +84,15 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { z } from 'zod'
+import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 
+const { t } = useI18n()
+
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email(t('validation.emailRequired')),
+  password: z.string().min(6, t('validation.passwordMinLength')),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
