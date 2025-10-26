@@ -147,7 +147,7 @@ export default {
       },
       getResults: {
         title: 'Ottieni Risultati Perfetti',
-        description: 'Ricevi suggerimenti regalo personalizzati istantaneamente! Ogni raccomandazione è accuratamente selezionata in base alle tue risposte.',
+        description: 'Il nostro algoritmo intelligente analizza le tue risposte e fornisce suggerimenti regalo personalizzati istantaneamente! Ogni raccomandazione è accuratamente selezionata per corrispondere ai tuoi criteri.',
       },
     },
   },

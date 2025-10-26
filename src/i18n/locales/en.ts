@@ -147,7 +147,7 @@ export default {
       },
       getResults: {
         title: 'Get Perfect Matches',
-        description: 'Receive personalized gift suggestions instantly! Each recommendation is carefully selected based on your answers.',
+        description: 'Our intelligent algorithm analyzes your answers and delivers personalized gift suggestions instantly! Each recommendation is carefully selected to match your criteria.',
       },
     },
   },

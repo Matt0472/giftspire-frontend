@@ -89,18 +89,14 @@
 
         <!-- Navigation Arrows -->
         <button
-          @click="previousSlide"
-          :disabled="currentSlide === 0"
-          class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-          :class="{ 'opacity-50 cursor-not-allowed': currentSlide === 0 }"
+          @click="handleArrowClick('previous')"
+          class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
         >
           <ChevronLeft class="w-6 h-6 text-gray-700 dark:text-gray-300" />
         </button>
         <button
-          @click="nextSlide"
-          :disabled="currentSlide === totalSlides - 1"
-          class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-          :class="{ 'opacity-50 cursor-not-allowed': currentSlide === totalSlides - 1 }"
+          @click="handleArrowClick('next')"
+          class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
         >
           <ChevronRight class="w-6 h-6 text-gray-700 dark:text-gray-300" />
         </button>
@@ -135,33 +131,41 @@ const totalSlides = 3
 let autoPlayInterval: number | null = null
 
 const nextSlide = () => {
-  if (currentSlide.value < totalSlides - 1) {
-    currentSlide.value++
-  } else {
-    currentSlide.value = 0
-  }
+  currentSlide.value = (currentSlide.value + 1) % totalSlides
 }
 
 const previousSlide = () => {
-  if (currentSlide.value > 0) {
-    currentSlide.value--
-  } else {
-    currentSlide.value = totalSlides - 1
-  }
+  currentSlide.value = (currentSlide.value - 1 + totalSlides) % totalSlides
 }
 
 const goToSlide = (index: number) => {
   currentSlide.value = index
-  // Reset auto-play timer when manually navigating
+  // Give user more time to read after manual navigation (10 seconds instead of 5)
   stopAutoPlay()
-  startAutoPlay()
+  startAutoPlay(10000)
 }
 
-const startAutoPlay = () => {
+const handleArrowClick = (direction: 'next' | 'previous') => {
+  if (direction === 'next') {
+    nextSlide()
+  } else {
+    previousSlide()
+  }
+  // Give user more time to read after clicking arrows (10 seconds instead of 5)
+  stopAutoPlay()
+  startAutoPlay(10000)
+}
+
+const startAutoPlay = (delay: number = 5000) => {
   if (autoPlayInterval) return
   autoPlayInterval = window.setInterval(() => {
     nextSlide()
-  }, 5000) // Change slide every 5 seconds
+    // After the extended delay, reset to normal interval
+    if (delay !== 5000) {
+      stopAutoPlay()
+      startAutoPlay(5000)
+    }
+  }, delay)
 }
 
 const stopAutoPlay = () => {
