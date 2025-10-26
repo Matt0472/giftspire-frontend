@@ -20,10 +20,10 @@
             :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
           >
             <!-- Slide 1: Register -->
-            <div class="w-full flex-shrink-0">
-              <div class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-12 md:p-16">
-                <div class="max-w-2xl mx-auto text-center text-white">
-                  <div class="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl">
+            <div class="w-full flex-shrink-0 min-h-[400px]">
+              <div class="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-12 md:p-16 h-full">
+                <div class="max-w-2xl mx-auto text-center text-white h-full flex flex-col justify-center">
+                  <div class="flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl mx-auto">
                     <UserPlus class="w-12 h-12" />
                   </div>
                   <div class="mb-4">
@@ -42,10 +42,10 @@
             </div>
 
             <!-- Slide 2: Fill Form -->
-            <div class="w-full flex-shrink-0">
-              <div class="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 p-12 md:p-16">
-                <div class="max-w-2xl mx-auto text-center text-white">
-                  <div class="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl">
+            <div class="w-full flex-shrink-0 min-h-[400px]">
+              <div class="bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 p-12 md:p-16 h-full">
+                <div class="max-w-2xl mx-auto text-center text-white h-full flex flex-col justify-center">
+                  <div class="flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl mx-auto">
                     <ClipboardList class="w-12 h-12" />
                   </div>
                   <div class="mb-4">
@@ -64,10 +64,10 @@
             </div>
 
             <!-- Slide 3: Get Results -->
-            <div class="w-full flex-shrink-0">
-              <div class="bg-gradient-to-br from-emerald-500 via-green-500 to-lime-500 p-12 md:p-16">
-                <div class="max-w-2xl mx-auto text-center text-white">
-                  <div class="inline-flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl">
+            <div class="w-full flex-shrink-0 min-h-[400px]">
+              <div class="bg-gradient-to-br from-emerald-500 via-green-500 to-lime-500 p-12 md:p-16 h-full">
+                <div class="max-w-2xl mx-auto text-center text-white h-full flex flex-col justify-center">
+                  <div class="flex items-center justify-center w-24 h-24 bg-white/20 backdrop-blur-sm rounded-3xl mb-8 shadow-xl mx-auto">
                     <Sparkles class="w-12 h-12" />
                   </div>
                   <div class="mb-4">
