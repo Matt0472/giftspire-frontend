@@ -151,4 +151,18 @@ export default {
       },
     },
   },
+  about: {
+    title: 'GiftSpire: dove nascono le idee regalo perfette',
+    introduction: 'Conosci quella sensazione di smarrimento quando devi fare un regalo e non hai la minima idea di cosa scegliere? La paura di optare per qualcosa di scontato, di riproporre anno dopo anno le stesse idee, o peggio ancora, di ritrovarti alla festa con un altro invitato che ha portato esattamente lo stesso pensiero. Niente panico: GiftSpire è qui proprio per questo. La nostra missione è scovare le idee regalo più originali e alternative, quelle che ti faranno brillare sotto l\'albero di Natale, al compleanno o in qualsiasi altra occasione speciale.',
+    sections: {
+      thinkAboutPerson: {
+        title: 'Inizia pensando alla persona speciale',
+        description: 'Racconta chi è il destinatario del tuo regalo: quali sono le sue passioni, i suoi interessi, cosa lo rende unico. Il nostro algoritmo intelligente prende in considerazione l\'occasione da celebrare, il tipo di legame che ti unisce a questa persona e i suoi gusti personali per suggerirti regali che faranno davvero centro. Dopo aver analizzato il profilo, ti accompagneremo in un viaggio tra le idee regalo più creative e sorprendenti, perfettamente calibrate sui desideri di chi riceverà il tuo pensiero.',
+      },
+      perfectGift: {
+        title: 'Un regalo perfetto per ogni occasione',
+        description: 'Che si tratti di un compleanno, un anniversario o qualsiasi altro momento da celebrare, abbiamo la soluzione ideale. Ti presentiamo una selezione curata di regali unici, pensati su misura per chi festeggia: oggetti speciali, esperienze indimenticabili e chicche che sapranno conquistare. Ti basta rispondere a poche semplici domande sul destinatario: l\'algoritmo di GiftSpire elaborerà il profilo e individuerà i regali più adatti per regalare un sorriso, indicandoti anche dove trovarli.',
+      },
+    },
+  },
 }

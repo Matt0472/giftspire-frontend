@@ -63,6 +63,9 @@
 
     <!-- User Journey Carousel Section -->
     <UserJourneyCarousel />
+
+    <!-- About GiftSpire Section -->
+    <AboutGiftSpire />
   </div>
 </template>
 
@@ -74,6 +77,7 @@ import BaseButton from '@/components/ui/BaseButton.vue'
 import StarryBackground from '@/components/ui/StarryBackground.vue'
 import HowItWorks from '@/components/HomePage/HowItWorks.vue'
 import UserJourneyCarousel from '@/components/HomePage/UserJourneyCarousel.vue'
+import AboutGiftSpire from '@/components/HomePage/AboutGiftSpire.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()

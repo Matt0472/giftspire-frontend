@@ -151,4 +151,18 @@ export default {
       },
     },
   },
+  about: {
+    title: 'GiftSpire: where perfect gift ideas are born',
+    introduction: 'Know that feeling of being lost when you have to give a gift and you have no idea what to choose? The fear of opting for something obvious, of proposing the same ideas year after year, or worse still, of finding yourself at the party with another guest who brought exactly the same gift. Don\'t panic: GiftSpire is here for exactly this reason. Our mission is to find the most original and alternative gift ideas, the ones that will make you shine under the Christmas tree, at birthdays, or on any other special occasion.',
+    sections: {
+      thinkAboutPerson: {
+        title: 'Start by thinking about the special person',
+        description: 'Tell us who the recipient of your gift is: what are their passions, their interests, what makes them unique. Our intelligent algorithm takes into account the occasion to celebrate, the type of bond that unites you to this person and their personal tastes to suggest gifts that will really hit the mark. After analyzing the profile, we will accompany you on a journey through the most creative and surprising gift ideas, perfectly calibrated to the wishes of those who will receive your gift.',
+      },
+      perfectGift: {
+        title: 'A perfect gift for every occasion',
+        description: 'Whether it\'s a birthday, an anniversary or any other moment to celebrate, we have the ideal solution. We present you with a curated selection of unique gifts, designed to measure for those celebrating: special objects, unforgettable experiences and gems that will win hearts. Just answer a few simple questions about the recipient: the GiftSpire algorithm will process the profile and identify the most suitable gifts to bring a smile, also telling you where to find them.',
+      },
+    },
+  },
 }
