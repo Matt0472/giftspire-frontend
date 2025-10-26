@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[60vh] flex items-center justify-center">
+  <div class="min-h-[calc(100vh-200px)] flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 px-4 py-12">
     <RegisterForm @submit="handleRegister" @social-login="handleSocialLogin" />
   </div>
 </template>

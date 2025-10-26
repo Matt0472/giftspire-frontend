@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[60vh] flex items-center justify-center px-4">
+  <div class="min-h-[calc(100vh-200px)] flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 px-4 py-12">
     <div class="max-w-md w-full">
       <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center border border-gray-200 dark:border-gray-700"

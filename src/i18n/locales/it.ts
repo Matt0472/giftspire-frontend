@@ -96,4 +96,59 @@ export default {
     nameMinLength: 'Il nome deve contenere almeno 2 caratteri',
     passwordsMismatch: 'Le password non corrispondono',
   },
+  howItWorks: {
+    title: 'Come Funziona GiftSpire',
+    subtitle: 'Trova il regalo perfetto in soli 5 semplici passaggi. La nostra piattaforma basata sull\'intelligenza artificiale rende i regali facili.',
+    step: 'Passo',
+    steps: {
+      gender: {
+        title: 'Scegli il Genere',
+        description: 'Inizia selezionando il genere della persona per cui stai cercando un regalo. Questo ci aiuta a restringere le opzioni più rilevanti.',
+      },
+      relation: {
+        title: 'Seleziona la Relazione',
+        description: 'Dicci la tua relazione con il destinatario - amico, familiare, collega o partner. Ogni relazione merita un approccio unico.',
+      },
+      occasion: {
+        title: 'Scegli l\'Occasione',
+        description: 'Che sia un compleanno, anniversario, festa o semplicemente perché sì - l\'occasione definisce il tono per il regalo perfetto.',
+      },
+      interest: {
+        title: 'Condividi i Loro Interessi',
+        description: 'Cosa amano? Sport, tecnologia, cucina, arte? Condividi le loro passioni e hobby per ottenere raccomandazioni davvero personalizzate.',
+      },
+      budget: {
+        title: 'Imposta il Tuo Budget',
+        description: 'Definisci la tua fascia di prezzo e troveremo regali fantastici perfettamente adatti al tuo budget. Grandi regali per ogni budget.',
+      },
+    },
+    result: {
+      title: 'Ottieni Risultati Perfetti!',
+      description: 'La nostra IA analizza i tuoi dati e fornisce almeno 5 suggerimenti di regali accuratamente selezionati, ciascuno personalizzato secondo i tuoi criteri specifici. Ogni raccomandazione include informazioni dettagliate e link diretti per l\'acquisto.',
+      suggestions: 'Idee Regalo',
+      instant: 'Istantanei',
+      speed: 'Risultati',
+      personalized: 'Personalizzati',
+    },
+    cta: 'Inizia a Trovare Regali Ora',
+  },
+  userJourney: {
+    title: 'Il Tuo Viaggio Verso il Regalo Perfetto',
+    subtitle: 'Tre semplici passaggi per scoprire raccomandazioni regalo personalizzate',
+    step: 'Passo',
+    steps: {
+      register: {
+        title: 'Crea il Tuo Account',
+        description: 'Registrati in pochi secondi e unisciti alla nostra comunità. È completamente gratuito e ci vuole meno di un minuto per iniziare.',
+      },
+      fillForm: {
+        title: 'Rispondi a Semplici Domande',
+        description: 'Raccontaci del destinatario rispondendo a poche domande rapide su genere, relazione, occasione, interessi e budget.',
+      },
+      getResults: {
+        title: 'Ottieni Risultati Perfetti',
+        description: 'Ricevi suggerimenti regalo personalizzati istantaneamente! Ogni raccomandazione è accuratamente selezionata in base alle tue risposte.',
+      },
+    },
+  },
 }

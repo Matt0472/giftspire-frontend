@@ -96,4 +96,59 @@ export default {
     nameMinLength: 'Name must be at least 2 characters',
     passwordsMismatch: 'Passwords do not match',
   },
+  howItWorks: {
+    title: 'How GiftSpire Works',
+    subtitle: 'Find the perfect gift in just 5 simple steps. Our AI-powered platform makes gift-giving effortless.',
+    step: 'Step',
+    steps: {
+      gender: {
+        title: 'Choose Gender',
+        description: 'Start by selecting the gender of the person you\'re shopping for. This helps us narrow down the most relevant gift options.',
+      },
+      relation: {
+        title: 'Select Relationship',
+        description: 'Tell us your relationship with the recipient - friend, family member, colleague, or partner. Each relationship deserves a unique approach.',
+      },
+      occasion: {
+        title: 'Pick the Occasion',
+        description: 'Whether it\'s a birthday, anniversary, holiday, or just because - the occasion sets the tone for the perfect gift.',
+      },
+      interest: {
+        title: 'Share Their Interests',
+        description: 'What do they love? Sports, tech, cooking, art? Share their passions and hobbies to get truly personalized recommendations.',
+      },
+      budget: {
+        title: 'Set Your Budget',
+        description: 'Define your price range and we\'ll find amazing gifts that fit perfectly within your budget. Great gifts at any price point.',
+      },
+    },
+    result: {
+      title: 'Get Perfect Matches!',
+      description: 'Our AI analyzes your inputs and delivers at least 5 carefully curated gift suggestions, each tailored to your specific criteria. Every recommendation comes with detailed information and direct purchase links.',
+      suggestions: 'Gift Ideas',
+      instant: 'Instant',
+      speed: 'Results',
+      personalized: 'Personalized',
+    },
+    cta: 'Start Finding Gifts Now',
+  },
+  userJourney: {
+    title: 'Your Journey to the Perfect Gift',
+    subtitle: 'Three simple steps to discover personalized gift recommendations',
+    step: 'Step',
+    steps: {
+      register: {
+        title: 'Create Your Account',
+        description: 'Sign up in seconds and join our community. It\'s completely free and takes less than a minute to get started.',
+      },
+      fillForm: {
+        title: 'Answer Simple Questions',
+        description: 'Tell us about the recipient by answering a few quick questions about gender, relationship, occasion, interests, and budget.',
+      },
+      getResults: {
+        title: 'Get Perfect Matches',
+        description: 'Receive personalized gift suggestions instantly! Each recommendation is carefully selected based on your answers.',
+      },
+    },
+  },
 }

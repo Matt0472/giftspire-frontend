@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100">
     <AppHeader />
 
     <main class="flex-1">
-      <div v-if="route.name === 'home'">
+      <div v-if="isFullWidthPage">
         <slot />
       </div>
       <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -19,10 +19,16 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppHeader from '../components/pagination/AppHeader.vue'
 import AppFooter from '../components/pagination/AppFooter.vue'
 import ToastContainer from '../components/ui/ToastContainer.vue'
 
 const route = useRoute()
+
+const isFullWidthPage = computed(() => {
+  const fullWidthPages = ['home', 'login', 'register', 'verify-email-pending', 'email-verified']
+  return fullWidthPages.includes(route.name as string)
+})
 </script>
