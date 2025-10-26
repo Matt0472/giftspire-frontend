@@ -139,7 +139,7 @@ export default {
     steps: {
       register: {
         title: 'Crea il Tuo Account',
-        description: 'Registrati in pochi secondi e unisciti alla nostra comunità. È completamente gratuito e ci vuole meno di un minuto per iniziare.',
+        description: 'Registrati in pochi secondi e unisciti alla nostra comunità. Non utilizziamo alcun dato sensibile - scegli solo un nickname e una password. È completamente gratuito e ci vuole meno di un minuto per iniziare.',
       },
       fillForm: {
         title: 'Rispondi a Semplici Domande',

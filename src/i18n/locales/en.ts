@@ -139,7 +139,7 @@ export default {
     steps: {
       register: {
         title: 'Create Your Account',
-        description: 'Sign up in seconds and join our community. It\'s completely free and takes less than a minute to get started.',
+        description: 'Sign up in seconds and join our community. We don\'t use any sensitive data - just choose a nickname and password. It\'s completely free and takes less than a minute to get started.',
       },
       fillForm: {
         title: 'Answer Simple Questions',
