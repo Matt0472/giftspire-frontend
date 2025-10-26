@@ -1,7 +1,16 @@
 import apiClient from '@/config/api'
-import type { User, LoginRequest, RegisterRequest, LoginResponse, UserResponse } from '@/types/auth'
+import type { User, LoginRequest, RegisterRequest, LoginResponse, UserResponse, CheckNicknameResponse } from '@/types/auth'
 
 export const authAPI = {
+  /**
+   * Check if a nickname is available for registration
+   * Backend returns: { "available": true|false }
+   */
+  async checkNickname(nickname: string): Promise<boolean> {
+    const response = await apiClient.post<CheckNicknameResponse>('/auth/check-nickname', { nickname })
+    return response.data.available
+  },
+
   /**
    * Login user and return access token
    * Backend returns: { "access_token": "..." }
@@ -21,7 +30,7 @@ export const authAPI = {
 
   /**
    * Get current authenticated user
-   * Backend returns: { "id": "...", "display_name": "...", "email": "..." }
+   * Backend returns: { "id": "...", "display_name": "..." }
    */
   async getCurrentUser(): Promise<User> {
     const response = await apiClient.get<UserResponse>('/init')
@@ -29,28 +38,11 @@ export const authAPI = {
     // Map backend response to frontend User type
     return {
       id: response.data.id,
-      name: response.data.display_name,
-      email: response.data.email
+      display_name: response.data.display_name
     }
   },
 
   async logout(): Promise<void> {
     await apiClient.post('/auth/logout')
-  },
-
-  /**
-   * Resend email verification notification (authenticated users)
-   * Backend returns: 204 No Content
-   */
-  async resendVerificationEmail(): Promise<void> {
-    await apiClient.post('/auth/send_verification_email')
-  },
-
-  /**
-   * Resend email verification by email address (unauthenticated users)
-   * Backend returns: 204 No Content
-   */
-  async resendVerificationEmailByEmail(email: string): Promise<void> {
-    await apiClient.post('/auth/resend_verification_email', { email })
   }
 }

@@ -2,7 +2,7 @@
   <div>
     <div class="mb-8">
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        Welcome back, {{ authStore.user?.name }}!
+        Welcome back, {{ authStore.user?.display_name }}!
       </h1>
       <p class="text-gray-600 dark:text-gray-300">
         This is your personalized dashboard
@@ -17,7 +17,7 @@
           <User class="w-6 h-6 text-blue-500" />
         </div>
         <p class="text-gray-600 dark:text-gray-300 text-sm">
-          Email: {{ authStore.user?.email }}
+          Nickname: {{ authStore.user?.display_name }}
         </p>
       </div>
 

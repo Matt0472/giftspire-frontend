@@ -1,18 +1,16 @@
 export interface User {
   id: string
-  name: string
-  email: string
+  display_name: string
 }
 
 export interface LoginRequest {
-  email: string
+  nickname: string
   password: string
   remember_me?: boolean
 }
 
 export interface RegisterRequest {
-  name: string
-  email: string
+  nickname: string
   password: string
 }
 
@@ -25,5 +23,9 @@ export interface LoginResponse {
 export interface UserResponse {
   id: string
   display_name: string
-  email: string
+}
+
+// Backend check nickname response
+export interface CheckNicknameResponse {
+  available: boolean
 }

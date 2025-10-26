@@ -20,10 +20,10 @@ export function useAuth() {
 
       // Step 2: Fetch current user data using the token
       // First, temporarily store token so the API client can use it
-      authStore.login({ id: '', name: '', email: '' }, token)
+      authStore.login({ id: '', display_name: '' }, token)
 
       try {
-        // Step 3: Get user data (requires verified email)
+        // Step 3: Get user data
         const user = await authAPI.getCurrentUser()
 
         // Step 4: Store complete auth data
@@ -32,14 +32,7 @@ export function useAuth() {
         await router.push('/dashboard')
         return { user, token }
       } catch (userErr: unknown) {
-        // If getCurrentUser fails (likely due to unverified email)
-        // Keep the token but redirect to verification page
-        const responseStatus = (userErr as { response?: { status?: number } }).response?.status
-        if (responseStatus === 403 || responseStatus === 401) {
-          error.value = 'Please verify your email address to continue.'
-          await router.push('/verify-email-pending')
-          return { user: null, token }
-        }
+        // If getCurrentUser fails, clear auth and re-throw
         throw userErr
       }
     } catch (err: unknown) {
@@ -58,12 +51,14 @@ export function useAuth() {
 
     try {
       // Backend returns 204 No Content on successful registration
-      // and sends verification email to the user
+      // Users are auto-verified and can log in immediately
       await authAPI.register(userData)
 
-      // Registration successful - redirect to verification pending page
-      // User needs to check email and verify before logging in
-      await router.push('/verify-email-pending')
+      // Registration successful - redirect to login page
+      await router.push({
+        name: 'login',
+        query: { registered: 'true' }
+      })
 
       return { success: true }
     } catch (err: unknown) {

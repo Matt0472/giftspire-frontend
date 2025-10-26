@@ -25,6 +25,7 @@ export default {
   auth: {
     email: 'Email',
     password: 'Password',
+    nickname: 'Nickname',
     name: 'Nome Completo',
     confirmPassword: 'Conferma Password',
     createAccount: 'Crea Account',
@@ -35,10 +36,14 @@ export default {
     sending: 'Invio in corso...',
     continueWithGoogle: 'Continua con Google',
     enterEmail: 'Inserisci la tua email',
+    enterNickname: 'Inserisci il tuo nickname',
     enterPassword: 'Inserisci la tua password',
     enterFullName: 'Inserisci il tuo nome completo',
     confirmPasswordPlaceholder: 'Conferma la tua password',
     passwordHint: 'Deve contenere: 8+ caratteri, una lettera maiuscola, un numero, un carattere speciale',
+    nicknameHint: 'Minimo 3 caratteri. Solo lettere, numeri e underscore.',
+    nicknameAvailable: 'Nickname disponibile!',
+    nicknameTaken: 'Questo nickname è già in uso',
   },
   verifyEmail: {
     title: 'Verifica la Tua Email',
@@ -94,6 +99,7 @@ export default {
     passwordNumber: 'La password deve contenere almeno un numero',
     passwordSpecial: 'La password deve contenere almeno un carattere speciale',
     nameMinLength: 'Il nome deve contenere almeno 2 caratteri',
+    nicknameMinLength: 'Il nickname deve contenere almeno 3 caratteri',
     passwordsMismatch: 'Le password non corrispondono',
   },
   howItWorks: {
