@@ -72,8 +72,8 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import StarryBackground from '@/components/ui/StarryBackground.vue'
-import HowItWorks from '@/components/HowItWorks.vue'
-import UserJourneyCarousel from '@/components/UserJourneyCarousel.vue'
+import HowItWorks from '@/components/HomePage/HowItWorks.vue'
+import UserJourneyCarousel from '@/components/HomePage/UserJourneyCarousel.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
