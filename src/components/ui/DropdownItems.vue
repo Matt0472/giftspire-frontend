@@ -95,7 +95,7 @@ const emit = defineEmits<{
 }>()
 
 const openSubMenuIndex = ref<number | null>(null)
-let hoverTimeout: NodeJS.Timeout | null = null
+let hoverTimeout: ReturnType<typeof setTimeout> | null = null
 
 const handleMouseEnter = (index: number) => {
   // Clear any existing timeout
@@ -128,7 +128,7 @@ const handleClick = (item: DropdownItem) => {
 
   // If item has children, toggle the submenu on click (for touch devices)
   if (item.children) {
-    openSubMenuIndex.value = openSubMenuIndex.value === items.indexOf(item) ? null : items.indexOf(item)
+    openSubMenuIndex.value = openSubMenuIndex.value === props.items.indexOf(item) ? null : props.items.indexOf(item)
   } else {
     // If no children, emit the click event
     emit('itemClick', item)

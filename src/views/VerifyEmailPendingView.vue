@@ -118,7 +118,7 @@ const successMessage = ref('')
 const errorMessage = ref('')
 const email = ref('')
 
-let countdownInterval: NodeJS.Timeout | null = null
+let countdownInterval: ReturnType<typeof setInterval> | null = null
 
 const startCountdown = () => {
   countdown.value = 60 // 60 seconds cooldown
@@ -155,14 +155,15 @@ const handleResendEmail = async () => {
       successMessage.value = t('verifyEmail.emailSentGeneric')
       startCountdown()
     }
-  } catch (error: any) {
-    if (error.response?.status === 401) {
+  } catch (error: unknown) {
+    const responseStatus = (error as { response?: { status?: number } }).response?.status
+    if (responseStatus === 401) {
       errorMessage.value = t('verifyEmail.pleaseLogin')
-    } else if (error.response?.status === 422) {
+    } else if (responseStatus === 422) {
       errorMessage.value = t('verifyEmail.invalidEmail')
     } else {
-      errorMessage.value =
-        error.response?.data?.message || t('verifyEmail.resendFailed')
+      const errorMsg = (error as { response?: { data?: { message?: string } } }).response?.data?.message
+      errorMessage.value = errorMsg || t('verifyEmail.resendFailed')
     }
   } finally {
     isResending.value = false

@@ -3,10 +3,10 @@
     <button
       @click="toggleDropdown"
       class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-      :aria-label="`Current language: ${currentLanguage.name}`"
+      :aria-label="`Current language: ${currentLanguage?.name}`"
     >
-      <span class="text-lg">{{ currentLanguage.flag }}</span>
-      <span class="hidden sm:inline">{{ currentLanguage.code.toUpperCase() }}</span>
+      <span class="text-lg">{{ currentLanguage?.flag }}</span>
+      <span class="hidden sm:inline">{{ currentLanguage?.code.toUpperCase() }}</span>
       <svg
         class="w-4 h-4 transition-transform"
         :class="{ 'rotate-180': isOpen }"

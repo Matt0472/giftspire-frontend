@@ -121,7 +121,7 @@ const isSuccess = ref(false)
 const errorMessage = ref('')
 const countdown = ref(5)
 
-let countdownInterval: NodeJS.Timeout | null = null
+let countdownInterval: ReturnType<typeof setInterval> | null = null
 
 onMounted(() => {
   // Check query parameters

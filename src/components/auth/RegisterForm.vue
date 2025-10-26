@@ -177,6 +177,7 @@ const handleSubmit = async () => {
 
   isSubmitting.value = true
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmPassword, ...dataToSubmit } = result.data
     emit('submit', dataToSubmit)
   } finally {

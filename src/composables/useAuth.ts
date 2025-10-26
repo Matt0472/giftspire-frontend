@@ -31,18 +31,20 @@ export function useAuth() {
 
         await router.push('/dashboard')
         return { user, token }
-      } catch (userErr: any) {
+      } catch (userErr: unknown) {
         // If getCurrentUser fails (likely due to unverified email)
         // Keep the token but redirect to verification page
-        if (userErr.response?.status === 403 || userErr.response?.status === 401) {
+        const responseStatus = (userErr as { response?: { status?: number } }).response?.status
+        if (responseStatus === 403 || responseStatus === 401) {
           error.value = 'Please verify your email address to continue.'
           await router.push('/verify-email-pending')
           return { user: null, token }
         }
         throw userErr
       }
-    } catch (err: any) {
-      error.value = err.response?.data?.message || 'Login failed. Please try again.'
+    } catch (err: unknown) {
+      const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
+      error.value = errorMessage || 'Login failed. Please try again.'
       authStore.logout() // Clear any partial data on error
       throw err
     } finally {
@@ -64,8 +66,9 @@ export function useAuth() {
       await router.push('/verify-email-pending')
 
       return { success: true }
-    } catch (err: any) {
-      error.value = err.response?.data?.message || 'Registration failed. Please try again.'
+    } catch (err: unknown) {
+      const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
+      error.value = errorMessage || 'Registration failed. Please try again.'
       throw err
     } finally {
       isLoading.value = false
@@ -97,8 +100,9 @@ export function useAuth() {
         authStore.login(user, authStore.token)
       }
       return user
-    } catch (err: any) {
-      error.value = err.response?.data?.message || 'Failed to fetch user data.'
+    } catch (err: unknown) {
+      const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
+      error.value = errorMessage || 'Failed to fetch user data.'
       throw err
     } finally {
       isLoading.value = false

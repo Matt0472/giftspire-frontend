@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, useSlots } from 'vue'
 import { Eye, EyeOff } from 'lucide-vue-next'
 
 export interface BaseInputProps {
@@ -95,6 +95,7 @@ const emit = defineEmits<{
   focus: [event: FocusEvent]
 }>()
 
+const slots = useSlots()
 const isPasswordVisible = ref(false)
 
 const computedType = computed(() => {
@@ -108,10 +109,10 @@ const inputClasses = computed(() => {
   const classes = []
 
   // Padding adjustments for icons
-  if (props.$slots?.leftIcon) {
+  if (slots.leftIcon) {
     classes.push('pl-10')
   }
-  if (props.$slots?.rightIcon || (props.type === 'password' && props.showPasswordToggle)) {
+  if (slots.rightIcon || (props.type === 'password' && props.showPasswordToggle)) {
     classes.push('pr-10')
   }
 

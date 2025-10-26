@@ -73,7 +73,7 @@ const emit = defineEmits<{
 }>()
 
 const visible = ref(true)
-let autoCloseTimer: NodeJS.Timeout | null = null
+let autoCloseTimer: ReturnType<typeof setTimeout> | null = null
 
 // Icon components
 const InfoIcon = () =>
