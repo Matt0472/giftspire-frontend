@@ -3,8 +3,6 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import VerifyEmailPendingView from '@/views/VerifyEmailPendingView.vue'
-import EmailVerifiedView from '@/views/EmailVerifiedView.vue'
 import { useAuthStore } from '@/stores/auth'
 import './types'
 
@@ -27,16 +25,6 @@ const router = createRouter({
       name: 'register',
       component: RegisterView,
       meta: { requiresGuest: true },
-    },
-    {
-      path: '/verify-email-pending',
-      name: 'verify-email-pending',
-      component: VerifyEmailPendingView,
-    },
-    {
-      path: '/email-verified',
-      name: 'email-verified',
-      component: EmailVerifiedView,
     },
     {
       path: '/dashboard',

@@ -28,7 +28,7 @@ import ToastContainer from '../components/ui/ToastContainer.vue'
 const route = useRoute()
 
 const isFullWidthPage = computed(() => {
-  const fullWidthPages = ['home', 'login', 'register', 'verify-email-pending', 'email-verified']
+  const fullWidthPages = ['home', 'login', 'register']
   return fullWidthPages.includes(route.name as string)
 })
 </script>
