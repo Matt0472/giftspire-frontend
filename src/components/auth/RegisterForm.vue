@@ -325,18 +325,11 @@ const handleSubmit = async () => {
 
   if (!result.success) {
     // Map validation errors to form fields
-    const zodErrors = result.error.format()
-    if (zodErrors.nickname?._errors[0]) {
-      errors.nickname = zodErrors.nickname._errors[0]
-    }
-    if (zodErrors.password?._errors[0]) {
-      errors.password = zodErrors.password._errors[0]
-    }
-    if (zodErrors.confirmPassword?._errors[0]) {
-      errors.confirmPassword = zodErrors.confirmPassword._errors[0]
-    }
-    if (zodErrors.terms?._errors[0]) {
-      errors.terms = zodErrors.terms._errors[0]
+    for (const issue of result.error.issues) {
+      const field = issue.path[0] as keyof typeof errors
+      if (field && issue.message) {
+        errors[field] = issue.message
+      }
     }
     return
   }

@@ -82,12 +82,11 @@ const handleSubmit = async () => {
 
   if (!result.success) {
     // Map validation errors to form fields
-    const zodErrors = result.error.flatten().fieldErrors
-    if (zodErrors.nickname?.[0]) {
-      errors.nickname = zodErrors.nickname[0]
-    }
-    if (zodErrors.password?.[0]) {
-      errors.password = zodErrors.password[0]
+    for (const issue of result.error.issues) {
+      const field = issue.path[0] as keyof typeof errors
+      if (field && issue.message) {
+        errors[field] = issue.message
+      }
     }
     return
   }
