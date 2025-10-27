@@ -12,6 +12,8 @@ export interface LoginRequest {
 export interface RegisterRequest {
   nickname: string
   password: string
+  password_confirmation: string
+  terms: boolean
 }
 
 // Backend login response: only returns access_token

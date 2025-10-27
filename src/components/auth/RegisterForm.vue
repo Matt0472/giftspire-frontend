@@ -1,6 +1,13 @@
 <template>
   <div class="w-full max-w-md mx-auto">
-    <div class="bg-white dark:bg-gray-800 rounded-lg p-8" style="box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-lg p-8"
+      style="
+        box-shadow:
+          0 -2px 4px rgba(0, 0, 0, 0.06),
+          0 4px 6px rgba(0, 0, 0, 0.1);
+      "
+    >
       <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
         {{ t('auth.createAccount') }}
       </h2>
@@ -8,7 +15,10 @@
       <form @submit.prevent="handleSubmit" class="space-y-4">
         <!-- Nickname Field with Availability Check -->
         <div>
-          <label for="nickname" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            for="nickname"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             {{ t('auth.nickname') }}
           </label>
           <div class="relative">
@@ -24,41 +34,87 @@
                 'text-gray-900 dark:text-white',
                 'placeholder-gray-400 dark:placeholder-gray-500',
                 'focus:outline-none focus:ring-2',
-                nicknameInputClasses
+                nicknameInputClasses,
               ]"
               @input="handleNicknameInput"
             />
 
             <!-- Loading spinner -->
             <div v-if="isCheckingNickname" class="absolute right-3 top-1/2 -translate-y-1/2">
-              <svg class="animate-spin h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                class="animate-spin h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
             </div>
 
             <!-- Success icon -->
-            <div v-else-if="nicknameAvailable && formData.nickname.length >= 3" class="absolute right-3 top-1/2 -translate-y-1/2">
-              <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
+            <div
+              v-else-if="nicknameAvailable && formData.nickname.length >= 3"
+              class="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              <svg
+                class="h-5 w-5 text-green-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                  clip-rule="evenodd"
+                />
               </svg>
             </div>
 
             <!-- Error icon -->
-            <div v-else-if="nicknameAvailable === false && formData.nickname.length >= 3" class="absolute right-3 top-1/2 -translate-y-1/2">
-              <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+            <div
+              v-else-if="nicknameAvailable === false && formData.nickname.length >= 3"
+              class="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              <svg
+                class="h-5 w-5 text-red-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                  clip-rule="evenodd"
+                />
               </svg>
             </div>
           </div>
 
           <!-- Success message -->
-          <p v-if="nicknameAvailable && formData.nickname.length >= 3" class="mt-1 text-xs text-green-600 dark:text-green-400">
+          <p
+            v-if="nicknameAvailable && formData.nickname.length >= 3"
+            class="mt-1 text-xs text-green-600 dark:text-green-400"
+          >
             {{ t('auth.nicknameAvailable') }}
           </p>
 
           <!-- Error message -->
-          <p v-else-if="nicknameAvailable === false && formData.nickname.length >= 3" class="mt-1 text-xs text-red-600 dark:text-red-400">
+          <p
+            v-else-if="nicknameAvailable === false && formData.nickname.length >= 3"
+            class="mt-1 text-xs text-red-600 dark:text-red-400"
+          >
             {{ t('auth.nicknameTaken') }}
           </p>
 
@@ -96,7 +152,38 @@
           @input="errors.confirmPassword = undefined"
         />
 
-        <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting || !canSubmit">
+        <!-- Terms and Conditions Switch -->
+        <div>
+          <div class="flex items-start space-x-3">
+            <BaseSwitch
+              id="terms"
+              v-model="formData.terms"
+              @update:model-value="errors.terms = undefined"
+            />
+            <div class="flex-1">
+              <span class="text-sm text-gray-700 dark:text-gray-300">
+                {{ t('auth.agreeToTerms') }}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  class="text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  {{ t('auth.termsAndConditions') }}
+                </a>
+              </span>
+            </div>
+          </div>
+          <p v-if="errors.terms" class="mt-1 text-xs text-red-600 dark:text-red-400">
+            {{ errors.terms }}
+          </p>
+        </div>
+
+        <BaseButton
+          type="submit"
+          variant="primary"
+          class="w-full"
+          :disabled="isSubmitting || !canSubmit"
+        >
           {{ isSubmitting ? t('auth.creatingAccount') : t('common.signUp') }}
         </BaseButton>
       </form>
@@ -112,12 +199,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { z } from 'zod'
 import { useI18n } from 'vue-i18n'
 import { authAPI } from '@/api/auth'
+import type { RegisterRequest } from '@/types/auth'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
+import BaseSwitch from '@/components/ui/BaseSwitch.vue'
 
 const { t } = useI18n()
 
@@ -131,6 +220,9 @@ const registerSchema = z
       .regex(/[0-9]/, t('validation.passwordNumber'))
       .regex(/[^A-Za-z0-9]/, t('validation.passwordSpecial')),
     confirmPassword: z.string(),
+    terms: z.boolean().refine((val) => val === true, {
+      message: t('validation.termsRequired'),
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: t('validation.passwordsMismatch'),
@@ -143,6 +235,7 @@ const formData = reactive<RegisterFormData>({
   nickname: '',
   password: '',
   confirmPassword: '',
+  terms: false,
 })
 
 const errors = reactive<Partial<Record<keyof RegisterFormData, string>>>({})
@@ -152,7 +245,7 @@ const nicknameAvailable = ref<boolean | null>(null)
 let debounceTimeout: ReturnType<typeof setTimeout> | null = null
 
 const emit = defineEmits<{
-  submit: [data: Omit<RegisterFormData, 'confirmPassword'>]
+  submit: [data: RegisterRequest]
   socialLogin: [provider: 'google' | 'apple']
 }>()
 
@@ -175,6 +268,7 @@ const canSubmit = computed(() => {
     nicknameAvailable.value === true &&
     formData.password.length >= 8 &&
     formData.confirmPassword.length >= 8 &&
+    formData.terms === true &&
     !isCheckingNickname.value
   )
 })
@@ -188,8 +282,7 @@ const checkNicknameAvailability = async (nickname: string) => {
 
   isCheckingNickname.value = true
   try {
-    const available = await authAPI.checkNickname(nickname)
-    nicknameAvailable.value = available
+    nicknameAvailable.value = await authAPI.checkNickname(nickname)
   } catch (error) {
     console.error('Error checking nickname:', error)
     nicknameAvailable.value = null
@@ -219,6 +312,7 @@ const handleSubmit = async () => {
   errors.nickname = undefined
   errors.password = undefined
   errors.confirmPassword = undefined
+  errors.terms = undefined
 
   // Check nickname availability one last time
   if (nicknameAvailable.value !== true) {
@@ -231,23 +325,31 @@ const handleSubmit = async () => {
 
   if (!result.success) {
     // Map validation errors to form fields
-    const zodErrors = result.error.flatten().fieldErrors
-    if (zodErrors.nickname?.[0]) {
-      errors.nickname = zodErrors.nickname[0]
+    const zodErrors = result.error.format()
+    if (zodErrors.nickname?._errors[0]) {
+      errors.nickname = zodErrors.nickname._errors[0]
     }
-    if (zodErrors.password?.[0]) {
-      errors.password = zodErrors.password[0]
+    if (zodErrors.password?._errors[0]) {
+      errors.password = zodErrors.password._errors[0]
     }
-    if (zodErrors.confirmPassword?.[0]) {
-      errors.confirmPassword = zodErrors.confirmPassword[0]
+    if (zodErrors.confirmPassword?._errors[0]) {
+      errors.confirmPassword = zodErrors.confirmPassword._errors[0]
+    }
+    if (zodErrors.terms?._errors[0]) {
+      errors.terms = zodErrors.terms._errors[0]
     }
     return
   }
 
   isSubmitting.value = true
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { confirmPassword, ...dataToSubmit } = result.data
+    // Map form data to RegisterRequest format
+    const dataToSubmit = {
+      nickname: result.data.nickname,
+      password: result.data.password,
+      password_confirmation: result.data.confirmPassword,
+      terms: result.data.terms,
+    }
     emit('submit', dataToSubmit)
   } finally {
     isSubmitting.value = false

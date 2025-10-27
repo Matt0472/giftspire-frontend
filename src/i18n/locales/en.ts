@@ -44,6 +44,8 @@ export default {
     nicknameHint: 'Minimum 3 characters. Only letters, numbers, and underscores.',
     nicknameAvailable: 'Nickname is available!',
     nicknameTaken: 'This nickname is already taken',
+    agreeToTerms: 'I agree to the',
+    termsAndConditions: 'Terms and Conditions',
   },
   footer: {
     copyright: '© {0} GiftSpire. All rights reserved.',
@@ -64,6 +66,7 @@ export default {
     nameMinLength: 'Name must be at least 2 characters',
     nicknameMinLength: 'Nickname must be at least 3 characters',
     passwordsMismatch: 'Passwords do not match',
+    termsRequired: 'You must agree to the terms and conditions',
   },
   howItWorks: {
     title: 'How GiftSpire Works',
