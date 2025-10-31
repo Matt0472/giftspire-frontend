@@ -6,22 +6,18 @@ import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import { giftSearchAPI } from '@/api/giftSearch'
 import type { TrendingProduct } from '@/types/giftSearch'
 
-export type GradientVariant = 'variant1' | 'variant2' | 'variant3' | 'variant4' | 'variant5'
-
 interface TrendingProductsProps {
   category?: string
   limit?: number
   title?: string
   animationDelay?: number
-  gradientVariant?: GradientVariant
 }
 
 const props = withDefaults(defineProps<TrendingProductsProps>(), {
   category: 'tech',
   limit: 4,
   title: 'Trending Products',
-  animationDelay: 0,
-  gradientVariant: 'variant1'
+  animationDelay: 0
 })
 
 const emit = defineEmits<{
@@ -69,7 +65,7 @@ onMounted(async () => {
 <template>
   <Transition name="fade-slide">
     <div v-if="!loading && products.length > 0" class="mt-8" :style="{ animationDelay: `${animationDelay}ms` }">
-      <h2 class="text-xl font-bold mb-4 gradient-text-animated" :class="`gradient-${gradientVariant}`">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
         {{ title }}
       </h2>
 
@@ -131,52 +127,4 @@ onMounted(async () => {
   }
 }
 
-/* Using the same pattern as .gradient-text from main.css */
-.gradient-text-animated {
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  animation: gradient-shift 6s ease-in-out infinite;
-  display: inline-block;
-}
-
-/* Gradient Variant 1 - Blue/Cyan/Purple */
-.gradient-variant1 {
-  background: linear-gradient(90deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6, #06b6d4);
-}
-
-/* Gradient Variant 2 - Pink/Purple/Rose */
-.gradient-variant2 {
-  background: linear-gradient(90deg, #ec4899, #a855f7, #f43f5e, #ec4899, #a855f7);
-}
-
-/* Gradient Variant 3 - Orange/Red/Amber */
-.gradient-variant3 {
-  background: linear-gradient(90deg, #f59e0b, #ef4444, #f97316, #f59e0b, #ef4444);
-}
-
-/* Gradient Variant 4 - Green/Teal/Emerald */
-.gradient-variant4 {
-  background: linear-gradient(90deg, #10b981, #14b8a6, #22c55e, #10b981, #14b8a6);
-}
-
-/* Gradient Variant 5 - Amber/Yellow/Orange */
-.gradient-variant5 {
-  background: linear-gradient(90deg, #d97706, #eab308, #f59e0b, #d97706, #eab308);
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gradient-text-animated {
-    animation-duration: 0.001s;
-    animation-iteration-count: 1;
-  }
-}
 </style>

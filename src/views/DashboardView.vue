@@ -21,7 +21,6 @@
         category="tech"
         :limit="4"
         title="Tech & Gadgets"
-        gradient-variant="variant1"
         :animation-delay="0"
         @loaded="handleSectionLoaded"
       />
@@ -30,7 +29,6 @@
         category="fashion"
         :limit="4"
         title="Fashion & Accessories"
-        gradient-variant="variant2"
         :animation-delay="100"
         @loaded="handleSectionLoaded"
       />
@@ -39,7 +37,6 @@
         category="home"
         :limit="4"
         title="Home & Kitchen"
-        gradient-variant="variant3"
         :animation-delay="200"
         @loaded="handleSectionLoaded"
       />
@@ -48,7 +45,6 @@
         category="sports"
         :limit="4"
         title="Sports & Outdoors"
-        gradient-variant="variant4"
         :animation-delay="300"
         @loaded="handleSectionLoaded"
       />
@@ -57,7 +53,6 @@
         category="books"
         :limit="4"
         title="Books & Hobbies"
-        gradient-variant="variant5"
         :animation-delay="400"
         @loaded="handleSectionLoaded"
       />
