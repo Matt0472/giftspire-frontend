@@ -1,5 +1,5 @@
 import apiClient from '@/config/api'
-import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse } from '@/types/giftSearch'
+import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse, TrendingProductsResponse } from '@/types/giftSearch'
 
 export const giftSearchAPI = {
   /**
@@ -15,8 +15,8 @@ export const giftSearchAPI = {
   /**
    * Get trending products for a category
    */
-  async getTrending(category: string, limit: number = 10): Promise<GiftSearchResponse> {
-    const response = await apiClient.get<GiftSearchResponse>(`/gift-finder/trending/${category}`, {
+  async getTrending(category: string, limit: number = 10): Promise<TrendingProductsResponse> {
+    const response = await apiClient.get<TrendingProductsResponse>(`/gift-finder/trending/${category}`, {
       params: { limit }
     })
     return response.data

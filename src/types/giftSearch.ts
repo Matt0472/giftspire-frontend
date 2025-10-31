@@ -94,3 +94,24 @@ export interface GiftSearchErrorResponse {
   message: string
   errors?: Record<string, string[]>
 }
+
+export interface TrendingProduct {
+  asin: string
+  title: string
+  url: string
+  image: string
+  price: number
+  currency: string
+  rating: number | null
+  review_count: number
+  is_prime: boolean
+}
+
+export interface TrendingProductsResponse {
+  success: boolean
+  data: {
+    category: string
+    products: TrendingProduct[]
+    total: number
+  }
+}

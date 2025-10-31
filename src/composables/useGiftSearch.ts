@@ -147,7 +147,7 @@ export function useGiftSearch() {
     try {
       const response = await giftSearchAPI.getTrending(category, limit)
       console.log('[GiftSearch] Trending products:', response)
-      return response
+      return response.data.products
     } catch (err: unknown) {
       const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
       const message = errorMessage || 'Failed to get trending products.'

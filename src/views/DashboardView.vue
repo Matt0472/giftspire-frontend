@@ -6,38 +6,83 @@
       />
     </div>
 
-    <div class="mt-8">
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Explore</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <BaseCard
-          title="Gift Ideas Blog"
-          description="Curated tips and stories to inspire your gift selections."
-          image-src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1200&auto=format&fit=crop"
-          href="https://example.com/blog"
-        />
-        <BaseCard
-          title="Public Roadmap"
-          description="See what's coming next and vote for features."
-          image-src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop"
-          href="https://example.com/roadmap"
-        />
-        <BaseCard
-          title="Community"
-          description="Join the conversation, ask questions, and share ideas."
-          image-src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop"
-          href="https://example.com/community"
-        />
-      </div>
+    <!-- Loading State - Simple line skeletons -->
+    <div v-if="isLoading" class="mt-8 space-y-6">
+      <BaseSkeleton shape="rect" inner-class="h-8 w-64" />
+      <BaseSkeleton shape="rect" inner-class="h-6 w-96" />
+      <BaseSkeleton shape="rect" inner-class="h-6 w-80" />
+      <BaseSkeleton shape="rect" inner-class="h-6 w-72" />
+      <BaseSkeleton shape="rect" inner-class="h-6 w-88" />
+    </div>
+
+    <!-- Trending Sections - Hidden but mounted during loading -->
+    <div :class="{ 'opacity-0 h-0 overflow-hidden': isLoading }">
+      <TrendingProducts
+        category="tech"
+        :limit="4"
+        title="Tech & Gadgets"
+        gradient-variant="variant1"
+        :animation-delay="0"
+        @loaded="handleSectionLoaded"
+      />
+
+      <TrendingProducts
+        category="fashion"
+        :limit="4"
+        title="Fashion & Accessories"
+        gradient-variant="variant2"
+        :animation-delay="100"
+        @loaded="handleSectionLoaded"
+      />
+
+      <TrendingProducts
+        category="home"
+        :limit="4"
+        title="Home & Kitchen"
+        gradient-variant="variant3"
+        :animation-delay="200"
+        @loaded="handleSectionLoaded"
+      />
+
+      <TrendingProducts
+        category="sports"
+        :limit="4"
+        title="Sports & Outdoors"
+        gradient-variant="variant4"
+        :animation-delay="300"
+        @loaded="handleSectionLoaded"
+      />
+
+      <TrendingProducts
+        category="books"
+        :limit="4"
+        title="Books & Hobbies"
+        gradient-variant="variant5"
+        :animation-delay="400"
+        @loaded="handleSectionLoaded"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import BaseCard from '@/components/ui/BaseCard.vue'
-import type { ChipVariant } from '@/components/ui/BaseChip.vue'
+import { ref } from 'vue'
 import ChipsJumbotron from '@/components/Dashboard/ChipsJumbotron.vue'
+import TrendingProducts from '@/components/Dashboard/TrendingProducts.vue'
+import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 
 const skeletonWidths = ['w-24','w-28','w-32','w-20','w-36','w-24','w-28','w-20','w-32','w-24','w-28','w-36']
+
+const isLoading = ref(true)
+const loadedSections = ref(0)
+const totalSections = 5
+
+const handleSectionLoaded = () => {
+  loadedSections.value++
+  if (loadedSections.value >= totalSections) {
+    isLoading.value = false
+  }
+}
 </script>
 
 <style scoped>
