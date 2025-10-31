@@ -28,12 +28,7 @@ const { t, locale } = useI18n()
     <template #content>
       <div class="text-center max-w-4xl">
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-          <template v-if="locale === 'en'">
-            A Sky Full of <span class="gradient-text">gifts</span><br>{{ t('home.heroTitleLine2') }}
-          </template>
-          <template v-else>
-            Un Universo di <span class="gradient-text">Regali</span><br>{{ t('home.heroTitleLine2') }}
-          </template>
+          {{ t('home.heroTitleStart') }}<span class="gradient-text">{{ t('home.heroTitleHighlight') }}</span><br>{{ t('home.heroTitleLine2') }}
         </h1>
         <p class="text-xl md:text-2xl text-white/90 mb-10 max-w-2xl mx-auto">
           {{ t('home.heroSubtitle') }}

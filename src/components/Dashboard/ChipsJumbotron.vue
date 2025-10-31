@@ -65,7 +65,7 @@ onMounted(async () => {
     })) as ChipDef[]
   } catch (e: unknown) {
     console.error(e)
-    error.value = 'Failed to load quick actions.'
+    error.value = t('dashboard.jumbo.loadError')
     chips.value = []
   } finally {
     loading.value = false
@@ -84,8 +84,7 @@ onMounted(async () => {
 
     <template #left>
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">
-        Welcome back, <span class="gradient-text">{{ user?.display_name }}</span
-        >!
+        {{ t('dashboard.jumbo.welcomeBackPrefix') }}<span class="gradient-text">{{ user?.display_name }}</span>{{ t('dashboard.jumbo.welcomeBackSuffix') }}
       </h1>
       <h2 class="text-2xl md:text-3xl font-semibold text-white mb-3">
         {{ t('dashboard.jumbo.title') }}

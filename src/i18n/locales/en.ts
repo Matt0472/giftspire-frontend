@@ -15,6 +15,8 @@ export default {
   },
   home: {
     heroTitle: 'A Sky Full of gifts',
+    heroTitleStart: 'A Sky Full of ',
+    heroTitleHighlight: 'gifts',
     heroTitleLine2: 'For every occasion',
     heroSubtitle: 'Let GiftSpire inspire your gift-giving with personalized recommendations for every occasion',
     getStartedFree: 'Get Started Free',
@@ -138,8 +140,18 @@ export default {
   },
   dashboard: {
     jumbo: {
+      welcomeBackPrefix: 'Welcome back, ',
+      welcomeBackSuffix: '!',
       title: 'Start now — pick a chip to spark your first search',
       subtitle: 'Choose a person, a category, or an occasion. We\'ll turn it into smart gift ideas instantly.',
+      loadError: 'Failed to load quick actions.',
+    },
+    trending: {
+      title: 'Trending Products',
+      prime: 'Prime',
+      reviews: 'reviews',
+      ratingNotAvailable: 'N/A',
+      loadError: 'Failed to load trending products',
     },
     quickChips: {
       title: 'Quick Search',

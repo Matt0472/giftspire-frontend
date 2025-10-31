@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseCard from '@/components/ui/BaseCard.vue'
-import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import { giftSearchAPI } from '@/api/giftSearch'
 import type { TrendingProduct } from '@/types/giftSearch'
 
@@ -16,10 +15,11 @@ interface TrendingProductsProps {
   gradientVariant?: GradientVariant
 }
 
+const { t } = useI18n()
+
 const props = withDefaults(defineProps<TrendingProductsProps>(), {
   category: 'tech',
   limit: 4,
-  title: 'Trending Products',
   animationDelay: 0,
   gradientVariant: 'variant1'
 })
@@ -28,7 +28,6 @@ const emit = defineEmits<{
   loaded: []
 }>()
 
-const { t } = useI18n()
 const products = ref<TrendingProduct[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -42,7 +41,7 @@ const formatPrice = (price: number, currency: string) => {
 
 const formatRating = (rating: number | null | undefined) => {
   if (rating === null || rating === undefined) {
-    return 'N/A'
+    return t('dashboard.trending.ratingNotAvailable')
   }
   return rating.toFixed(1)
 }
@@ -59,7 +58,7 @@ onMounted(async () => {
     emit('loaded')
   } catch (e: unknown) {
     console.error('[TrendingProducts] Error fetching trending products:', e)
-    error.value = 'Failed to load trending products'
+    error.value = t('dashboard.trending.loadError')
     loading.value = false
     emit('loaded')
   }
@@ -70,7 +69,7 @@ onMounted(async () => {
   <Transition name="fade-slide">
     <div v-if="!loading && products.length > 0" class="mt-8" :style="{ animationDelay: `${animationDelay}ms` }">
       <h2 class="text-xl font-bold mb-4" :class="`gradient-text-${gradientVariant}`">
-        {{ title }}
+        {{ title || t('dashboard.trending.title') }}
       </h2>
 
       <!-- Products Grid -->
@@ -91,7 +90,7 @@ onMounted(async () => {
                 {{ formatPrice(product.price, product.currency) }}
               </span>
               <span v-if="product.is_prime" class="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
-                Prime
+                {{ t('dashboard.trending.prime') }}
               </span>
             </div>
             <div v-if="product.rating !== null && product.rating !== undefined" class="flex items-center gap-2">
@@ -104,7 +103,7 @@ onMounted(async () => {
                 </span>
               </div>
               <span class="text-xs text-gray-500 dark:text-gray-400">
-                ({{ product.review_count.toLocaleString() }} reviews)
+                ({{ product.review_count.toLocaleString() }} {{ t('dashboard.trending.reviews') }})
               </span>
             </div>
           </div>

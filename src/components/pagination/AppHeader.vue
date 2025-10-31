@@ -60,7 +60,7 @@ const toggleMobileMenu = () => {
           <template v-if="authStore.isAuthenticated">
             <div class="flex items-center gap-3">
               <span class="text-sm text-gray-700 dark:text-gray-300 hidden sm:block">
-                {{ authStore.user?.name }}
+                {{ authStore.user?.display_name }}
               </span>
               <BaseButton variant="ghost" size="sm" @click="goToDashboard">
                 <LayoutDashboard class="w-4 h-4" />
@@ -121,7 +121,7 @@ const toggleMobileMenu = () => {
             <template v-if="authStore.isAuthenticated">
               <div class="flex flex-col gap-3">
                 <div class="text-sm text-gray-700 dark:text-gray-300 font-medium">
-                  {{ authStore.user?.name }}
+                  {{ authStore.user?.display_name }}
                 </div>
                 <BaseButton variant="ghost" size="sm" @click="goToDashboard" class="w-full justify-start">
                   <LayoutDashboard class="w-4 h-4 mr-2" />

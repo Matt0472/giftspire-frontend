@@ -15,6 +15,8 @@ export default {
   },
   home: {
     heroTitle: 'Un Universo di Regali',
+    heroTitleStart: 'Un Universo di ',
+    heroTitleHighlight: 'Regali',
     heroTitleLine2: 'Per ogni occasione',
     heroSubtitle: 'Lascia che GiftSpire ispiri i tuoi regali con consigli personalizzati per ogni occasione',
     getStartedFree: 'Inizia Gratis',
@@ -138,8 +140,18 @@ export default {
   },
   dashboard: {
     jumbo: {
+      welcomeBackPrefix: 'Bentornato, ',
+      welcomeBackSuffix: '!',
       title: 'Inizia subito — scegli un chip per avviare la tua prima ricerca',
-      subtitle: 'Scegli una persona, una categoria o un’occasione. Noi la trasformeremo subito in idee regalo intelligenti.',
+      subtitle: 'Scegli una persona, una categoria o un\'occasione. Noi la trasformeremo subito in idee regalo intelligenti.',
+      loadError: 'Impossibile caricare le azioni rapide.',
+    },
+    trending: {
+      title: 'Prodotti di Tendenza',
+      prime: 'Prime',
+      reviews: 'recensioni',
+      ratingNotAvailable: 'N/D',
+      loadError: 'Impossibile caricare i prodotti di tendenza',
     },
     quickChips: {
       title: 'Ricerca rapida',

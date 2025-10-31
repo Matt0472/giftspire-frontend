@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { giftSearchAPI } from '@/api/giftSearch'
-import type { GiftSearchRequest, Relation, Occasion } from '@/types/giftSearch'
+import type { GiftSearchRequest, Occasion, Relation } from '@/types/giftSearch'
 import { useToastStore } from '@/stores/toast'
 import { useI18n } from 'vue-i18n'
 
@@ -150,8 +150,8 @@ export function useGiftSearch() {
       return response.data.products
     } catch (err: unknown) {
       const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
-      const message = errorMessage || 'Failed to get trending products.'
-      error.value = message
+
+      error.value = errorMessage || 'Failed to get trending products.'
       console.error('[GiftSearch] Error getting trending:', err)
       throw err
     } finally {
