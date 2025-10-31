@@ -51,6 +51,11 @@ input[type="radio"],
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .gradient-text,
+  .gradient-text-variant1,
+  .gradient-text-variant2,
+  .gradient-text-variant3,
+  .gradient-text-variant4,
+  .gradient-text-variant5,
   .animated-gradient-border,
   .animated-gradient-border--accent1,
   .animated-gradient-border--accent2,
@@ -58,6 +63,62 @@ input[type="radio"],
     animation-duration: 0.001s;
     animation-iteration-count: 1;
   }
+}
+
+/* Gradient text variants for section titles */
+.gradient-text-variant1 {
+  background: linear-gradient(90deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6, #06b6d4);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+.gradient-text-variant2 {
+  background: linear-gradient(90deg, #ec4899, #a855f7, #f43f5e, #ec4899, #a855f7);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+.gradient-text-variant3 {
+  background: linear-gradient(90deg, #f59e0b, #ef4444, #f97316, #f59e0b, #ef4444);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+.gradient-text-variant4 {
+  background: linear-gradient(90deg, #10b981, #14b8a6, #22c55e, #10b981, #14b8a6);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+.gradient-text-variant5 {
+  background: linear-gradient(90deg, #d97706, #eab308, #f59e0b, #d97706, #eab308);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
 }
 
 /* Variant animated gradient borders for chips */

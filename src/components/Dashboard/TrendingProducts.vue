@@ -6,18 +6,22 @@ import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import { giftSearchAPI } from '@/api/giftSearch'
 import type { TrendingProduct } from '@/types/giftSearch'
 
+export type GradientVariant = 'variant1' | 'variant2' | 'variant3' | 'variant4' | 'variant5'
+
 interface TrendingProductsProps {
   category?: string
   limit?: number
   title?: string
   animationDelay?: number
+  gradientVariant?: GradientVariant
 }
 
 const props = withDefaults(defineProps<TrendingProductsProps>(), {
   category: 'tech',
   limit: 4,
   title: 'Trending Products',
-  animationDelay: 0
+  animationDelay: 0,
+  gradientVariant: 'variant1'
 })
 
 const emit = defineEmits<{
@@ -65,7 +69,7 @@ onMounted(async () => {
 <template>
   <Transition name="fade-slide">
     <div v-if="!loading && products.length > 0" class="mt-8" :style="{ animationDelay: `${animationDelay}ms` }">
-      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+      <h2 class="text-xl font-bold mb-4" :class="`gradient-text-${gradientVariant}`">
         {{ title }}
       </h2>
 
