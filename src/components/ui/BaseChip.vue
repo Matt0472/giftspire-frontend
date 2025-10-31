@@ -61,10 +61,18 @@ const wrapperClasses = computed(() => {
 })
 
 const innerClasses = computed(() => {
-  const base = 'rounded-full bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-medium transition-colors'
+  const base = 'rounded-full bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-medium transition-all duration-200'
+
+  const hoverVariantMap: Record<ChipVariant, string> = {
+    accent1: 'hover:bg-[#a8c0ff]/20 dark:hover:bg-[#a8c0ff]/30',
+    accent2: 'hover:bg-[#2dd4bf]/20 dark:hover:bg-[#2dd4bf]/30',
+    accent3: 'hover:bg-[#f59e0b]/20 dark:hover:bg-[#f59e0b]/30',
+  }
+
   const interactive = props.disabled
     ? 'opacity-60 cursor-not-allowed'
-    : 'hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer'
+    : `${hoverVariantMap[props.variant]} hover:scale-105 cursor-pointer`
+
   const sizes: Record<ChipSize, string> = {
     sm: 'px-3 py-1 text-xs',
     md: 'px-4 py-2 text-sm',
