@@ -1,8 +1,10 @@
 <template>
   <div>
-    <ChipsJumbotron
-      :skeleton-widths="skeletonWidths"
-    />
+    <div class="full-bleed -mt-8">
+      <ChipsJumbotron
+        :skeleton-widths="skeletonWidths"
+      />
+    </div>
 
     <div class="mt-8">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Explore</h2>
@@ -37,3 +39,10 @@ import ChipsJumbotron from '@/components/Dashboard/ChipsJumbotron.vue'
 
 const skeletonWidths = ['w-24','w-28','w-32','w-20','w-36','w-24','w-28','w-20','w-32','w-24','w-28','w-36']
 </script>
+
+<style scoped>
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+</style>

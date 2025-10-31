@@ -7,11 +7,9 @@ const messages = {
   it,
 }
 
-// Get saved locale from localStorage or default to 'it'
 const savedLocale = localStorage.getItem('locale') || 'it'
 
 const i18n = createI18n({
-  legacy: false, // Use Composition API mode
   locale: savedLocale,
   fallbackLocale: 'it',
   messages,

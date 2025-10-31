@@ -70,7 +70,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <HeroJumbotron minHeight="md" gradientFrom="from-indigo-600" gradientTo="to-purple-700">
+  <HeroJumbotron minHeight="md" gradientFrom="from-indigo-600" gradientTo="to-purple-700" :noPadding="true">
     <template #left>
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">
         Welcome back, <span class="gradient-text">{{ user?.display_name }}</span

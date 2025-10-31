@@ -7,7 +7,7 @@
     <slot name="background" />
 
     <!-- Content container -->
-    <div class="relative z-10 px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+    <div class="relative z-10 py-10 md:py-16 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <!-- Left column -->
         <div>
@@ -29,6 +29,7 @@ export interface HeroJumbotronProps {
   minHeight?: 'none' | 'sm' | 'md' | 'lg'
   gradientFrom?: string
   gradientTo?: string
+  noPadding?: boolean
 }
 
 const props = withDefaults(defineProps<HeroJumbotronProps>(), {
@@ -36,6 +37,7 @@ const props = withDefaults(defineProps<HeroJumbotronProps>(), {
   // Tailwind color classes (must be valid classes)
   gradientFrom: 'from-indigo-600',
   gradientTo: 'to-purple-700',
+  noPadding: false,
 })
 
 const minHeightClass = computed(() => {
