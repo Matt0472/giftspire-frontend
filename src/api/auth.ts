@@ -35,7 +35,6 @@ export const authAPI = {
   async getCurrentUser(): Promise<User> {
     const response = await apiClient.get<UserResponse>('/init')
 
-    // Map backend response to frontend User type
     return {
       id: response.data.id,
       display_name: response.data.display_name

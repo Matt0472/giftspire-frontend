@@ -1,20 +1,18 @@
 import axios from 'axios'
-import { useAuthStore } from '@/stores/auth'
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:9090/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }
 })
 
-// Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const authStore = useAuthStore()
-    if (authStore.token) {
-      config.headers.Authorization = `Bearer ${authStore.token}`
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
@@ -23,42 +21,11 @@ apiClient.interceptors.request.use(
   }
 )
 
-// Response interceptor to handle errors
 apiClient.interceptors.response.use(
   (response) => {
     return response
   },
   async (error) => {
-    if (error.response) {
-      // Handle specific error codes
-      switch (error.response.status) {
-        case 401:
-          // Unauthorized - try to logout from backend, clear auth and redirect to login
-          const authStore = useAuthStore()
-          try {
-            // Attempt to call backend logout endpoint (may fail if token is invalid)
-            await apiClient.post('/auth/logout')
-          } catch (logoutError) {
-            console.error('Backend logout failed:', logoutError)
-          }
-          authStore.logout()
-          window.location.href = '/login'
-          break
-        case 403:
-          console.error('Forbidden access')
-          break
-        case 404:
-          console.error('Resource not found')
-          break
-        case 500:
-          console.error('Server error')
-          break
-      }
-    } else if (error.request) {
-      console.error('Network error - no response received')
-    } else {
-      console.error('Error setting up request:', error.message)
-    }
     return Promise.reject(error)
   }
 )

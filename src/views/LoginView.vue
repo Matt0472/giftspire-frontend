@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-[calc(100vh-200px)] flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 px-4 py-12">
-    <LoginForm @submit="handleLogin" @social-login="handleSocialLogin" />
+    <LoginForm @submit="handleLogin" />
   </div>
 </template>
 
@@ -17,11 +17,5 @@ const handleLogin = async (data: LoginRequest) => {
   } catch (error) {
     console.error('Login failed:', error)
   }
-}
-
-const handleSocialLogin = (provider: 'google' | 'apple') => {
-  console.log('Social login with:', provider)
-  // TODO: Implement social login logic here
-  alert(`Social login with ${provider} - Not implemented yet`)
 }
 </script>
