@@ -5,6 +5,7 @@ import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import StarryBackground from '@/components/ui/StarryBackground.vue'
 import type { ChipVariant } from '@/components/ui/BaseChip.vue'
 import { useAuthStore } from '@/stores/auth.ts'
+import { useGiftSearch } from '@/composables/useGiftSearch'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
@@ -32,9 +33,11 @@ const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
 const { t } = useI18n()
+const { searchFromChip, isLoading: isSearching } = useGiftSearch()
 
-function handleChipClick(prompt: string) {
-  console.log('[QuickChip]', prompt)
+async function handleChipClick(chipKey: string, chipPrompt: string) {
+  console.log('[QuickChip] Clicked:', chipKey, chipPrompt)
+  await searchFromChip(chipKey, chipPrompt)
 }
 
 const chips = ref<ChipDef[] | null>(null)
@@ -108,7 +111,8 @@ onMounted(async () => {
             :key="chip.key"
             :variant="chip.variant"
             :label="t(chip.labelTKey)"
-            @click="handleChipClick(t(chip.promptTKey))"
+            :disabled="isSearching"
+            @click="handleChipClick(chip.key, t(chip.promptTKey))"
           />
         </template>
       </div>
