@@ -137,6 +137,10 @@ export default {
     },
   },
   dashboard: {
+    jumbo: {
+      title: 'Start now — pick a chip to spark your first search',
+      subtitle: 'Choose a person, a category, or an occasion. We\'ll turn it into smart gift ideas instantly.',
+    },
     quickChips: {
       title: 'Quick Search',
       sections: {

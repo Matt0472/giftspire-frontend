@@ -1,39 +1,8 @@
 <template>
   <div>
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-        Welcome back, <span class="gradient-text">{{ authStore.user?.display_name }}</span>!
-      </h1>
-    </div>
-
-    <!-- Quick Chips Section -->
-    <div class="mb-8">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ t('dashboard.quickChips.title') }}</h2>
-
-      <div class="mb-4">
-        <div class="flex flex-wrap gap-2">
-          <template v-if="loading">
-            <BaseSkeleton
-              v-for="(w, i) in skeletonWidths"
-              :key="i"
-              shape="pill"
-              class="inline-block"
-              :inner-class="`h-9 ${w}`"
-            />
-          </template>
-          <template v-else>
-            <BaseChip
-              v-for="chip in chips"
-              :key="chip.key"
-              :variant="chip.variant"
-              :label="t(chip.labelTKey)"
-              @click="handleChipClick(t(chip.promptTKey))"
-            />
-          </template>
-        </div>
-        <p v-if="error" class="mt-2 text-sm text-red-600 dark:text-red-400">{{ error }}</p>
-      </div>
-    </div>
+    <ChipsJumbotron
+      :skeleton-widths="skeletonWidths"
+    />
 
     <div class="mt-8">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Explore</h2>
@@ -62,60 +31,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/auth'
 import BaseCard from '@/components/ui/BaseCard.vue'
-import BaseChip from '@/components/ui/BaseChip.vue'
-import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import type { ChipVariant } from '@/components/ui/BaseChip.vue'
-
-const authStore = useAuthStore()
-const { t } = useI18n()
-
-interface ChipDef {
-  key: string
-  labelTKey: string
-  promptTKey: string
-  variant: ChipVariant
-}
-
-interface RawChip {
-  key: unknown
-  labelTKey: unknown
-  promptTKey: unknown
-  variant: unknown
-}
-
-const chips = ref<ChipDef[] | null>(null)
-const loading = ref<boolean>(true)
-const error = ref<string | null>(null)
+import ChipsJumbotron from '@/components/Dashboard/ChipsJumbotron.vue'
 
 const skeletonWidths = ['w-24','w-28','w-32','w-20','w-36','w-24','w-28','w-20','w-32','w-24','w-28','w-36']
-
-onMounted(async () => {
-  try {
-    const res = await fetch(`${import.meta.env.BASE_URL}data/quick-start-chips.json`, { cache: 'no-store' })
-    if (!res.ok) throw new Error(`Failed to load quick chips: ${res.status}`)
-    const data: unknown = await res.json()
-    if (!Array.isArray(data)) throw new Error('Invalid quick chips format')
-    const allowed: ChipVariant[] = ['accent1','accent2','accent3']
-    chips.value = (data as RawChip[]).map((item) => ({
-      key: String(item.key ?? ''),
-      labelTKey: String(item.labelTKey ?? ''),
-      promptTKey: String(item.promptTKey ?? ''),
-      variant: allowed.includes(item.variant as ChipVariant) ? (item.variant as ChipVariant) : 'accent1',
-    })) as ChipDef[]
-  } catch (e: unknown) {
-    console.error(e)
-    error.value = 'Failed to load quick actions.'
-    chips.value = []
-  } finally {
-    loading.value = false
-  }
-})
-
-function handleChipClick(prompt: string) {
-  console.log('[QuickChip]', prompt)
-}
 </script>
