@@ -2,6 +2,7 @@
 import BaseChip from '@/components/ui/BaseChip.vue'
 import HeroJumbotron from '@/components/ui/HeroJumbotron.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
+import StarryBackground from '@/components/ui/StarryBackground.vue'
 import type { ChipVariant } from '@/components/ui/BaseChip.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import { storeToRefs } from 'pinia'
@@ -70,7 +71,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <HeroJumbotron minHeight="md" gradientFrom="from-indigo-600" gradientTo="to-purple-700">
+  <HeroJumbotron minHeight="md" gradientFrom="from-[#4b6cb7]" gradientTo="to-[#182848]">
+    <template #background>
+      <!-- Starry Background Animation -->
+      <StarryBackground :star-count="150" color="#7c9fe8" speed="slow" :size="{ min: 1, max: 2 }" />
+      <StarryBackground :star-count="100" color="#a8c0ff" speed="normal" :size="{ min: 1, max: 3 }" />
+      <StarryBackground :star-count="80" color="#6b8dd6" speed="fast" :size="{ min: 0.5, max: 1.5 }" />
+    </template>
+
     <template #left>
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">
         Welcome back, <span class="gradient-text">{{ user?.display_name }}</span
