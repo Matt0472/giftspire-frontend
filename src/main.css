@@ -18,3 +18,41 @@ input[type="radio"],
 .cursor-pointer {
   cursor: pointer;
 }
+
+/* Reusable animated gradient text, matching the Home hero "gifts" effect */
+.gradient-text {
+  background: linear-gradient(90deg, #a8c0ff, #7c9fe8, #ffd1ff, #a8c0ff, #7c9fe8);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Animated gradient border utility. Usage:
+   <div class="animated-gradient-border rounded-lg p-[2px]">
+     <input class="... rounded-lg border-transparent ..." />
+   </div>
+*/
+.animated-gradient-border {
+  background: linear-gradient(90deg, #a8c0ff, #7c9fe8, #ffd1ff, #a8c0ff, #7c9fe8);
+  background-size: 300% auto;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text,
+  .animated-gradient-border {
+    animation-duration: 0.001s;
+    animation-iteration-count: 1;
+  }
+}
