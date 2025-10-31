@@ -3,10 +3,12 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { authAPI } from '@/api/auth'
 import type { LoginRequest, RegisterRequest } from '@/types/auth'
+import { useToastStore } from '@/stores/toast'
 
 export function useAuth() {
   const authStore = useAuthStore()
   const router = useRouter()
+  const toast = useToastStore()
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
@@ -21,7 +23,11 @@ export function useAuth() {
 
     } catch (err: unknown) {
       const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
-      error.value = errorMessage || 'Login failed. Please try again.'
+      const message = errorMessage || 'Login failed. Please try again.'
+      error.value = message
+      // Surface error to customer via toast
+      toast.error(message, 'Login failed')
+      isLoading.value = false
       throw err
     }
 
@@ -36,6 +42,11 @@ export function useAuth() {
 
       authStore.login(user, token)
     } catch (userErr: unknown) {
+      const errorMessage = (userErr as { response?: { data?: { message?: string } } }).response?.data?.message
+      const message = errorMessage || 'We could not load your account. Please try again.'
+      error.value = message
+      toast.error(message, 'Login failed')
+      isLoading.value = false
       throw userErr
     }
     isLoading.value = false
@@ -56,7 +67,9 @@ export function useAuth() {
 
     } catch (err: unknown) {
       const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
-      error.value = errorMessage || 'Registration failed. Please try again.'
+      const message = errorMessage || 'Registration failed. Please try again.'
+      error.value = message
+      toast.error(message, 'Registration failed')
       throw err
     } finally {
       isLoading.value = false
