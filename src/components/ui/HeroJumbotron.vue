@@ -7,15 +7,17 @@
     <slot name="background" />
 
     <!-- Content container -->
-    <div class="relative z-10 py-10 md:py-16 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <!-- Left column -->
-        <div>
-          <slot name="left" />
-        </div>
-        <!-- Right column -->
-        <div>
-          <slot name="right" />
+    <div class="relative z-10 py-10 md:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <!-- Left column -->
+          <div>
+            <slot name="left" />
+          </div>
+          <!-- Right column -->
+          <div>
+            <slot name="right" />
+          </div>
         </div>
       </div>
     </div>
