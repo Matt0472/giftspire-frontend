@@ -37,7 +37,6 @@ const currentYear = computed(() => new Date().getFullYear())
         <!-- Right Column: Transparency Disclosure -->
         <div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ t('footer.transparencyTitle') }}</h3>
-          <p class="text-sm text-gray-700 dark:text-white/80 mb-2 leading-relaxed">{{ t('footer.transparencyText') }}</p>
           <p class="text-sm text-gray-700 dark:text-white/80 leading-relaxed">{{ t('footer.amazonDisclosure') }}</p>
         </div>
       </div>

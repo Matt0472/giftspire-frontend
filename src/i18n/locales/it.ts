@@ -53,8 +53,7 @@ export default {
     aboutDescription: 'Ti aiutiamo a trovare il regalo perfetto per ogni occasione con raccomandazioni personalizzate basate sull\'intelligenza artificiale. Rendi i tuoi regali più facili e significativi.',
     followInstagram: 'Seguici su Instagram',
     transparencyTitle: 'Trasparenza per i nostri utenti',
-    transparencyText: 'Alcuni dei siti partner ci riconoscono una piccola quota dei ricavi ogni volta che un utente acquista un prodotto sul loro sito.',
-    amazonDisclosure: 'Inoltre GiftSpire è un membro del Programma di affiliazione Amazon UE, un programma pubblicitario di affiliazione pensato per fornire ai siti un metodo per ottenere commissioni pubblicitarie mediante la creazione di pubblicità e link a Amazon.it',
+    amazonDisclosure: 'GiftSpire è un membro del Programma di affiliazione Amazon UE, un programma pubblicitario di affiliazione pensato per fornire ai siti un metodo per ottenere commissioni pubblicitarie mediante la creazione di pubblicità e link a Amazon.it',
   },
   validation: {
     emailRequired: 'Inserisci un indirizzo email valido',
