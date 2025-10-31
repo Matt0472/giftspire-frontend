@@ -80,7 +80,6 @@ interface ChipDef {
   variant: ChipVariant
 }
 
-// Raw JSON item shape (loose, for type-safe parsing)
 interface RawChip {
   key: unknown
   labelTKey: unknown
@@ -99,7 +98,6 @@ onMounted(async () => {
     const res = await fetch(`${import.meta.env.BASE_URL}data/quick-start-chips.json`, { cache: 'no-store' })
     if (!res.ok) throw new Error(`Failed to load quick chips: ${res.status}`)
     const data: unknown = await res.json()
-    // Basic runtime validation
     if (!Array.isArray(data)) throw new Error('Invalid quick chips format')
     const allowed: ChipVariant[] = ['accent1','accent2','accent3']
     chips.value = (data as RawChip[]).map((item) => ({
@@ -118,8 +116,6 @@ onMounted(async () => {
 })
 
 function handleChipClick(prompt: string) {
-  // Navigation will be implemented later; for now, simply log the chosen prompt
-  // eslint-disable-next-line no-console
   console.log('[QuickChip]', prompt)
 }
 </script>
