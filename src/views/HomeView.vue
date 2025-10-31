@@ -1,15 +1,8 @@
 <template>
   <div>
-    <!-- Hero/Jumbotron Section -->
     <HomeJumbotron />
-
-    <!-- How It Works Section -->
     <HowItWorks />
-
-    <!-- User Journey Carousel Section -->
     <UserJourneyCarousel />
-
-    <!-- About GiftSpire Section -->
     <AboutGiftSpire />
   </div>
 </template>
