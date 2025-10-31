@@ -4,26 +4,37 @@
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
         Welcome back, <span class="gradient-text">{{ authStore.user?.display_name }}</span>!
       </h1>
-      <p class="text-gray-600 dark:text-gray-300">
-        This is your personalized dashboard
-      </p>
     </div>
 
-    <!-- Quick Search Section -->
+    <!-- Quick Chips Section -->
     <div class="mb-8">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Quick Search</h2>
-      <div class="relative">
-        <div class="animated-gradient-border rounded-lg p-[2px]">
-          <input
-            v-model="quickQuery"
-            type="text"
-            class="w-full rounded-lg border border-transparent bg-white px-4 py-3 text-gray-900 placeholder-gray-500 shadow-sm focus:border-transparent focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
-            :placeholder="placeholderText"
-            aria-label="Quick search"
-          />
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ t('dashboard.quickChips.title') }}</h2>
+
+      <div class="mb-4">
+        <div class="flex flex-wrap gap-2">
+          <template v-if="loading">
+            <BaseSkeleton
+              v-for="(w, i) in skeletonWidths"
+              :key="i"
+              shape="pill"
+              class="inline-block"
+              :inner-class="`h-9 ${w}`"
+            />
+          </template>
+          <template v-else>
+            <BaseChip
+              v-for="chip in chips"
+              :key="chip.key"
+              :variant="chip.variant"
+              :label="t(chip.labelTKey)"
+              @click="handleChipClick(t(chip.promptTKey))"
+            />
+          </template>
         </div>
+        <p v-if="error" class="mt-2 text-sm text-red-600 dark:text-red-400">{{ error }}</p>
       </div>
     </div>
+
     <div class="mt-8">
       <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Explore</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,15 +62,64 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import BaseChip from '@/components/ui/BaseChip.vue'
+import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
+import type { ChipVariant } from '@/components/ui/BaseChip.vue'
 
 const authStore = useAuthStore()
+const { t } = useI18n()
 
-// UI state for quick search input (no behavior wired yet)
-const quickQuery = ref('')
-const placeholderText = computed(() => {
-  return "Ask anything, e.g., 'gift ideas for dad under $50' or 'birthday gift for a 10-year-old who loves LEGO'"
+interface ChipDef {
+  key: string
+  labelTKey: string
+  promptTKey: string
+  variant: ChipVariant
+}
+
+// Raw JSON item shape (loose, for type-safe parsing)
+interface RawChip {
+  key: unknown
+  labelTKey: unknown
+  promptTKey: unknown
+  variant: unknown
+}
+
+const chips = ref<ChipDef[] | null>(null)
+const loading = ref<boolean>(true)
+const error = ref<string | null>(null)
+
+const skeletonWidths = ['w-24','w-28','w-32','w-20','w-36','w-24','w-28','w-20','w-32','w-24','w-28','w-36']
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}data/quick-start-chips.json`, { cache: 'no-store' })
+    if (!res.ok) throw new Error(`Failed to load quick chips: ${res.status}`)
+    const data: unknown = await res.json()
+    // Basic runtime validation
+    if (!Array.isArray(data)) throw new Error('Invalid quick chips format')
+    const allowed: ChipVariant[] = ['accent1','accent2','accent3']
+    chips.value = (data as RawChip[]).map((item) => ({
+      key: String(item.key ?? ''),
+      labelTKey: String(item.labelTKey ?? ''),
+      promptTKey: String(item.promptTKey ?? ''),
+      variant: allowed.includes(item.variant as ChipVariant) ? (item.variant as ChipVariant) : 'accent1',
+    })) as ChipDef[]
+  } catch (e: unknown) {
+    console.error(e)
+    error.value = 'Failed to load quick actions.'
+    chips.value = []
+  } finally {
+    loading.value = false
+  }
 })
+
+function handleChipClick(prompt: string) {
+  // Navigation will be implemented later; for now, simply log the chosen prompt
+  // eslint-disable-next-line no-console
+  console.log('[QuickChip]', prompt)
+}
 </script>

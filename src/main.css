@@ -51,8 +51,33 @@ input[type="radio"],
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .gradient-text,
-  .animated-gradient-border {
+  .animated-gradient-border,
+  .animated-gradient-border--accent1,
+  .animated-gradient-border--accent2,
+  .animated-gradient-border--accent3 {
     animation-duration: 0.001s;
     animation-iteration-count: 1;
   }
+}
+
+/* Variant animated gradient borders for chips */
+.animated-gradient-border--accent1 {
+  /* Violet → Indigo → Pink vibe (previously person) */
+  background: linear-gradient(90deg, #a8c0ff, #7c9fe8, #ffd1ff, #a8c0ff, #7c9fe8);
+  background-size: 300% auto;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+.animated-gradient-border--accent2 {
+  /* Teal → Emerald → Cyan vibe (previously category) */
+  background: linear-gradient(90deg, #2dd4bf, #34d399, #22d3ee, #2dd4bf, #34d399);
+  background-size: 300% auto;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+.animated-gradient-border--accent3 {
+  /* Amber → Rose → Fuchsia vibe (previously event) */
+  background: linear-gradient(90deg, #f59e0b, #f43f5e, #a855f7, #f59e0b, #f43f5e);
+  background-size: 300% auto;
+  animation: gradient-shift 6s ease-in-out infinite;
 }
