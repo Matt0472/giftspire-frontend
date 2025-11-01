@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
+import SearchResultsView from '@/views/SearchResultsView.vue'
 import { useAuthStore } from '@/stores/auth'
 import './types'
 
@@ -30,6 +31,12 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/search/:id',
+      name: 'searchResults',
+      component: SearchResultsView,
       meta: { requiresAuth: true },
     },
   ],

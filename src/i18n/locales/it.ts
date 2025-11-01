@@ -213,6 +213,28 @@ export default {
       },
     },
   },
+  searchResults: {
+    title: 'I Tuoi Regali Perfetti',
+    subtitle: 'Abbiamo trovato {count} raccomandazioni regalo personalizzate per te',
+    aiPowered: 'Basato su IA',
+    whyThisGift: 'Perché questo regalo?',
+    keyFeatures: 'Caratteristiche Principali',
+    context: {
+      relation: 'Relazione',
+      occasion: 'Occasione',
+      budget: 'Budget',
+      interests: 'Interessi'
+    },
+    empty: {
+      title: 'Nessun Risultato Trovato',
+      description: 'Non siamo riusciti a trovare regali corrispondenti alla tua ricerca. Prova a modificare i criteri e cerca di nuovo.',
+      backToDashboard: 'Torna alla Dashboard'
+    },
+    error: {
+      title: 'Ops! Qualcosa è Andato Storto',
+      backToDashboard: 'Torna alla Dashboard'
+    }
+  },
   giftFinder: {
     title: 'Trova il Regalo Perfetto',
     subtitle: 'Rispondi a poche domande e lascia che l\'IA scopra il regalo perfetto per i tuoi cari',

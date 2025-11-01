@@ -42,5 +42,13 @@ export const giftSearchAPI = {
       params: { query, type }
     })
     return response.data.data.suggestions
+  },
+
+  /**
+   * Get search results by search ID
+   */
+  async getSearchResults(searchId: string): Promise<GiftSearchResponse> {
+    const response = await apiClient.get<GiftSearchResponse>(`/gift-finder/search/${searchId}`)
+    return response.data
   }
 }

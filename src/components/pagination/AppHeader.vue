@@ -30,7 +30,8 @@ const notifications = ref([
     message: 'We found 5 perfect gift matches for your mom\'s birthday',
     time: '2 min ago',
     read: false,
-    icon: '🎁'
+    icon: '🎁',
+    searchId: 'search-123' // Mock search ID
   },
   {
     id: 2,
@@ -48,7 +49,8 @@ const notifications = ref([
     message: 'Your personalized gift recommendations are ready to view',
     time: '3 hours ago',
     read: true,
-    icon: '🎉'
+    icon: '🎉',
+    searchId: 'search-456' // Mock search ID
   },
   {
     id: 4,
@@ -175,6 +177,17 @@ const markAsRead = (id: number) => {
   const notification = notifications.value.find(n => n.id === id)
   if (notification) {
     notification.read = true
+  }
+}
+
+const handleNotificationClick = (notification: any) => {
+  markAsRead(notification.id)
+
+  // If notification has a searchId, navigate to results page
+  if (notification.searchId) {
+    isNotificationOpen.value = false
+    isNotificationModalOpen.value = false
+    router.push({ name: 'searchResults', params: { id: notification.searchId } })
   }
 }
 
@@ -317,7 +330,7 @@ onUnmounted(() => {
                     <div
                       v-for="notification in notifications"
                       :key="notification.id"
-                      @click="markAsRead(notification.id)"
+                      @click="handleNotificationClick(notification)"
                       :class="[
                         'px-4 py-3 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50',
                         !notification.read && 'bg-indigo-50/50 dark:bg-indigo-900/10'
@@ -548,7 +561,7 @@ onUnmounted(() => {
                     <div
                       v-for="notification in notifications.slice(0, 3)"
                       :key="notification.id"
-                      @click="markAsRead(notification.id)"
+                      @click="handleNotificationClick(notification)"
                       :class="[
                         'px-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0 cursor-pointer transition-colors',
                         !notification.read && 'bg-indigo-50/50 dark:bg-indigo-900/10'
@@ -669,7 +682,7 @@ onUnmounted(() => {
       <div
         v-for="notification in notifications"
         :key="notification.id"
-        @click="markAsRead(notification.id)"
+        @click="handleNotificationClick(notification)"
         :class="[
           'px-6 py-4 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-700/50',
           !notification.read && 'bg-indigo-50/50 dark:bg-indigo-900/10 border-l-4 border-l-indigo-500'

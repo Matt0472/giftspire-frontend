@@ -213,6 +213,28 @@ export default {
       },
     },
   },
+  searchResults: {
+    title: 'Your Perfect Gift Matches',
+    subtitle: 'We found {count} personalized gift recommendations for you',
+    aiPowered: 'AI Powered',
+    whyThisGift: 'Why this gift?',
+    keyFeatures: 'Key Features',
+    context: {
+      relation: 'Relation',
+      occasion: 'Occasion',
+      budget: 'Budget',
+      interests: 'Interests'
+    },
+    empty: {
+      title: 'No Results Found',
+      description: 'We couldn\'t find any gift matches for your search. Try adjusting your criteria and search again.',
+      backToDashboard: 'Back to Dashboard'
+    },
+    error: {
+      title: 'Oops! Something Went Wrong',
+      backToDashboard: 'Back to Dashboard'
+    }
+  },
   giftFinder: {
     title: 'Find Your Perfect Gift',
     subtitle: 'Answer a few questions and let AI discover the perfect gift for your loved ones',
