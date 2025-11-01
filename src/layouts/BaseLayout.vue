@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-gray-100 overflow-x-hidden">
     <AppHeader />
 
-    <main class="flex-1">
+    <main class="flex-1 overflow-x-hidden">
       <div v-if="isFullWidthPage">
         <slot />
       </div>
