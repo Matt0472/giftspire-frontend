@@ -13,6 +13,23 @@ export default {
     or: 'OPPURE',
     backToLogin: 'Torna al Login',
   },
+  notifications: {
+    title: 'Notifiche',
+    total: 'totali',
+    unread: 'non lette',
+    markAllRead: 'Segna tutte come lette',
+    clearAll: 'Cancella tutto',
+    viewAll: 'Vedi tutte le notifiche',
+    emptyTitle: 'Tutto a posto!',
+    emptyDescription: 'Non hai notifiche al momento. Ti avviseremo quando succederà qualcosa di importante.',
+    emptyDescriptionShort: 'Nessuna notifica al momento',
+    showingAll: 'Mostrate tutte le {count} notifica',
+    showingAllPlural: 'Mostrate tutte le {count} notifiche',
+    badges: {
+      success: 'Successo',
+      info: 'Info'
+    }
+  },
   home: {
     heroTitle: 'Un Universo di Regali',
     heroTitleStart: 'Un Universo di ',

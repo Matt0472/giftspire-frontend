@@ -13,6 +13,23 @@ export default {
     or: 'OR',
     backToLogin: 'Back to Login',
   },
+  notifications: {
+    title: 'Notifications',
+    total: 'total',
+    unread: 'unread',
+    markAllRead: 'Mark all read',
+    clearAll: 'Clear all',
+    viewAll: 'View all notifications',
+    emptyTitle: 'All caught up!',
+    emptyDescription: 'You don\'t have any notifications right now. We\'ll notify you when something important happens.',
+    emptyDescriptionShort: 'No notifications right now',
+    showingAll: 'Showing all {count} notification',
+    showingAllPlural: 'Showing all {count} notifications',
+    badges: {
+      success: 'Success',
+      info: 'Info'
+    }
+  },
   home: {
     heroTitle: 'A Sky Full of gifts',
     heroTitleStart: 'A Sky Full of ',
