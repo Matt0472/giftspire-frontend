@@ -86,7 +86,7 @@ onMounted(async () => {
         <template #description>
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="text-lg font-bold text-gray-900 dark:text-white">
+              <span class="text-lg font-bold text-white dark:text-gray-100">
                 {{ formatPrice(product.price, product.currency) }}
               </span>
               <span v-if="product.is_prime" class="text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">
