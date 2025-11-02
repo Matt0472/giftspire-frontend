@@ -1,8 +1,9 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import axios from 'axios'
 
 /**
- * Notification interface matching backend SearchCompletedNotification event
+ * Notification interface matching backend Notification model
  */
 export interface Notification {
   id: string | number
@@ -19,15 +20,49 @@ export interface Notification {
 /**
  * Notification Store
  *
- * Security: Notifications are only received via authenticated WebSocket channels
- * Each user can only receive notifications on their private channel
+ * Security: Notifications are stored in the backend database and protected by Sanctum authentication
+ * Each user can only access their own notifications via API
+ * Persistence: Notifications are stored in the database, surviving browser cache clearing and available across devices
  */
 export const useNotificationStore = defineStore('notification', () => {
   const notifications = ref<Notification[]>([])
-  const maxNotifications = 50 // Limit stored notifications to prevent memory issues
+  const loading = ref(false)
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+  /**
+   * Get authorization headers with Sanctum token
+   */
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('auth_token')
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  }
+
+  /**
+   * Fetch notifications from backend API
+   */
+  const fetchNotifications = async () => {
+    try {
+      loading.value = true
+      const response = await axios.get(`${API_BASE_URL}/notifications`, {
+        headers: getAuthHeaders(),
+      })
+
+      notifications.value = response.data.notifications
+      console.log(`[Notification Store] Loaded ${response.data.notifications.length} notifications from backend`)
+    } catch (error) {
+      console.error('[Notification Store] Error fetching notifications from backend:', error)
+    } finally {
+      loading.value = false
+    }
+  }
 
   /**
    * Add a new notification (typically from WebSocket event)
+   * This adds optimistically to the local state, the backend already saved it
    */
   const addNotification = (notification: Omit<Notification, 'id' | 'read'>) => {
     const newNotification: Notification = {
@@ -39,46 +74,100 @@ export const useNotificationStore = defineStore('notification', () => {
     // Add to the beginning of the array (newest first)
     notifications.value.unshift(newNotification)
 
-    // Limit the number of stored notifications
-    if (notifications.value.length > maxNotifications) {
-      notifications.value = notifications.value.slice(0, maxNotifications)
-    }
-
     return newNotification.id
   }
 
   /**
-   * Mark a notification as read
+   * Mark a notification as read via API
    */
-  const markAsRead = (id: string | number) => {
-    const notification = notifications.value.find((n) => n.id === id)
-    if (notification) {
-      notification.read = true
+  const markAsRead = async (id: string | number) => {
+    try {
+      // Optimistic update
+      const notification = notifications.value.find((n) => n.id === id)
+      if (notification) {
+        notification.read = true
+      }
+
+      // Sync with backend
+      await axios.post(
+        `${API_BASE_URL}/notifications/${id}/read`,
+        {},
+        {
+          headers: getAuthHeaders(),
+        }
+      )
+    } catch (error) {
+      console.error('[Notification Store] Error marking notification as read:', error)
+      // Revert optimistic update on error
+      const notification = notifications.value.find((n) => n.id === id)
+      if (notification) {
+        notification.read = false
+      }
     }
   }
 
   /**
-   * Mark all notifications as read
+   * Mark all notifications as read via API
    */
-  const markAllAsRead = () => {
-    notifications.value.forEach((n) => (n.read = true))
-  }
+  const markAllAsRead = async () => {
+    try {
+      // Optimistic update
+      notifications.value.forEach((n) => (n.read = true))
 
-  /**
-   * Remove a specific notification
-   */
-  const removeNotification = (id: string | number) => {
-    const index = notifications.value.findIndex((n) => n.id === id)
-    if (index > -1) {
-      notifications.value.splice(index, 1)
+      // Sync with backend
+      await axios.post(
+        `${API_BASE_URL}/notifications/read-all`,
+        {},
+        {
+          headers: getAuthHeaders(),
+        }
+      )
+    } catch (error) {
+      console.error('[Notification Store] Error marking all notifications as read:', error)
+      // Refresh from backend on error
+      await fetchNotifications()
     }
   }
 
   /**
-   * Clear all notifications
+   * Remove a specific notification via API
    */
-  const clearAll = () => {
-    notifications.value = []
+  const removeNotification = async (id: string | number) => {
+    try {
+      // Optimistic update
+      const index = notifications.value.findIndex((n) => n.id === id)
+      if (index > -1) {
+        notifications.value.splice(index, 1)
+      }
+
+      // Sync with backend
+      await axios.delete(`${API_BASE_URL}/notifications/${id}`, {
+        headers: getAuthHeaders(),
+      })
+    } catch (error) {
+      console.error('[Notification Store] Error removing notification:', error)
+      // Refresh from backend on error
+      await fetchNotifications()
+    }
+  }
+
+  /**
+   * Clear all notifications via API
+   */
+  const clearAll = async () => {
+    try {
+      // Optimistic update
+      notifications.value = []
+
+      // Sync with backend
+      await axios.delete(`${API_BASE_URL}/notifications`, {
+        headers: getAuthHeaders(),
+      })
+    } catch (error) {
+      console.error('[Notification Store] Error clearing all notifications:', error)
+      // Refresh from backend on error
+      await fetchNotifications()
+    }
   }
 
   /**
@@ -114,6 +203,8 @@ export const useNotificationStore = defineStore('notification', () => {
   return {
     notifications,
     unreadCount,
+    loading,
+    fetchNotifications,
     addNotification,
     markAsRead,
     markAllAsRead,

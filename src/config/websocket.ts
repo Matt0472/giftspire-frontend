@@ -8,12 +8,12 @@
  */
 
 export const websocketConfig = {
-  broadcaster: 'pusher', // Reverb uses Pusher protocol
-  key: import.meta.env.VITE_REVERB_APP_KEY,
+  broadcaster: 'pusher' as const, // Reverb uses Pusher protocol
+  key: import.meta.env.VITE_REVERB_APP_KEY as string,
   cluster: 'mt1', // Required by Pusher.js but not used by Reverb
-  wsHost: import.meta.env.VITE_REVERB_HOST,
-  wsPort: import.meta.env.VITE_REVERB_PORT ?? 9000,
-  wssPort: import.meta.env.VITE_REVERB_PORT ?? 9000,
+  wsHost: import.meta.env.VITE_REVERB_HOST as string,
+  wsPort: (import.meta.env.VITE_REVERB_PORT ?? 9000) as number,
+  wssPort: (import.meta.env.VITE_REVERB_PORT ?? 9000) as number,
   forceTLS: import.meta.env.VITE_REVERB_SCHEME === 'https',
   enabledTransports: ['ws', 'wss'],
 
@@ -22,7 +22,7 @@ export const websocketConfig = {
 
   // Authorization headers - will be set dynamically
   auth: {
-    headers: {}
+    headers: {} as Record<string, string>
   },
 
   // Connection options

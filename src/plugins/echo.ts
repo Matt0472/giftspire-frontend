@@ -1,16 +1,15 @@
-import type { App } from 'vue'
+import type { App, Plugin } from 'vue'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import websocketConfig from '@/config/websocket'
 import { useNotificationStore } from '@/stores/notification'
 import { useAuthStore } from '@/stores/auth'
-import { useToastStore } from '@/stores/toast'
 
 // Make Pusher available globally for Laravel Echo
 declare global {
   interface Window {
     Pusher: typeof Pusher
-    Echo: Echo
+    Echo: Echo<'pusher'> | undefined
   }
 }
 
@@ -25,7 +24,7 @@ window.Pusher = Pusher
  * - Authorization verified via /broadcasting/auth endpoint
  * - Token sent in Authorization header
  */
-export function createEchoInstance(): Echo | null {
+export function createEchoInstance(): Echo<'pusher'> | null {
   const authStore = useAuthStore()
   const token = localStorage.getItem('auth_token')
 
@@ -48,8 +47,18 @@ export function createEchoInstance(): Echo | null {
     authEndpoint: websocketConfig.authEndpoint,
   })
 
-  const echoInstance = new Echo({
-    ...websocketConfig,
+  const echoInstance = new Echo<'pusher'>({
+    broadcaster: websocketConfig.broadcaster,
+    key: websocketConfig.key,
+    cluster: websocketConfig.cluster,
+    wsHost: websocketConfig.wsHost,
+    wsPort: websocketConfig.wsPort,
+    wssPort: websocketConfig.wssPort,
+    forceTLS: websocketConfig.forceTLS,
+    authEndpoint: websocketConfig.authEndpoint,
+    disableStats: websocketConfig.disableStats,
+    encrypted: websocketConfig.encrypted,
+    enableLogging: websocketConfig.enableLogging,
     auth: {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -65,12 +74,11 @@ export function createEchoInstance(): Echo | null {
 /**
  * Setup WebSocket notification listeners
  */
-export function setupNotificationListeners(echo: Echo | null) {
+export function setupNotificationListeners(echo: Echo<'pusher'> | null): void {
   if (!echo) return
 
   const authStore = useAuthStore()
   const notificationStore = useNotificationStore()
-  const toastStore = useToastStore()
 
   const userId = authStore.user?.id
 
@@ -78,6 +86,11 @@ export function setupNotificationListeners(echo: Echo | null) {
     console.warn('[WebSocket] Cannot setup listeners: User ID not available')
     return
   }
+
+  // Fetch existing notifications from backend on initialization
+  notificationStore.fetchNotifications().catch((error) => {
+    console.error('[WebSocket] Failed to fetch notifications:', error)
+  })
 
   // Listen to the private user channel for search completed notifications
   // Channel name format: App.Models.User.{userId}
@@ -94,13 +107,8 @@ export function setupNotificationListeners(echo: Echo | null) {
     }) => {
       console.log('[WebSocket] Search completed notification received:', data)
 
-      // Add notification to store
+      // Add notification to store (optimistically, already saved in backend)
       notificationStore.handleWebSocketNotification(data)
-
-      // Show toast notification
-      toastStore.success(data.message, data.title, {
-        duration: 7000,
-      })
     })
     .error((error: Error) => {
       console.error('[WebSocket] Channel subscription error:', error)
@@ -112,7 +120,7 @@ export function setupNotificationListeners(echo: Echo | null) {
 /**
  * Disconnect from WebSocket
  */
-export function disconnectEcho() {
+export function disconnectEcho(): void {
   if (window.Echo) {
     window.Echo.disconnect()
     console.log('[WebSocket] Disconnected')
@@ -126,7 +134,7 @@ export function disconnectEcho() {
  * import { echoPlugin } from './plugins/echo'
  * app.use(echoPlugin)
  */
-export const echoPlugin = {
+export const echoPlugin: Plugin = {
   install: (app: App) => {
     console.log('[WebSocket] Echo plugin installing...')
     const authStore = useAuthStore()
@@ -138,13 +146,15 @@ export const echoPlugin = {
     })
 
     // Initialize Echo when user is authenticated
-    authStore.$subscribe((mutation, state) => {
+    authStore.$subscribe((_mutation, state) => {
+      const isAuthenticated = !!state.user && !!state.token
+
       console.log('[WebSocket] Auth state changed:', {
-        isAuthenticated: state.isAuthenticated,
+        isAuthenticated,
         hasEcho: !!window.Echo,
       })
 
-      if (state.isAuthenticated && !window.Echo) {
+      if (isAuthenticated && !window.Echo) {
         console.log('[WebSocket] User authenticated, initializing Echo...')
         const echo = createEchoInstance()
         if (echo) {
@@ -152,9 +162,10 @@ export const echoPlugin = {
           setupNotificationListeners(echo)
           console.log('[WebSocket] Echo initialized and listeners setup')
         }
-      } else if (!state.isAuthenticated && window.Echo) {
+      } else if (!isAuthenticated && window.Echo) {
         console.log('[WebSocket] User logged out, disconnecting Echo')
         disconnectEcho()
+        window.Echo = undefined
       }
     })
 
@@ -172,7 +183,7 @@ export const echoPlugin = {
     }
 
     // Provide Echo instance to components (optional)
-    app.provide('echo', window.Echo)
+    app.provide('echo', window.Echo || null)
     console.log('[WebSocket] Echo plugin installed')
   },
 }
