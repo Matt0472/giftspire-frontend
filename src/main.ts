@@ -8,6 +8,7 @@ import router from './router'
 import i18n from './i18n'
 import { useThemeStore } from './stores/theme'
 import { useAuthStore } from './stores/auth'
+import { echoPlugin } from './plugins/echo'
 
 const app = createApp(App)
 
@@ -18,9 +19,10 @@ app.use(i18n)
 
 app.mount('#app')
 
-// Initialize stores after mounting
 const themeStore = useThemeStore()
 themeStore.initTheme()
 
 const authStore = useAuthStore()
 authStore.initAuth()
+
+app.use(echoPlugin)

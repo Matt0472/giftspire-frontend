@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { LogOut, Menu, X, Bell } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useAuth } from '@/composables/useAuth'
+import { useNotificationStore } from '@/stores/notification'
+import { formatRelativeTime } from '@/utils/time'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import LanguageSwitcher from '../ui/LanguageSwitcher.vue'
 import BaseButton from '../ui/BaseButton.vue'
@@ -14,6 +16,8 @@ const router = useRouter()
 const authStore = useAuthStore()
 const { logout } = useAuth()
 const { t } = useI18n()
+const notificationStore = useNotificationStore()
+
 const isMobileMenuOpen = ref(false)
 const isDropdownOpen = ref(false)
 const isNotificationOpen = ref(false)
@@ -21,123 +25,9 @@ const isNotificationModalOpen = ref(false)
 const dropdownRef = ref<HTMLDivElement | null>(null)
 const notificationRef = ref<HTMLDivElement | null>(null)
 
-// Mock notifications data
-const notifications = ref([
-  {
-    id: 1,
-    type: 'success',
-    title: 'Gift Search Completed!',
-    message: 'We found 5 perfect gift matches for your mom\'s birthday',
-    time: '2 min ago',
-    read: false,
-    icon: '🎁',
-    searchId: 'search-123' // Mock search ID
-  },
-  {
-    id: 2,
-    type: 'info',
-    title: 'New Trending Products',
-    message: 'Check out the latest tech gadgets that just arrived',
-    time: '1 hour ago',
-    read: false,
-    icon: '✨'
-  },
-  {
-    id: 3,
-    type: 'success',
-    title: 'Search Results Ready',
-    message: 'Your personalized gift recommendations are ready to view',
-    time: '3 hours ago',
-    read: true,
-    icon: '🎉',
-    searchId: 'search-456' // Mock search ID
-  },
-  {
-    id: 4,
-    type: 'info',
-    title: 'Valentine\'s Day Approaching',
-    message: 'Start searching for the perfect gift for your loved one',
-    time: '1 day ago',
-    read: true,
-    icon: '💝'
-  },
-  {
-    id: 5,
-    type: 'success',
-    title: 'Wishlist Updated',
-    message: 'You have successfully added 3 new items to your wishlist',
-    time: '2 days ago',
-    read: true,
-    icon: '📝'
-  },
-  {
-    id: 6,
-    type: 'info',
-    title: 'Price Drop Alert',
-    message: 'The item "Wireless Headphones" you viewed is now 20% off!',
-    time: '3 days ago',
-    read: false,
-    icon: '💰'
-  },
-  {
-    id: 7,
-    type: 'success',
-    title: 'Gift Delivered',
-    message: 'Your gift for John has been delivered successfully',
-    time: '4 days ago',
-    read: true,
-    icon: '📦'
-  },
-  {
-    id: 8,
-    type: 'info',
-    title: 'Holiday Sale Started',
-    message: 'Discover amazing deals on gifts for the holiday season',
-    time: '5 days ago',
-    read: true,
-    icon: '🎊'
-  },
-  {
-    id: 9,
-    type: 'success',
-    title: 'Review Submitted',
-    message: 'Thank you for reviewing your recent purchase!',
-    time: '6 days ago',
-    read: true,
-    icon: '⭐'
-  },
-  {
-    id: 10,
-    type: 'info',
-    title: 'Birthday Reminder',
-    message: 'Sarah\'s birthday is coming up in 7 days. Find the perfect gift!',
-    time: '1 week ago',
-    read: true,
-    icon: '🎂'
-  },
-  {
-    id: 11,
-    type: 'success',
-    title: 'Gift Recommendation Saved',
-    message: 'We saved your gift search preferences for future recommendations',
-    time: '1 week ago',
-    read: true,
-    icon: '💾'
-  },
-  {
-    id: 12,
-    type: 'info',
-    title: 'New Feature Available',
-    message: 'Try our new AI-powered gift suggestion feature for better results',
-    time: '2 weeks ago',
-    read: true,
-    icon: '🚀'
-  }
-])
-
-const unreadCount = computed(() => {
-  return notifications.value.filter(n => !n.read).length
-})
+// Use real notifications from the store
+const notifications = computed(() => notificationStore.notifications)
+const unreadCount = computed(() => notificationStore.unreadCount)
 
 const handleLogin = () => {
   router.push('/login')
@@ -173,11 +63,8 @@ const toggleNotifications = () => {
   }
 }
 
-const markAsRead = (id: number) => {
-  const notification = notifications.value.find(n => n.id === id)
-  if (notification) {
-    notification.read = true
-  }
+const markAsRead = (id: string | number) => {
+  notificationStore.markAsRead(id)
 }
 
 const handleNotificationClick = (notification: any) => {
@@ -192,11 +79,11 @@ const handleNotificationClick = (notification: any) => {
 }
 
 const markAllAsRead = () => {
-  notifications.value.forEach(n => n.read = true)
+  notificationStore.markAllAsRead()
 }
 
 const clearAllNotifications = () => {
-  notifications.value = []
+  notificationStore.clearAll()
 }
 
 const openNotificationModal = () => {
@@ -354,7 +241,7 @@ onUnmounted(() => {
                             {{ notification.message }}
                           </p>
                           <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                            {{ notification.time }}
+                            {{ formatRelativeTime(notification.timestamp) }}
                           </p>
                         </div>
                       </div>
@@ -422,9 +309,6 @@ onUnmounted(() => {
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">
                       {{ authStore.user?.display_name }}
-                    </p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {{ authStore.user?.email }}
                     </p>
                   </div>
 
@@ -517,9 +401,6 @@ onUnmounted(() => {
                       <p class="text-sm font-semibold text-gray-900 dark:text-white">
                         {{ authStore.user?.display_name }}
                       </p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ authStore.user?.email }}
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -579,7 +460,7 @@ onUnmounted(() => {
                             {{ notification.message }}
                           </p>
                           <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                            {{ notification.time }}
+                            {{ formatRelativeTime(notification.timestamp) }}
                           </p>
                         </div>
                         <span
@@ -706,7 +587,7 @@ onUnmounted(() => {
               {{ notification.message }}
             </p>
             <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
-              <span>{{ notification.time }}</span>
+              <span>{{ formatRelativeTime(notification.timestamp) }}</span>
               <span
                 v-if="notification.type === 'success'"
                 class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full font-medium"
