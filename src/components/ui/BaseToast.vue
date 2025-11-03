@@ -156,10 +156,10 @@ const iconComponent = computed(() => {
 
 const toastClasses = computed(() => {
   const variants = {
-    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
-    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
-    error: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
-    success: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800',
+    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/80 dark:border-blue-800',
+    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/80 dark:border-yellow-800',
+    error: 'bg-red-50 border-red-200 dark:bg-red-900/80 dark:border-red-800',
+    success: 'bg-green-50 border-green-200 dark:bg-green-900/80 dark:border-green-800',
   }
   return variants[props.variant]
 })
