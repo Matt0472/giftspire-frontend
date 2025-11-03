@@ -317,32 +317,34 @@ onMounted(() => {
   gap: 1rem;
   justify-content: center;
   padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+  background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
   border-radius: 1rem;
   max-width: 900px;
   margin: 0 auto;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.1);
 }
 
 .context-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1.125rem;
   background: white;
   border-radius: 999px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.15);
 }
 
 .context-label {
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #6366f1;
+  font-weight: 700;
+  color: #4f46e5;
 }
 
 .context-value {
   font-size: 0.875rem;
-  color: #374151;
-  font-weight: 500;
+  color: #1f2937;
+  font-weight: 600;
   text-transform: capitalize;
 }
 
@@ -364,11 +366,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 680px;
 }
 
 .product-card :deep(.card-wrapper) {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .product-card :deep(.card-content) {
@@ -384,7 +388,7 @@ onMounted(() => {
 }
 
 .product-card :deep(.image-container) {
-  min-height: 250px;
+  flex-shrink: 0;
 }
 
 /* Product Info */
@@ -514,6 +518,9 @@ onMounted(() => {
 /* Product Card Content */
 .ai-description {
   margin-bottom: 1rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
 }
 
 .ai-badge {
@@ -533,6 +540,10 @@ onMounted(() => {
   font-size: 0.9375rem;
   line-height: 1.6;
   color: #4b5563;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ai-reasoning {
@@ -693,12 +704,20 @@ onMounted(() => {
     color: #d1d5db;
   }
 
+  .search-context {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+  }
+
   .context-item {
-    background: rgba(55, 65, 81, 0.5);
+    background: rgba(55, 65, 81, 0.8);
+  }
+
+  .context-label {
+    color: #a5b4fc;
   }
 
   .context-value {
-    color: #d1d5db;
+    color: #e5e7eb;
   }
 
   .product-price {

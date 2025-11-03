@@ -93,8 +93,8 @@ const navigate = (item: BreadcrumbItem) => {
   gap: 0.25rem;
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #1f2937;
+  font-weight: 600;
+  color: #374151;
   background: transparent;
   border: none;
   border-radius: 0.5rem;
@@ -103,18 +103,19 @@ const navigate = (item: BreadcrumbItem) => {
 }
 
 .breadcrumb-link:hover {
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.1);
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.08);
 }
 
 .home-link {
   padding: 0.5rem;
+  color: #374151;
 }
 
 .breadcrumb-separator {
   width: 1rem;
   height: 1rem;
-  color: #6b7280;
+  color: #9ca3af;
   flex-shrink: 0;
 }
 
@@ -122,9 +123,9 @@ const navigate = (item: BreadcrumbItem) => {
   display: inline-block;
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
-  font-weight: 600;
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.1);
+  font-weight: 700;
+  color: #1e40af;
+  background: #dbeafe;
   border-radius: 0.5rem;
 }
 
