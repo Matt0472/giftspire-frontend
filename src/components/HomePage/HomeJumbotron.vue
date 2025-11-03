@@ -8,7 +8,7 @@ import StarryBackground from '@/components/ui/StarryBackground.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 </script>
 
 <template>

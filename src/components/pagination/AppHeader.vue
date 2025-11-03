@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { LogOut, Menu, X, Bell } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useAuth } from '@/composables/useAuth'
-import { useNotificationStore } from '@/stores/notification'
+import { useNotificationStore, type Notification } from '@/stores/notification'
 import { formatRelativeTime } from '@/utils/time'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import LanguageSwitcher from '../ui/LanguageSwitcher.vue'
@@ -67,7 +67,7 @@ const markAsRead = (id: string | number) => {
   notificationStore.markAsRead(id)
 }
 
-const handleNotificationClick = (notification: any) => {
+const handleNotificationClick = (notification: Notification) => {
   markAsRead(notification.id)
 
   // If notification has a searchId, navigate to results page

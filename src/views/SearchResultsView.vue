@@ -3,10 +3,10 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { giftSearchAPI } from '@/api/giftSearch'
-import type { GiftSearchResponse, GiftProduct } from '@/types/giftSearch'
+import type { GiftSearchResponse } from '@/types/giftSearch'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
-import { Heart, Star, ShoppingCart, ExternalLink, Sparkles } from 'lucide-vue-next'
+import { Sparkles } from 'lucide-vue-next'
 
 const route = useRoute()
 const { t } = useI18n()
@@ -29,19 +29,12 @@ const loadSearchResults = async () => {
     error.value = null
     const response = await giftSearchAPI.getSearchResults(searchId.value)
     searchData.value = response
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Failed to load search results:', err)
-    error.value = err.response?.data?.message || 'Failed to load search results'
+    error.value = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to load search results'
   } finally {
     isLoading.value = false
   }
-}
-
-const formatPrice = (price: number, currency: string) => {
-  if (currency === 'EUR') {
-    return `€${price.toFixed(2)}`
-  }
-  return `${currency} ${price.toFixed(2)}`
 }
 
 onMounted(() => {
