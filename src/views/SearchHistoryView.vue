@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { giftSearchAPI } from '@/api/giftSearch'
 import type { SearchHistoryResponse } from '@/types/giftSearch'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
+import AppBreadcrumbs from '@/components/ui/AppBreadcrumbs.vue'
 import { Sparkles, Calendar, ArrowRight } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -14,6 +15,11 @@ const isLoading = ref(true)
 const error = ref<string | null>(null)
 const searchHistory = ref<SearchHistoryResponse | null>(null)
 const currentPage = ref(1)
+
+const breadcrumbItems = computed(() => [
+  { label: t('common.dashboard'), to: { name: 'dashboard' } },
+  { label: t('common.searchHistory'), to: undefined }
+])
 
 const loadSearchHistory = async (page: number = 1) => {
   try {
@@ -57,6 +63,9 @@ onMounted(() => {
 
 <template>
   <div class="history-container">
+    <!-- Breadcrumbs -->
+    <AppBreadcrumbs :items="breadcrumbItems" />
+
     <!-- Loading State -->
     <div v-if="isLoading" class="loading-state">
       <div class="loading-header">

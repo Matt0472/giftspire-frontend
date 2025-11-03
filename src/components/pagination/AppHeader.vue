@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { LogOut, Menu, X, Bell } from 'lucide-vue-next'
+import { LogOut, Menu, X, Bell, History } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useAuth } from '@/composables/useAuth'
 import { useNotificationStore, type Notification } from '@/stores/notification'
@@ -61,6 +61,12 @@ const toggleNotifications = () => {
   if (isNotificationOpen.value) {
     isDropdownOpen.value = false
   }
+}
+
+const goToSearchHistory = () => {
+  isDropdownOpen.value = false
+  isMobileMenuOpen.value = false
+  router.push({ name: 'searchHistory' })
 }
 
 const markAsRead = (id: string | number) => {
@@ -312,6 +318,17 @@ onUnmounted(() => {
                     </p>
                   </div>
 
+                  <!-- Search History Link -->
+                  <div class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
+                    <button
+                      @click="goToSearchHistory"
+                      class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    >
+                      <History class="w-4 h-4" />
+                      {{ t('common.searchHistory') }}
+                    </button>
+                  </div>
+
                   <!-- Language Switcher -->
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-2">
@@ -489,6 +506,15 @@ onUnmounted(() => {
                     </p>
                   </div>
                 </div>
+
+                <!-- Search History Link -->
+                <button
+                  @click="goToSearchHistory"
+                  class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full"
+                >
+                  <History class="w-4 h-4" />
+                  {{ t('common.searchHistory') }}
+                </button>
 
                 <!-- Logout Button -->
                 <button

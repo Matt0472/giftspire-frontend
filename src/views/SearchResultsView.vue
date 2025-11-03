@@ -6,6 +6,7 @@ import { giftSearchAPI } from '@/api/giftSearch'
 import type { SearchHistoryItem } from '@/types/giftSearch'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
+import AppBreadcrumbs from '@/components/ui/AppBreadcrumbs.vue'
 import { Sparkles } from 'lucide-vue-next'
 
 const route = useRoute()
@@ -16,6 +17,12 @@ const error = ref<string | null>(null)
 const searchData = ref<SearchHistoryItem | null>(null)
 
 const searchId = computed(() => route.params.id as string)
+
+const breadcrumbItems = computed(() => [
+  { label: t('common.dashboard'), to: { name: 'dashboard' } },
+  { label: t('common.searchHistory'), to: { name: 'searchHistory' } },
+  { label: t('searchResults.breadcrumb', { id: searchId.value }), to: undefined }
+])
 
 const loadSearchResults = async () => {
   if (!searchId.value) {
@@ -44,6 +51,9 @@ onMounted(() => {
 
 <template>
   <div class="results-container">
+    <!-- Breadcrumbs -->
+    <AppBreadcrumbs :items="breadcrumbItems" />
+
     <!-- Loading State -->
     <div v-if="isLoading" class="loading-state">
       <div class="loading-header">

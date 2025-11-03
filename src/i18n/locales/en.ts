@@ -14,6 +14,7 @@ export default {
     backToLogin: 'Back to Login',
     previous: 'Previous',
     next: 'Next',
+    searchHistory: 'Search History',
   },
   notifications: {
     title: 'Notifications',
@@ -218,6 +219,7 @@ export default {
   searchResults: {
     title: 'Your Perfect Gift Matches',
     subtitle: 'We found {count} personalized gift recommendations for you',
+    breadcrumb: 'Search #{id}',
     aiPowered: 'AI Powered',
     whyThisGift: 'Why this gift?',
     keyFeatures: 'Key Features',

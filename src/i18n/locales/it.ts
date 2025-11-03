@@ -14,6 +14,7 @@ export default {
     backToLogin: 'Torna al Login',
     previous: 'Precedente',
     next: 'Successivo',
+    searchHistory: 'Storico Ricerche',
   },
   notifications: {
     title: 'Notifiche',
@@ -218,6 +219,7 @@ export default {
   searchResults: {
     title: 'I Tuoi Regali Perfetti',
     subtitle: 'Abbiamo trovato {count} raccomandazioni regalo personalizzate per te',
+    breadcrumb: 'Ricerca #{id}',
     aiPowered: 'Basato su IA',
     whyThisGift: 'Perché questo regalo?',
     keyFeatures: 'Caratteristiche Principali',
