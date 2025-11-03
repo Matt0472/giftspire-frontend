@@ -12,6 +12,8 @@ export default {
     theme: 'Theme',
     or: 'OR',
     backToLogin: 'Back to Login',
+    previous: 'Previous',
+    next: 'Next',
   },
   notifications: {
     title: 'Notifications',
@@ -232,6 +234,24 @@ export default {
     },
     error: {
       title: 'Oops! Something Went Wrong',
+      backToDashboard: 'Back to Dashboard'
+    }
+  },
+  searchHistory: {
+    title: 'Search History',
+    subtitle: 'You have {count} saved searches',
+    searchFor: 'Gift for',
+    budget: 'Budget',
+    interests: 'Interests',
+    results: 'Results',
+    viewResults: 'View Results',
+    empty: {
+      title: 'No Search History',
+      description: 'You haven\'t performed any gift searches yet. Start searching to see your history here!',
+      startSearching: 'Start Searching'
+    },
+    error: {
+      title: 'Failed to Load History',
       backToDashboard: 'Back to Dashboard'
     }
   },

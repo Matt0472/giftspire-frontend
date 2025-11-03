@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import SearchResultsView from '@/views/SearchResultsView.vue'
+import SearchHistoryView from '@/views/SearchHistoryView.vue'
 import { useAuthStore } from '@/stores/auth'
 import './types'
 
@@ -37,6 +38,12 @@ const router = createRouter({
       path: '/search/:id',
       name: 'searchResults',
       component: SearchResultsView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/history',
+      name: 'searchHistory',
+      component: SearchHistoryView,
       meta: { requiresAuth: true },
     },
   ],

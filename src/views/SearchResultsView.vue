@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { giftSearchAPI } from '@/api/giftSearch'
-import type { GiftSearchResponse } from '@/types/giftSearch'
+import type { SearchHistoryItem } from '@/types/giftSearch'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import { Sparkles } from 'lucide-vue-next'
@@ -13,7 +13,7 @@ const { t } = useI18n()
 
 const isLoading = ref(true)
 const error = ref<string | null>(null)
-const searchData = ref<GiftSearchResponse | null>(null)
+const searchData = ref<SearchHistoryItem | null>(null)
 
 const searchId = computed(() => route.params.id as string)
 

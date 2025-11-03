@@ -1,5 +1,5 @@
 import apiClient from '@/config/api'
-import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse, TrendingProductsResponse } from '@/types/giftSearch'
+import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse, TrendingProductsResponse, SearchHistoryResponse, SearchHistoryItem } from '@/types/giftSearch'
 
 export const giftSearchAPI = {
   /**
@@ -47,8 +47,18 @@ export const giftSearchAPI = {
   /**
    * Get search results by search ID
    */
-  async getSearchResults(searchId: string): Promise<GiftSearchResponse> {
-    const response = await apiClient.get<GiftSearchResponse>(`/gift-finder/search/${searchId}`)
+  async getSearchResults(searchId: string): Promise<SearchHistoryItem> {
+    const response = await apiClient.get<SearchHistoryItem>(`/gift-finder/searches/${searchId}`)
+    return response.data
+  },
+
+  /**
+   * Get all search history for the authenticated user (paginated)
+   */
+  async getSearchHistory(page: number = 1, perPage: number = 12): Promise<SearchHistoryResponse> {
+    const response = await apiClient.get<SearchHistoryResponse>('/gift-finder/searches', {
+      params: { page, per_page: perPage }
+    })
     return response.data
   }
 }

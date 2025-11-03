@@ -12,6 +12,8 @@ export default {
     theme: 'Tema',
     or: 'OPPURE',
     backToLogin: 'Torna al Login',
+    previous: 'Precedente',
+    next: 'Successivo',
   },
   notifications: {
     title: 'Notifiche',
@@ -232,6 +234,24 @@ export default {
     },
     error: {
       title: 'Ops! Qualcosa è Andato Storto',
+      backToDashboard: 'Torna alla Dashboard'
+    }
+  },
+  searchHistory: {
+    title: 'Storico Ricerche',
+    subtitle: 'Hai {count} ricerche salvate',
+    searchFor: 'Regalo per',
+    budget: 'Budget',
+    interests: 'Interessi',
+    results: 'Risultati',
+    viewResults: 'Visualizza Risultati',
+    empty: {
+      title: 'Nessuno Storico',
+      description: 'Non hai ancora effettuato ricerche di regali. Inizia a cercare per vedere lo storico qui!',
+      startSearching: 'Inizia a Cercare'
+    },
+    error: {
+      title: 'Errore nel Caricamento dello Storico',
       backToDashboard: 'Torna alla Dashboard'
     }
   },
