@@ -55,7 +55,7 @@ export const giftSearchAPI = {
   /**
    * Get all search history for the authenticated user (paginated)
    */
-  async getSearchHistory(page: number = 1, perPage: number = 12): Promise<SearchHistoryResponse> {
+  async getSearchHistory(page: number = 1, perPage: number = 9): Promise<SearchHistoryResponse> {
     const response = await apiClient.get<SearchHistoryResponse>('/gift-finder/searches', {
       params: { page, per_page: perPage }
     })

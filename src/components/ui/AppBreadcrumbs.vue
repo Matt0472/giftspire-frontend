@@ -94,7 +94,7 @@ const navigate = (item: BreadcrumbItem) => {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #6b7280;
+  color: #1f2937;
   background: transparent;
   border: none;
   border-radius: 0.5rem;
@@ -114,7 +114,7 @@ const navigate = (item: BreadcrumbItem) => {
 .breadcrumb-separator {
   width: 1rem;
   height: 1rem;
-  color: #d1d5db;
+  color: #6b7280;
   flex-shrink: 0;
 }
 

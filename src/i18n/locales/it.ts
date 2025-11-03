@@ -223,6 +223,8 @@ export default {
     aiPowered: 'Basato su IA',
     whyThisGift: 'Perché questo regalo?',
     keyFeatures: 'Caratteristiche Principali',
+    showMore: 'Mostra di Più',
+    showLess: 'Mostra Meno',
     context: {
       relation: 'Relazione',
       occasion: 'Occasione',
