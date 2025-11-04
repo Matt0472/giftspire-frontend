@@ -4,8 +4,8 @@
     class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
     :aria-label="`Switch to ${isDark ? 'light' : 'dark'} mode`"
   >
-    <Sun v-if="isDark" class="w-6 h-6 text-gray-900 dark:text-gray-100" />
-    <Moon v-else class="w-6 h-6 text-gray-900 dark:text-gray-100" />
+    <Sun v-if="isDark" class="w-6 h-6 text-yellow-500 dark:text-yellow-400" />
+    <Moon v-else class="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
   </button>
 </template>
 

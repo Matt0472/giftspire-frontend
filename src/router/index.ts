@@ -5,6 +5,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import SearchResultsView from '@/views/SearchResultsView.vue'
 import SearchHistoryView from '@/views/SearchHistoryView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import { useAuthStore } from '@/stores/auth'
 import './types'
 
@@ -44,6 +45,12 @@ const router = createRouter({
       path: '/history',
       name: 'searchHistory',
       component: SearchHistoryView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
       meta: { requiresAuth: true },
     },
   ],

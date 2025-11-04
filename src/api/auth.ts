@@ -43,5 +43,28 @@ export const authAPI = {
 
   async logout(): Promise<void> {
     await apiClient.post('/auth/logout')
+  },
+
+  /**
+   * Update user password
+   * Backend expects: { "old_password": "...", "new_password": "..." }
+   * Backend returns: 204 No Content
+   */
+  async updatePassword(oldPassword: string, newPassword: string): Promise<void> {
+    await apiClient.put('/user/password', {
+      old_password: oldPassword,
+      new_password: newPassword
+    })
+  },
+
+  /**
+   * Delete user account
+   * Backend expects: { "password": "..." }
+   * Backend returns: 204 No Content
+   */
+  async deleteAccount(password: string): Promise<void> {
+    await apiClient.delete('/user/account', {
+      data: { password }
+    })
   }
 }
