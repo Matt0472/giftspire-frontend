@@ -51,7 +51,7 @@ export const authAPI = {
    * Backend returns: 204 No Content
    */
   async updatePassword(oldPassword: string, newPassword: string): Promise<void> {
-    await apiClient.put('/user/password', {
+    await apiClient.put('/auth/password', {
       old_password: oldPassword,
       new_password: newPassword
     })
@@ -63,7 +63,7 @@ export const authAPI = {
    * Backend returns: 204 No Content
    */
   async deleteAccount(password: string): Promise<void> {
-    await apiClient.delete('/user/account', {
+    await apiClient.delete('/auth/delete_account', {
       data: { password }
     })
   }

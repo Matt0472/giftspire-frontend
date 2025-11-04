@@ -40,7 +40,7 @@ const handleDeleteAccount = async () => {
     await authAPI.deleteAccount(password.value)
 
     // Clear auth state and redirect to home
-    authStore.clearAuth()
+    authStore.logout()
     router.push('/')
   } catch (err: any) {
     console.error('Failed to delete account:', err)
