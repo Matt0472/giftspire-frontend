@@ -328,6 +328,7 @@ export default {
       feature1: 'Ricerca in corso in diverse categorie',
       feature2: 'IA che analizza le migliori corrispondenze',
       feature3: 'Riceverai presto una notifica',
+      viewPending: 'Visualizza Ricerche in Attesa',
       newSearch: 'Inizia Nuova Ricerca',
     },
     relations: {

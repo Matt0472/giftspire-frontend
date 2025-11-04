@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const emit = defineEmits<{
   newSearch: []
 }>()
+
+const goToPendingOrders = () => {
+  router.push({ name: 'pendingOrders' })
+}
 </script>
 
 <template>
@@ -27,9 +33,14 @@ const emit = defineEmits<{
         <span class="feature-text">{{ t('giftFinder.success.feature3') }}</span>
       </div>
     </div>
-    <button class="new-search-button" @click="emit('newSearch')">
-      ✨ {{ t('giftFinder.success.newSearch') }}
-    </button>
+    <div class="button-group">
+      <button class="view-pending-button" @click="goToPendingOrders">
+        🔍 {{ t('giftFinder.success.viewPending') }}
+      </button>
+      <button class="new-search-button" @click="emit('newSearch')">
+        ✨ {{ t('giftFinder.success.newSearch') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -80,7 +91,7 @@ const emit = defineEmits<{
 
 .success-description {
   font-size: 1.25rem;
-  color: #6b7280;
+  color: #374151;
   margin-bottom: 3rem;
   max-width: 600px;
   margin-left: auto;
@@ -121,8 +132,33 @@ const emit = defineEmits<{
 .feature-text {
   font-size: 1rem;
   font-weight: 600;
-  color: #374151;
+  color: #1f2937;
   text-align: left;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.view-pending-button {
+  padding: 1.25rem 3rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+.view-pending-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
 }
 
 .new-search-button {

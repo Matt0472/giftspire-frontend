@@ -178,6 +178,24 @@ onUnmounted(() => {
         <div class="hidden sm:flex items-center gap-3">
           <!-- Authenticated User Menu -->
           <template v-if="authStore.isAuthenticated">
+            <!-- Pending Orders Link -->
+            <button
+              @click="goToPendingOrders"
+              class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <Clock class="w-4 h-4" />
+              <span>{{ t('common.pendingOrders') }}</span>
+            </button>
+
+            <!-- Search History Link -->
+            <button
+              @click="goToSearchHistory"
+              class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <History class="w-4 h-4" />
+              <span>{{ t('common.searchHistory') }}</span>
+            </button>
+
             <!-- Notification Bell -->
             <div class="relative" ref="notificationRef">
               <button
@@ -344,20 +362,6 @@ onUnmounted(() => {
                     >
                       <User class="w-4 h-4" />
                       {{ t('common.myProfile') }}
-                    </button>
-                    <button
-                      @click="goToPendingOrders"
-                      class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                    >
-                      <Clock class="w-4 h-4" />
-                      {{ t('common.pendingOrders') }}
-                    </button>
-                    <button
-                      @click="goToSearchHistory"
-                      class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                    >
-                      <History class="w-4 h-4" />
-                      {{ t('common.searchHistory') }}
                     </button>
                   </div>
 

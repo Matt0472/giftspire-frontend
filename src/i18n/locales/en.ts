@@ -328,6 +328,7 @@ export default {
       feature1: 'Searching across multiple categories',
       feature2: 'AI analyzing best matches',
       feature3: 'You\'ll receive a notification soon',
+      viewPending: 'View Pending Searches',
       newSearch: 'Start New Search',
     },
     relations: {
