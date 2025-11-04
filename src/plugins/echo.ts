@@ -97,7 +97,7 @@ export function setupNotificationListeners(echo: Echo<'pusher'> | null): void {
   // Event name: search.completed (defined in SearchCompletedNotification::broadcastAs)
   echo
     .private(`App.Models.User.${userId}`)
-    .listen('.search.completed', (data: {
+    .listen('.search.completed', async (data: {
       order_id: string | number
       title: string
       message: string
@@ -107,8 +107,12 @@ export function setupNotificationListeners(echo: Echo<'pusher'> | null): void {
     }) => {
       console.log('[WebSocket] Search completed notification received:', data)
 
-      // Add notification to store (optimistically, already saved in backend)
-      notificationStore.handleWebSocketNotification(data)
+      // Fetch latest notifications from backend to get real IDs
+      try {
+        await notificationStore.handleWebSocketNotification(data)
+      } catch (error) {
+        console.error('[WebSocket] Error handling notification:', error)
+      }
     })
     .error((error: Error) => {
       console.error('[WebSocket] Channel subscription error:', error)

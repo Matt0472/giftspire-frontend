@@ -3,10 +3,10 @@
     <AppHeader />
 
     <main class="flex-1 overflow-x-hidden">
-      <div v-if="isFullWidthPage">
+      <div v-if="isFullWidthPage" class="mt-16">
         <slot />
       </div>
-      <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-16">
         <slot />
       </div>
     </main>

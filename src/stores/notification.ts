@@ -179,9 +179,9 @@ export const useNotificationStore = defineStore('notification', () => {
 
   /**
    * Handle incoming WebSocket notification
-   * Maps the backend event data to our Notification interface
+   * Fetches fresh notifications from backend to get the real IDs
    */
-  const handleWebSocketNotification = (data: {
+  const handleWebSocketNotification = async (data: {
     order_id?: string | number
     title: string
     message: string
@@ -189,15 +189,9 @@ export const useNotificationStore = defineStore('notification', () => {
     type: string
     timestamp: string
   }) => {
-    addNotification({
-      type: data.type as 'success' | 'info' | 'warning' | 'error',
-      title: data.title,
-      message: data.message,
-      icon: data.icon,
-      timestamp: data.timestamp,
-      orderId: data.order_id,
-      searchId: data.order_id,
-    })
+    // Instead of adding with a fake ID, fetch from backend to get real notification IDs
+    // This ensures we can properly mark notifications as read
+    await fetchNotifications()
   }
 
   return {

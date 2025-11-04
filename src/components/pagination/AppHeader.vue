@@ -100,12 +100,13 @@ const goToProfile = () => {
   router.push({ name: 'profile' })
 }
 
-const markAsRead = (id: string | number) => {
-  notificationStore.markAsRead(id)
+const markAsRead = async (id: string | number) => {
+  await notificationStore.markAsRead(id)
 }
 
-const handleNotificationClick = (notification: Notification) => {
-  markAsRead(notification.id)
+const handleNotificationClick = async (notification: Notification) => {
+  // Wait for the notification to be marked as read before navigating
+  await markAsRead(notification.id)
 
   // If notification has a searchId, navigate to results page
   if (notification.searchId) {
@@ -185,7 +186,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="bg-white dark:bg-gray-900 shadow dark:shadow-gray-700">
+  <header class="fixed top-0 left-0 right-0 w-full bg-white dark:bg-gray-900 shadow dark:shadow-gray-700 z-[9999]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <router-link to="/">
