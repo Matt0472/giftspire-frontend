@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { LogOut, Menu, X, Bell, History, User } from 'lucide-vue-next'
+import { LogOut, Menu, X, Bell, History, User, Clock } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useAuth } from '@/composables/useAuth'
 import { useNotificationStore, type Notification } from '@/stores/notification'
@@ -68,6 +68,12 @@ const goToSearchHistory = () => {
   isDropdownOpen.value = false
   isMobileMenuOpen.value = false
   router.push({ name: 'searchHistory' })
+}
+
+const goToPendingOrders = () => {
+  isDropdownOpen.value = false
+  isMobileMenuOpen.value = false
+  router.push({ name: 'pendingOrders' })
 }
 
 const goToProfile = () => {
@@ -340,6 +346,13 @@ onUnmounted(() => {
                       {{ t('common.myProfile') }}
                     </button>
                     <button
+                      @click="goToPendingOrders"
+                      class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                    >
+                      <Clock class="w-4 h-4" />
+                      {{ t('common.pendingOrders') }}
+                    </button>
+                    <button
                       @click="goToSearchHistory"
                       class="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     >
@@ -381,6 +394,8 @@ onUnmounted(() => {
 
           <!-- Guest Menu -->
           <template v-else>
+            <LanguageSwitcher />
+            <ThemeToggle />
             <BaseButton variant="outline" size="sm" @click="handleLogin">
               {{ t('common.login') }}
             </BaseButton>
@@ -579,6 +594,13 @@ onUnmounted(() => {
                 >
                   <User class="w-4 h-4" />
                   {{ t('common.myProfile') }}
+                </button>
+                <button
+                  @click="goToPendingOrders"
+                  class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full"
+                >
+                  <Clock class="w-4 h-4" />
+                  {{ t('common.pendingOrders') }}
                 </button>
                 <button
                   @click="goToSearchHistory"

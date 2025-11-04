@@ -6,6 +6,7 @@ import StarryBackground from '@/components/ui/StarryBackground.vue'
 import type { ChipVariant } from '@/components/ui/BaseChip.vue'
 import { useAuthStore } from '@/stores/auth.ts'
 import { useGiftSearch } from '@/composables/useGiftSearch'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
@@ -32,12 +33,22 @@ defineProps<ChipsJumbotronProps>()
 const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
+const router = useRouter()
 const { t } = useI18n()
 const { searchFromChip, isLoading: isSearching } = useGiftSearch()
 
 async function handleChipClick(chipKey: string, chipPrompt: string) {
   console.log('[QuickChip] Clicked:', chipKey, chipPrompt)
-  await searchFromChip(chipKey, chipPrompt)
+  try {
+    await searchFromChip(chipKey, chipPrompt)
+    // Redirect to pending orders page after successful submission
+    setTimeout(() => {
+      router.push({ name: 'pendingOrders' })
+    }, 1500) // Short delay to show success toast
+  } catch (error) {
+    // Error is already handled in the composable
+    console.error('Chip search failed:', error)
+  }
 }
 
 const chips = ref<ChipDef[] | null>(null)

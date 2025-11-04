@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useGiftSearch } from '@/composables/useGiftSearch'
 import type { Relation, Occasion, AgeGroup, Gender, GiftSearchRequest } from '@/types/giftSearch'
@@ -10,6 +11,7 @@ import OccasionStep from './GiftFinder/OccasionStep.vue'
 import BudgetStep from './GiftFinder/BudgetStep.vue'
 import InterestsStep from './GiftFinder/InterestsStep.vue'
 
+const router = useRouter()
 const { t, locale } = useI18n()
 const { search, isLoading } = useGiftSearch()
 
@@ -61,8 +63,18 @@ async function handleSearch() {
     output_language: locale.value === 'it' ? 'Italian' : 'English'
   }
 
-  await search(request)
-  searchSubmitted.value = true
+  try {
+    await search(request)
+    searchSubmitted.value = true
+
+    // Redirect to pending orders page after successful submission
+    setTimeout(() => {
+      router.push({ name: 'pendingOrders' })
+    }, 1500) // Short delay to show success message
+  } catch (error) {
+    // Error is already handled in the composable
+    console.error('Search failed:', error)
+  }
 }
 
 function startNewSearch() {

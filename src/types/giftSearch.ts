@@ -147,3 +147,29 @@ export interface SearchHistoryResponse {
   links: PaginationLinks
   meta: PaginationMeta
 }
+
+export interface PendingOrderItem {
+  id: number
+  options: {
+    relation: string
+    occasion: string
+    minBudget: number
+    maxBudget: number
+    interests: string[]
+    ageGroup?: string
+    gender?: string
+    maxResults?: number
+    outputLanguage?: string
+  }
+  created_at: string | null
+  started_at: string | null
+  failed_at: string | null
+  error_code: string | null
+  error_details: string | null
+}
+
+export interface PendingOrdersResponse {
+  data: PendingOrderItem[]
+  links: PaginationLinks
+  meta: PaginationMeta
+}

@@ -15,7 +15,9 @@ export default {
     previous: 'Precedente',
     next: 'Successivo',
     searchHistory: 'Storico Ricerche',
+    pendingOrders: 'Ricerche in Attesa',
     myProfile: 'Il Mio Profilo',
+    locale: 'it-IT',
   },
   notifications: {
     title: 'Notifiche',
@@ -257,6 +259,33 @@ export default {
     },
     error: {
       title: 'Errore nel Caricamento dello Storico',
+      backToDashboard: 'Torna alla Dashboard'
+    }
+  },
+  pendingOrders: {
+    title: 'Ricerche in Attesa',
+    subtitle: 'Hai {count} richieste di ricerca in attesa',
+    searchFor: 'Regalo per',
+    occasion: 'Occasione',
+    budget: 'Budget',
+    interests: 'Interessi',
+    createdAt: 'Creata',
+    delete: 'Elimina',
+    confirmDelete: 'Sei sicuro di voler eliminare questa richiesta in attesa?',
+    errorDetails: 'Dettagli Errore',
+    unknownError: 'Si è verificato un errore sconosciuto',
+    status: {
+      pending: 'In Attesa',
+      processing: 'In Elaborazione',
+      failed: 'Fallita'
+    },
+    empty: {
+      title: 'Nessuna Ricerca in Attesa',
+      description: 'Non hai richieste di ricerca in attesa. Inizia una nuova ricerca per vederla qui!',
+      startSearching: 'Inizia a Cercare'
+    },
+    error: {
+      title: 'Errore nel Caricamento delle Richieste',
       backToDashboard: 'Torna alla Dashboard'
     }
   },

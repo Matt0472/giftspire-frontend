@@ -15,7 +15,9 @@ export default {
     previous: 'Previous',
     next: 'Next',
     searchHistory: 'Search History',
+    pendingOrders: 'Pending Searches',
     myProfile: 'My Profile',
+    locale: 'en-US',
   },
   notifications: {
     title: 'Notifications',
@@ -257,6 +259,33 @@ export default {
     },
     error: {
       title: 'Failed to Load History',
+      backToDashboard: 'Back to Dashboard'
+    }
+  },
+  pendingOrders: {
+    title: 'Pending Searches',
+    subtitle: 'You have {count} pending search requests',
+    searchFor: 'Gift for',
+    occasion: 'Occasion',
+    budget: 'Budget',
+    interests: 'Interests',
+    createdAt: 'Created',
+    delete: 'Delete',
+    confirmDelete: 'Are you sure you want to delete this pending order?',
+    errorDetails: 'Error Details',
+    unknownError: 'An unknown error occurred',
+    status: {
+      pending: 'Waiting',
+      processing: 'Processing',
+      failed: 'Failed'
+    },
+    empty: {
+      title: 'No Pending Searches',
+      description: 'You don\'t have any pending search requests. Start a new search to see it here!',
+      startSearching: 'Start Searching'
+    },
+    error: {
+      title: 'Failed to Load Pending Orders',
       backToDashboard: 'Back to Dashboard'
     }
   },

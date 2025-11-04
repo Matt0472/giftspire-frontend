@@ -1,5 +1,5 @@
 import apiClient from '@/config/api'
-import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse, TrendingProductsResponse, SearchHistoryResponse, SearchHistoryItem } from '@/types/giftSearch'
+import type { GiftSearchRequest, GiftSearchResponse, GiftSearchErrorResponse, TrendingProductsResponse, SearchHistoryResponse, SearchHistoryItem, PendingOrdersResponse } from '@/types/giftSearch'
 
 export const giftSearchAPI = {
   /**
@@ -59,6 +59,24 @@ export const giftSearchAPI = {
     const response = await apiClient.get<SearchHistoryResponse>('/gift-finder/searches', {
       params: { page, per_page: perPage }
     })
+    return response.data
+  },
+
+  /**
+   * Get all pending orders for the authenticated user (paginated)
+   */
+  async getPendingOrders(page: number = 1, perPage: number = 12): Promise<PendingOrdersResponse> {
+    const response = await apiClient.get<PendingOrdersResponse>('/gift-finder/pending-orders', {
+      params: { page, per_page: perPage }
+    })
+    return response.data
+  },
+
+  /**
+   * Delete a pending order by ID
+   */
+  async deletePendingOrder(orderId: number): Promise<{ message: string }> {
+    const response = await apiClient.delete<{ message: string }>(`/gift-finder/pending-orders/${orderId}`)
     return response.data
   }
 }
