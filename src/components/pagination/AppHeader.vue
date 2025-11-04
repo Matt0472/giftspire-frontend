@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { LogOut, Menu, X, Bell, History, User, Clock } from 'lucide-vue-next'
 import { useAuthStore } from '@/stores/auth'
 import { useAuth } from '@/composables/useAuth'
 import { useNotificationStore, type Notification } from '@/stores/notification'
+import { usePendingOrdersCount } from '@/composables/usePendingOrdersCount'
 import { formatRelativeTime } from '@/utils/time'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import LanguageSwitcher from '../ui/LanguageSwitcher.vue'
@@ -13,10 +14,27 @@ import BaseButton from '../ui/BaseButton.vue'
 import BaseModal from '../ui/BaseModal.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const { logout } = useAuth()
 const { t } = useI18n()
 const notificationStore = useNotificationStore()
+const { pendingOrdersCount, fetchPendingOrdersCount, startAutoRefresh, stopAutoRefresh } = usePendingOrdersCount()
+
+// Watch for route changes to refresh count
+watch(() => route.path, (newPath) => {
+  // Refresh count when leaving pending orders page (order might have been deleted)
+  if (newPath !== '/pending-orders') {
+    fetchPendingOrdersCount()
+  }
+})
+
+// Watch for notification changes to refresh count (order completion)
+watch(() => notificationStore.notifications.length, () => {
+  // When a new notification arrives, refresh the pending orders count
+  // This ensures the counter decrements when an order completes
+  fetchPendingOrdersCount()
+})
 
 const isMobileMenuOpen = ref(false)
 const isDropdownOpen = ref(false)
@@ -157,10 +175,12 @@ const handleClickOutside = (event: MouseEvent) => {
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
-})
+  startAutoRefresh()
 
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
+  onUnmounted(() => {
+    document.removeEventListener('click', handleClickOutside)
+    stopAutoRefresh()
+  })
 })
 </script>
 
@@ -181,10 +201,16 @@ onUnmounted(() => {
             <!-- Pending Orders Link -->
             <button
               @click="goToPendingOrders"
-              class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              class="relative flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             >
               <Clock class="w-4 h-4" />
               <span>{{ t('common.pendingOrders') }}</span>
+              <span
+                v-if="pendingOrdersCount > 0"
+                class="ml-1 px-2 py-0.5 text-xs font-bold bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full shadow-lg"
+              >
+                {{ pendingOrdersCount > 99 ? '99+' : pendingOrdersCount }}
+              </span>
             </button>
 
             <!-- Search History Link -->
@@ -601,10 +627,18 @@ onUnmounted(() => {
                 </button>
                 <button
                   @click="goToPendingOrders"
-                  class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full"
+                  class="flex items-center justify-between gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full"
                 >
-                  <Clock class="w-4 h-4" />
-                  {{ t('common.pendingOrders') }}
+                  <div class="flex items-center gap-3">
+                    <Clock class="w-4 h-4" />
+                    {{ t('common.pendingOrders') }}
+                  </div>
+                  <span
+                    v-if="pendingOrdersCount > 0"
+                    class="px-2 py-0.5 text-xs font-bold bg-gradient-to-br from-orange-500 to-red-500 text-white rounded-full shadow-lg"
+                  >
+                    {{ pendingOrdersCount > 99 ? '99+' : pendingOrdersCount }}
+                  </span>
                 </button>
                 <button
                   @click="goToSearchHistory"

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { giftSearchAPI } from '@/api/giftSearch'
-import type { PendingOrdersResponse, PendingOrderItem } from '@/types/giftSearch'
+import type { PendingOrderItem, PendingOrdersResponse } from '@/types/giftSearch'
 import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import AppBreadcrumbs from '@/components/ui/AppBreadcrumbs.vue'
-import { Clock, Trash2, AlertCircle, CheckCircle, Loader } from 'lucide-vue-next'
+import { AlertCircle, Clock, Loader, Trash2 } from 'lucide-vue-next'
 
-const router = useRouter()
 const { t } = useI18n()
 
 const isLoading = ref(true)
@@ -19,19 +17,21 @@ const deletingOrderId = ref<number | null>(null)
 
 const breadcrumbItems = computed(() => [
   { label: t('common.dashboard'), to: { name: 'dashboard' } },
-  { label: t('pendingOrders.title'), to: undefined }
+  { label: t('pendingOrders.title'), to: undefined },
 ])
 
 const loadPendingOrders = async (page: number = 1) => {
   try {
     isLoading.value = true
     error.value = null
-    const response = await giftSearchAPI.getPendingOrders(page)
-    pendingOrders.value = response
+
+    pendingOrders.value = await giftSearchAPI.getPendingOrders(page)
     currentPage.value = page
   } catch (err: unknown) {
     console.error('Failed to load pending orders:', err)
-    error.value = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to load pending orders'
+    error.value =
+      (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+      'Failed to load pending orders'
   } finally {
     isLoading.value = false
   }
@@ -46,11 +46,18 @@ const deletePendingOrder = async (orderId: number) => {
     deletingOrderId.value = orderId
     await giftSearchAPI.deletePendingOrder(orderId)
 
-    // Reload the current page
-    await loadPendingOrders(currentPage.value)
+    // If we're on a page that will be empty after deletion, go to previous page
+    if (pendingOrders.value && pendingOrders.value.data.length === 1 && currentPage.value > 1) {
+      await loadPendingOrders(currentPage.value - 1)
+    } else {
+      // Reload the current page
+      await loadPendingOrders(currentPage.value)
+    }
   } catch (err: unknown) {
     console.error('Failed to delete pending order:', err)
-    error.value = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to delete pending order'
+    error.value =
+      (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+      'Failed to delete pending order'
   } finally {
     deletingOrderId.value = null
   }
@@ -61,20 +68,20 @@ const getStatusInfo = (order: PendingOrderItem) => {
     return {
       text: t('pendingOrders.status.failed'),
       icon: AlertCircle,
-      class: 'status-failed'
+      class: 'status-failed',
     }
   }
   if (order.started_at) {
     return {
       text: t('pendingOrders.status.processing'),
       icon: Loader,
-      class: 'status-processing'
+      class: 'status-processing',
     }
   }
   return {
     text: t('pendingOrders.status.pending'),
     icon: Clock,
-    class: 'status-pending'
+    class: 'status-pending',
   }
 }
 
@@ -86,7 +93,7 @@ const formatDate = (dateString: string | null) => {
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   }).format(date)
 }
 
@@ -124,12 +131,7 @@ onMounted(() => {
       </div>
 
       <div class="orders-grid">
-        <BaseSkeleton
-          v-for="i in 6"
-          :key="i"
-          shape="rect"
-          inner-class="h-64 w-full rounded-2xl"
-        />
+        <BaseSkeleton v-for="i in 6" :key="i" shape="rect" inner-class="h-64 w-full rounded-2xl" />
       </div>
     </div>
 
@@ -197,7 +199,7 @@ onMounted(() => {
               <div class="card-detail">
                 <span class="detail-label">{{ t('pendingOrders.budget') }}:</span>
                 <span class="detail-value">
-                  €{{ order.options.minBudget }} - €{{ order.options.maxBudget }}
+                  €{{ order.options.min_budget }} - €{{ order.options.max_budget }}
                 </span>
               </div>
               <div class="card-detail">
@@ -234,11 +236,7 @@ onMounted(() => {
 
         <!-- Pagination -->
         <div v-if="pendingOrders.meta.last_page > 1" class="pagination">
-          <button
-            @click="prevPage"
-            :disabled="currentPage === 1"
-            class="pagination-button"
-          >
+          <button @click="prevPage" :disabled="currentPage === 1" class="pagination-button">
             {{ t('common.previous') }}
           </button>
 
@@ -304,7 +302,8 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -562,9 +561,16 @@ onMounted(() => {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
 }
 
 .error-title {
@@ -617,7 +623,9 @@ onMounted(() => {
   font-weight: 600;
   border-radius: 0.75rem;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
 }
 

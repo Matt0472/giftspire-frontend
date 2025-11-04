@@ -153,13 +153,13 @@ export interface PendingOrderItem {
   options: {
     relation: string
     occasion: string
-    minBudget: number
-    maxBudget: number
+    min_budget: number
+    max_budget: number
     interests: string[]
-    ageGroup?: string
+    age_group?: string
     gender?: string
-    maxResults?: number
-    outputLanguage?: string
+    max_results?: number
+    output_language?: string
   }
   created_at: string | null
   started_at: string | null

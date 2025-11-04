@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGiftSearch } from '@/composables/useGiftSearch'
+import { usePendingOrdersCount } from '@/composables/usePendingOrdersCount'
 import type { Relation, Occasion, AgeGroup, Gender, GiftSearchRequest } from '@/types/giftSearch'
 import ProgressStepper from './GiftFinder/ProgressStepper.vue'
 import SuccessMessage from './GiftFinder/SuccessMessage.vue'
@@ -12,6 +13,7 @@ import InterestsStep from './GiftFinder/InterestsStep.vue'
 
 const { t, locale } = useI18n()
 const { search, isLoading } = useGiftSearch()
+const { fetchPendingOrdersCount } = usePendingOrdersCount()
 
 // Step management
 const currentStep = ref(1)
@@ -64,6 +66,8 @@ async function handleSearch() {
   try {
     await search(request)
     searchSubmitted.value = true
+    // Refresh pending orders count after successful search submission
+    await fetchPendingOrdersCount()
   } catch (error) {
     // Error is already handled in the composable
     console.error('Search failed:', error)
