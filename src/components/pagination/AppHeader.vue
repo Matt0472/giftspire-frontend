@@ -24,6 +24,7 @@ const isNotificationOpen = ref(false)
 const isNotificationModalOpen = ref(false)
 const dropdownRef = ref<HTMLDivElement | null>(null)
 const notificationRef = ref<HTMLDivElement | null>(null)
+const mobileNotificationRef = ref<HTMLDivElement | null>(null)
 
 // Use real notifications from the store
 const notifications = computed(() => notificationStore.notifications)
@@ -132,7 +133,12 @@ const handleClickOutside = (event: MouseEvent) => {
   if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
     isDropdownOpen.value = false
   }
-  if (notificationRef.value && !notificationRef.value.contains(event.target as Node)) {
+  // Check both desktop and mobile notification refs
+  const clickedInsideNotification =
+    (notificationRef.value && notificationRef.value.contains(event.target as Node)) ||
+    (mobileNotificationRef.value && mobileNotificationRef.value.contains(event.target as Node))
+
+  if (!clickedInsideNotification) {
     isNotificationOpen.value = false
   }
 }
@@ -371,14 +377,145 @@ onUnmounted(() => {
           </template>
         </div>
 
-        <!-- Mobile Menu Button (visible on mobile only) -->
-        <button
-          @click="toggleMobileMenu"
-          class="sm:hidden p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        >
-          <Menu v-if="!isMobileMenuOpen" class="w-6 h-6" />
-          <X v-else class="w-6 h-6" />
-        </button>
+        <!-- Mobile Controls (visible on mobile only) -->
+        <div class="sm:hidden flex items-center gap-2">
+          <!-- Mobile Notification Bell (only for authenticated users) -->
+          <div v-if="authStore.isAuthenticated" class="relative" ref="mobileNotificationRef">
+            <button
+              @click="toggleNotifications"
+              class="relative w-10 h-10 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 hover:scale-105"
+            >
+              <Bell class="w-5 h-5" />
+              <span
+                v-if="unreadCount > 0"
+                class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-pink-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-pulse"
+              >
+                {{ unreadCount > 9 ? '9+' : unreadCount }}
+              </span>
+            </button>
+
+            <!-- Mobile Notification Dropdown -->
+            <Transition
+              enter-active-class="transition ease-out duration-200"
+              enter-from-class="opacity-0 scale-95"
+              enter-to-class="opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-150"
+              leave-from-class="opacity-100 scale-100"
+              leave-to-class="opacity-0 scale-95"
+            >
+              <div
+                v-if="isNotificationOpen"
+                class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden"
+              >
+                <!-- Header -->
+                <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                  <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+                      {{ t('notifications.title') }}
+                    </h3>
+                    <span
+                      v-if="notifications.length > 0"
+                      class="text-xs text-gray-500 dark:text-gray-400"
+                    >
+                      {{ notifications.length }} {{ t('notifications.total') }}
+                    </span>
+                  </div>
+                  <div v-if="notifications.length > 0" class="flex gap-2">
+                    <button
+                      v-if="unreadCount > 0"
+                      @click="markAllAsRead"
+                      class="flex-1 px-2 py-1 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded font-medium transition-colors"
+                    >
+                      {{ t('notifications.markAllRead') }}
+                    </button>
+                    <button
+                      @click="clearAllNotifications"
+                      class="flex-1 px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded font-medium transition-colors"
+                    >
+                      {{ t('notifications.clearAll') }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Notifications List -->
+                <div class="max-h-96 overflow-y-auto custom-scrollbar">
+                  <div
+                    v-for="notification in notifications"
+                    :key="notification.id"
+                    @click="handleNotificationClick(notification)"
+                    :class="[
+                      'px-4 py-3 border-b border-gray-100 dark:border-gray-700 cursor-pointer transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50',
+                      !notification.read && 'bg-indigo-50/50 dark:bg-indigo-900/10'
+                    ]"
+                  >
+                    <div class="flex gap-3">
+                      <div class="flex-shrink-0 text-xl">
+                        {{ notification.icon }}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between gap-2">
+                          <p class="text-xs font-semibold text-gray-900 dark:text-white">
+                            {{ notification.title }}
+                          </p>
+                          <span
+                            v-if="!notification.read"
+                            class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full flex-shrink-0 mt-1"
+                          ></span>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          {{ notification.message }}
+                        </p>
+                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                          {{ formatRelativeTime(notification.timestamp) }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Empty State -->
+                  <div
+                    v-if="notifications.length === 0"
+                    class="px-6 py-12 text-center"
+                  >
+                    <div class="relative inline-block mb-4">
+                      <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
+                        <Bell class="w-8 h-8 text-indigo-400 dark:text-indigo-500" />
+                      </div>
+                      <div class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center">
+                        <span class="text-white text-xs font-bold">✓</span>
+                      </div>
+                    </div>
+                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
+                      {{ t('notifications.emptyTitle') }}
+                    </h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      {{ t('notifications.emptyDescription') }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div v-if="notifications.length > 0" class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+                  <button
+                    @click="openNotificationModal"
+                    class="text-xs text-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium w-full transition-colors"
+                  >
+                    {{ t('notifications.viewAll') }}
+                  </button>
+                </div>
+              </div>
+            </Transition>
+          </div>
+
+          <!-- Hamburger Menu Button -->
+          <button
+            @click="toggleMobileMenu"
+            class="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          >
+            <Menu v-if="!isMobileMenuOpen" class="w-6 h-6" />
+            <X v-else class="w-6 h-6" />
+          </button>
+        </div>
       </div>
 
       <!-- Mobile Menu (visible on mobile when open) -->
@@ -419,91 +556,6 @@ onUnmounted(() => {
                         {{ authStore.user?.display_name }}
                       </p>
                     </div>
-                  </div>
-                </div>
-
-                <!-- Notifications -->
-                <div class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                  <div class="px-3 py-2 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center justify-between mb-2">
-                      <div class="flex items-center gap-2">
-                        <Bell class="w-4 h-4 text-gray-700 dark:text-gray-300" />
-                        <span class="text-xs font-semibold text-gray-900 dark:text-white">{{ t('notifications.title') }}</span>
-                      </div>
-                      <span
-                        v-if="unreadCount > 0"
-                        class="px-2 py-0.5 bg-gradient-to-br from-red-500 to-pink-500 text-white text-xs font-bold rounded-full"
-                      >
-                        {{ unreadCount }}
-                      </span>
-                    </div>
-                    <div v-if="notifications.length > 0" class="flex gap-2">
-                      <button
-                        v-if="unreadCount > 0"
-                        @click="markAllAsRead"
-                        class="flex-1 px-2 py-1 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded font-medium transition-colors"
-                      >
-                        {{ t('notifications.markAllRead') }}
-                      </button>
-                      <button
-                        @click="clearAllNotifications"
-                        class="flex-1 px-2 py-1 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded font-medium transition-colors"
-                      >
-                        {{ t('notifications.clearAll') }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Mobile Notifications List -->
-                  <div v-if="notifications.length > 0" class="max-h-64 overflow-y-auto custom-scrollbar">
-                    <div
-                      v-for="notification in notifications.slice(0, 3)"
-                      :key="notification.id"
-                      @click="handleNotificationClick(notification)"
-                      :class="[
-                        'px-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0 cursor-pointer transition-colors',
-                        !notification.read && 'bg-indigo-50/50 dark:bg-indigo-900/10'
-                      ]"
-                    >
-                      <div class="flex gap-2">
-                        <div class="flex-shrink-0 text-lg">
-                          {{ notification.icon }}
-                        </div>
-                        <div class="flex-1 min-w-0">
-                          <p class="text-xs font-semibold text-gray-900 dark:text-white">
-                            {{ notification.title }}
-                          </p>
-                          <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5 line-clamp-1">
-                            {{ notification.message }}
-                          </p>
-                          <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                            {{ formatRelativeTime(notification.timestamp) }}
-                          </p>
-                        </div>
-                        <span
-                          v-if="!notification.read"
-                          class="w-2 h-2 bg-indigo-600 dark:bg-indigo-400 rounded-full flex-shrink-0 mt-1"
-                        ></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Mobile Empty State -->
-                  <div v-else class="px-4 py-8 text-center">
-                    <div class="relative inline-block mb-3">
-                      <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
-                        <Bell class="w-8 h-8 text-indigo-400 dark:text-indigo-500" />
-                      </div>
-                      <div class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center">
-                        <span class="text-white text-xs font-bold">✓</span>
-                      </div>
-                    </div>
-                    <h4 class="text-xs font-semibold text-gray-900 dark:text-white mb-1">
-                      {{ t('notifications.emptyTitle') }}
-                    </h4>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
-                      {{ t('notifications.emptyDescriptionShort') }}
-                    </p>
                   </div>
                 </div>
 
