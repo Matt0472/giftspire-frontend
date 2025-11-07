@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import BaseSkeleton from '@/components/ui/BaseSkeleton.vue'
 import { giftSearchAPI } from '@/api/giftSearch'
 import type { TrendingProduct } from '@/types/giftSearch'
 
@@ -24,19 +25,24 @@ const props = withDefaults(defineProps<TrendingProductsProps>(), {
   gradientVariant: 'variant1'
 })
 
-const emit = defineEmits<{
-  loaded: []
-}>()
-
 const products = ref<TrendingProduct[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
+const isMounted = ref(true)
 
-const formatPrice = (price: number, currency: string) => {
-  return new Intl.NumberFormat(undefined, {
-    style: 'currency',
-    currency: currency
-  }).format(price)
+const formatPrice = (price: number, currency: string | null | undefined) => {
+  // Default to USD if currency is null or invalid
+  const validCurrency = currency || 'USD'
+
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: validCurrency
+    }).format(price)
+  } catch (e) {
+    // Fallback if currency code is still invalid
+    return `${validCurrency} ${price.toFixed(2)}`
+  }
 }
 
 const formatRating = (rating: number | null | undefined) => {
@@ -53,27 +59,51 @@ onMounted(async () => {
 
     console.log('[TrendingProducts] Response:', response)
 
+    // Only update if still mounted
+    if (!isMounted.value) return
+
     products.value = response.data.products
     loading.value = false
-    emit('loaded')
   } catch (e: unknown) {
     console.error('[TrendingProducts] Error fetching trending products:', e)
+
+    // Only update if still mounted - fail gracefully without breaking other components
+    if (!isMounted.value) return
+
     error.value = t('dashboard.trending.loadError')
     loading.value = false
-    emit('loaded')
   }
+})
+
+onBeforeUnmount(() => {
+  isMounted.value = false
 })
 </script>
 
 <template>
-  <Transition name="fade-slide">
-    <div v-if="!loading && products.length > 0" class="mt-8" :style="{ animationDelay: `${animationDelay}ms` }">
-      <h2 class="text-xl font-bold mb-4" :class="`gradient-text-${gradientVariant}`">
-        {{ title || t('dashboard.trending.title') }}
-      </h2>
-
-      <!-- Products Grid -->
+  <div class="mt-8">
+    <!-- Loading Skeleton -->
+    <div v-if="loading" class="space-y-4">
+      <BaseSkeleton shape="rect" inner-class="h-6 w-48" />
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <BaseSkeleton v-for="i in limit" :key="i" shape="rect" inner-class="h-64" />
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-center py-8">
+      <p class="text-sm text-gray-500 dark:text-gray-400">{{ error }}</p>
+    </div>
+
+    <!-- Products Content -->
+    <Transition name="fade-slide" v-else-if="products.length > 0">
+      <div>
+        <h2 class="text-xl font-bold mb-4" :class="`gradient-text-${gradientVariant}`">
+          {{ title || t('dashboard.trending.title') }}
+        </h2>
+
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <BaseCard
         v-for="product in products"
         :key="product.asin"
@@ -109,9 +139,10 @@ onMounted(async () => {
           </div>
         </template>
       </BaseCard>
+        </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>
