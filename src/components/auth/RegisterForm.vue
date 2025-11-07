@@ -263,14 +263,10 @@ const nicknameInputClasses = computed(() => {
 
 // Check if form can be submitted
 const canSubmit = computed(() => {
-  return (
-    formData.nickname.length >= 3 &&
+  return (formData.nickname.length >= 3 &&
     nicknameAvailable.value === true &&
     formData.password.length >= 8 &&
-    formData.confirmPassword.length >= 8 &&
-    formData.terms === true &&
-    !isCheckingNickname.value
-  )
+    formData.confirmPassword.length >= 8 && formData.terms && !isCheckingNickname.value)
 })
 
 // Debounced nickname availability check
