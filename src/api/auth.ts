@@ -12,12 +12,12 @@ export const authAPI = {
   },
 
   /**
-   * Login user and return access token
-   * Backend returns: { "access_token": "..." }
+   * Login user and return access token with expiration
+   * Backend returns: { "access_token": "...", "token_expires_at": "..." }
    */
-  async login(data: LoginRequest): Promise<string> {
+  async login(data: LoginRequest): Promise<LoginResponse> {
     const response = await apiClient.post<LoginResponse>('/auth/login', data)
-    return response.data.access_token
+    return response.data
   },
 
   /**
