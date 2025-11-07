@@ -2,7 +2,7 @@
   <div
     aria-live="polite"
     aria-atomic="true"
-    class="fixed top-0 right-0 z-50 p-4 space-y-4 pointer-events-none"
+    class="fixed top-0 right-0 z-[10000] p-4 space-y-4 pointer-events-none"
     style="max-width: 420px; width: 100%"
   >
     <transition-group

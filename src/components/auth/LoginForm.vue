@@ -28,6 +28,18 @@
           @input="errors.password = undefined"
         />
 
+        <div class="flex items-center">
+          <input
+            id="remember_me"
+            v-model="formData.remember_me"
+            type="checkbox"
+            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+            {{ t('auth.rememberMe') }}
+          </label>
+        </div>
+
         <BaseButton type="submit" variant="primary" class="w-full" :disabled="isSubmitting">
           {{ isSubmitting ? t('auth.signingIn') : t('common.signIn') }}
         </BaseButton>
@@ -55,6 +67,7 @@ const { t } = useI18n()
 const loginSchema = z.object({
   nickname: z.string().min(3, t('validation.nicknameMinLength')),
   password: z.string().min(6, t('validation.passwordMinLength')),
+  remember_me: z.boolean().optional(),
 })
 
 type LoginFormData = z.infer<typeof loginSchema>
@@ -62,6 +75,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 const formData = reactive<LoginFormData>({
   nickname: '',
   password: '',
+  remember_me: false,
 })
 
 const errors = reactive<Partial<Record<keyof LoginFormData, string>>>({})

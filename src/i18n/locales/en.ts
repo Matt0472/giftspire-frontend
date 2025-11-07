@@ -71,6 +71,7 @@ export default {
     nicknameTaken: 'This nickname is already taken',
     agreeToTerms: 'I agree to the',
     termsAndConditions: 'Terms and Conditions',
+    rememberMe: 'Remember me',
   },
   footer: {
     copyright: '© {0} GiftSpire. All rights reserved.',
