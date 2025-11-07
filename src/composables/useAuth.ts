@@ -17,9 +17,10 @@ export function useAuth() {
     error.value = null
 
     try {
-      const token = await authAPI.login(credentials)
+      const loginResponse = await authAPI.login(credentials)
 
-      localStorage.setItem('auth_token', token);
+      localStorage.setItem('auth_token', loginResponse.access_token)
+      localStorage.setItem('auth_token_expires_at', loginResponse.token_expires_at)
 
     } catch (err: unknown) {
       const errorMessage = (err as { response?: { data?: { message?: string } } }).response?.data?.message
@@ -34,13 +35,14 @@ export function useAuth() {
     try {
       // Step 3: Get user data
       const user = await authAPI.getCurrentUser()
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem('auth_token')
+      const tokenExpiresAt = localStorage.getItem('auth_token_expires_at')
 
-      if (!user || !token) {
-        throw new Error('User data or token is missing')
+      if (!user || !token || !tokenExpiresAt) {
+        throw new Error('User data, token, or token expiration is missing')
       }
 
-      authStore.login(user, token)
+      authStore.login(user, token, tokenExpiresAt)
     } catch (userErr: unknown) {
       const errorMessage = (userErr as { response?: { data?: { message?: string } } }).response?.data?.message
       const message = errorMessage || 'We could not load your account. Please try again.'

@@ -21,18 +21,13 @@ const { t } = useI18n()
 const notificationStore = useNotificationStore()
 const { pendingOrdersCount, fetchPendingOrdersCount, startAutoRefresh, stopAutoRefresh } = usePendingOrdersCount()
 
-// Watch for route changes to refresh count
 watch(() => route.path, (newPath) => {
-  // Refresh count when leaving pending orders page (order might have been deleted)
   if (newPath !== '/pending-orders') {
     fetchPendingOrdersCount()
   }
 })
 
-// Watch for notification changes to refresh count (order completion)
 watch(() => notificationStore.notifications.length, () => {
-  // When a new notification arrives, refresh the pending orders count
-  // This ensures the counter decrements when an order completes
   fetchPendingOrdersCount()
 })
 
@@ -44,24 +39,19 @@ const dropdownRef = ref<HTMLDivElement | null>(null)
 const notificationRef = ref<HTMLDivElement | null>(null)
 const mobileNotificationRef = ref<HTMLDivElement | null>(null)
 
-// Use real notifications from the store
 const notifications = computed(() => notificationStore.notifications)
 const unreadCount = computed(() => notificationStore.unreadCount)
 
 const handleLogin = () => {
   router.push('/login')
-  isMobileMenuOpen.value = false
 }
 
 const handleSignup = () => {
   router.push('/register')
-  isMobileMenuOpen.value = false
 }
 
 const handleLogout = async () => {
   await logout()
-  isMobileMenuOpen.value = false
-  isDropdownOpen.value = false
 }
 
 const toggleMobileMenu = () => {
@@ -83,20 +73,14 @@ const toggleNotifications = () => {
 }
 
 const goToSearchHistory = () => {
-  isDropdownOpen.value = false
-  isMobileMenuOpen.value = false
   router.push({ name: 'searchHistory' })
 }
 
 const goToPendingOrders = () => {
-  isDropdownOpen.value = false
-  isMobileMenuOpen.value = false
   router.push({ name: 'pendingOrders' })
 }
 
 const goToProfile = () => {
-  isDropdownOpen.value = false
-  isMobileMenuOpen.value = false
   router.push({ name: 'profile' })
 }
 
@@ -105,14 +89,12 @@ const markAsRead = async (id: string | number) => {
 }
 
 const handleNotificationClick = async (notification: Notification) => {
-  // Wait for the notification to be marked as read before navigating
   await markAsRead(notification.id)
 
-  // If notification has a searchId, navigate to results page
   if (notification.searchId) {
     isNotificationOpen.value = false
     isNotificationModalOpen.value = false
-    router.push({ name: 'searchResults', params: { id: notification.searchId } })
+    await router.push({ name: 'searchResults', params: { id: notification.searchId } })
   }
 }
 
@@ -131,13 +113,11 @@ const openNotificationModal = () => {
   isMobileMenuOpen.value = false
 }
 
-// Get user initials (first 2 letters of nickname, capitalized)
 const userInitials = computed(() => {
   const nickname = authStore.user?.display_name || ''
   return nickname.substring(0, 2).toUpperCase()
 })
 
-// Generate a consistent color based on nickname
 const avatarColor = computed(() => {
   const nickname = authStore.user?.display_name || ''
   const colors = [
@@ -159,12 +139,10 @@ const avatarColor = computed(() => {
   return colors[Math.abs(hash) % colors.length]
 })
 
-// Close dropdown when clicking outside
 const handleClickOutside = (event: MouseEvent) => {
   if (dropdownRef.value && !dropdownRef.value.contains(event.target as Node)) {
     isDropdownOpen.value = false
   }
-  // Check both desktop and mobile notification refs
   const clickedInsideNotification =
     (notificationRef.value && notificationRef.value.contains(event.target as Node)) ||
     (mobileNotificationRef.value && mobileNotificationRef.value.contains(event.target as Node))
@@ -177,11 +155,10 @@ const handleClickOutside = (event: MouseEvent) => {
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
   startAutoRefresh()
-
-  onUnmounted(() => {
-    document.removeEventListener('click', handleClickOutside)
-    stopAutoRefresh()
-  })
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  stopAutoRefresh()
 })
 </script>
 
@@ -195,11 +172,8 @@ onMounted(() => {
           </h1>
         </router-link>
 
-        <!-- Desktop Menu (hidden on mobile) -->
         <div class="hidden sm:flex items-center gap-3">
-          <!-- Authenticated User Menu -->
           <template v-if="authStore.isAuthenticated">
-            <!-- Pending Orders Link -->
             <button
               @click="goToPendingOrders"
               class="relative flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
@@ -214,7 +188,6 @@ onMounted(() => {
               </span>
             </button>
 
-            <!-- Search History Link -->
             <button
               @click="goToSearchHistory"
               class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
@@ -223,7 +196,6 @@ onMounted(() => {
               <span>{{ t('common.searchHistory') }}</span>
             </button>
 
-            <!-- Notification Bell -->
             <div class="relative" ref="notificationRef">
               <button
                 @click="toggleNotifications"
@@ -238,7 +210,6 @@ onMounted(() => {
                 </span>
               </button>
 
-              <!-- Notification Dropdown -->
               <Transition
                 enter-active-class="transition ease-out duration-200"
                 enter-from-class="opacity-0 scale-95"
@@ -251,7 +222,6 @@ onMounted(() => {
                   v-if="isNotificationOpen"
                   class="absolute right-0 mt-2 w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden"
                 >
-                  <!-- Header -->
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-2">
                       <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
@@ -281,7 +251,6 @@ onMounted(() => {
                     </div>
                   </div>
 
-                  <!-- Notifications List -->
                   <div class="max-h-96 overflow-y-auto custom-scrollbar">
                     <div
                       v-for="notification in notifications"
@@ -316,7 +285,6 @@ onMounted(() => {
                       </div>
                     </div>
 
-                    <!-- Empty State -->
                     <div
                       v-if="notifications.length === 0"
                       class="px-6 py-16 text-center"
@@ -338,7 +306,6 @@ onMounted(() => {
                     </div>
                   </div>
 
-                  <!-- Footer -->
                   <div v-if="notifications.length > 0" class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
                     <button
                       @click="openNotificationModal"
@@ -351,9 +318,7 @@ onMounted(() => {
               </Transition>
             </div>
 
-            <!-- User Avatar Dropdown -->
             <div class="relative" ref="dropdownRef">
-              <!-- Avatar Circle -->
               <button
                 @click="toggleDropdown"
                 :class="[avatarColor, 'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer']"
@@ -361,7 +326,6 @@ onMounted(() => {
                 {{ userInitials }}
               </button>
 
-              <!-- Dropdown Menu -->
               <Transition
                 enter-active-class="transition ease-out duration-200"
                 enter-from-class="opacity-0 scale-95"
@@ -374,14 +338,12 @@ onMounted(() => {
                   v-if="isDropdownOpen"
                   class="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-50"
                 >
-                  <!-- User Info -->
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">
                       {{ authStore.user?.display_name }}
                     </p>
                   </div>
 
-                  <!-- Menu Links -->
                   <div class="px-2 py-2 border-b border-gray-200 dark:border-gray-700">
                     <button
                       @click="goToProfile"
@@ -392,7 +354,6 @@ onMounted(() => {
                     </button>
                   </div>
 
-                  <!-- Language Switcher -->
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-2">
                       <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('common.language') }}</span>
@@ -400,7 +361,6 @@ onMounted(() => {
                     <LanguageSwitcher />
                   </div>
 
-                  <!-- Theme Toggle -->
                   <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex items-center justify-between mb-2">
                       <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('common.theme') }}</span>
@@ -408,7 +368,6 @@ onMounted(() => {
                     <ThemeToggle />
                   </div>
 
-                  <!-- Logout Button -->
                   <div class="px-2 py-2">
                     <button
                       @click="handleLogout"
@@ -423,7 +382,6 @@ onMounted(() => {
             </div>
           </template>
 
-          <!-- Guest Menu -->
           <template v-else>
             <LanguageSwitcher />
             <ThemeToggle />
@@ -436,9 +394,7 @@ onMounted(() => {
           </template>
         </div>
 
-        <!-- Mobile Controls (visible on mobile only) -->
         <div class="sm:hidden flex items-center gap-2">
-          <!-- Mobile Notification Bell (only for authenticated users) -->
           <div v-if="authStore.isAuthenticated" class="relative" ref="mobileNotificationRef">
             <button
               @click="toggleNotifications"
@@ -453,7 +409,6 @@ onMounted(() => {
               </span>
             </button>
 
-            <!-- Mobile Notification Dropdown -->
             <Transition
               enter-active-class="transition ease-out duration-200"
               enter-from-class="opacity-0 scale-95"
@@ -466,7 +421,6 @@ onMounted(() => {
                 v-if="isNotificationOpen"
                 class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 z-50 overflow-hidden"
               >
-                <!-- Header -->
                 <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                   <div class="flex items-center justify-between mb-2">
                     <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
@@ -496,7 +450,6 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- Notifications List -->
                 <div class="max-h-96 overflow-y-auto custom-scrollbar">
                   <div
                     v-for="notification in notifications"
@@ -531,7 +484,6 @@ onMounted(() => {
                     </div>
                   </div>
 
-                  <!-- Empty State -->
                   <div
                     v-if="notifications.length === 0"
                     class="px-6 py-12 text-center"
@@ -553,7 +505,6 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- Footer -->
                 <div v-if="notifications.length > 0" class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
                   <button
                     @click="openNotificationModal"
@@ -566,7 +517,6 @@ onMounted(() => {
             </Transition>
           </div>
 
-          <!-- Hamburger Menu Button -->
           <button
             @click="toggleMobileMenu"
             class="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -577,7 +527,6 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Mobile Menu (visible on mobile when open) -->
       <Transition
         enter-active-class="transition-all ease-out duration-700"
         enter-from-class="opacity-0 max-h-0 -translate-y-4"
@@ -589,7 +538,6 @@ onMounted(() => {
         <div v-if="isMobileMenuOpen" class="sm:hidden overflow-hidden">
           <div class="mt-4 pb-4 border-t border-gray-200 dark:border-gray-700 pt-4">
           <div class="flex flex-col gap-4">
-            <!-- Language and Theme Controls -->
             <div class="flex items-center justify-between">
               <span class="text-sm text-gray-700 dark:text-gray-300">{{ t('common.language') }}</span>
               <LanguageSwitcher />
@@ -601,10 +549,8 @@ onMounted(() => {
 
             <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
-            <!-- Authenticated User Menu -->
             <template v-if="authStore.isAuthenticated">
               <div class="flex flex-col gap-3">
-                <!-- User Info -->
                 <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div class="flex items-center gap-3">
                     <div :class="[avatarColor, 'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg']">
@@ -618,7 +564,6 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- Menu Links -->
                 <button
                   @click="goToProfile"
                   class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full"
@@ -649,7 +594,6 @@ onMounted(() => {
                   {{ t('common.searchHistory') }}
                 </button>
 
-                <!-- Logout Button -->
                 <button
                   @click="handleLogout"
                   class="flex items-center gap-3 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors w-full"
@@ -660,7 +604,6 @@ onMounted(() => {
               </div>
             </template>
 
-            <!-- Guest Menu -->
             <template v-else>
               <div class="flex flex-col gap-3">
                 <BaseButton variant="outline" size="sm" @click="handleLogin" class="w-full">
@@ -678,9 +621,7 @@ onMounted(() => {
     </div>
   </header>
 
-  <!-- Notification Modal -->
   <BaseModal v-model="isNotificationModalOpen" max-width="2xl">
-    <!-- Modal Header -->
     <template #header>
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
         <div class="flex items-center gap-3 mb-3">
@@ -698,7 +639,6 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div v-if="notifications.length > 0" class="flex gap-2">
           <button
             v-if="unreadCount > 0"
@@ -717,7 +657,6 @@ onMounted(() => {
       </div>
     </template>
 
-    <!-- Modal Body - Notifications List -->
     <div v-if="notifications.length > 0">
       <div
         v-for="notification in notifications"
@@ -765,7 +704,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Empty State -->
     <div v-else class="px-6 py-20 text-center">
       <div class="relative inline-block mb-6">
         <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 flex items-center justify-center">
@@ -783,7 +721,6 @@ onMounted(() => {
       </p>
     </div>
 
-    <!-- Modal Footer -->
     <template #footer>
       <div v-if="notifications.length > 0" class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
         <p class="text-xs text-center text-gray-500 dark:text-gray-400">
@@ -802,7 +739,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* Custom scrollbar styling for notifications */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
@@ -826,12 +762,10 @@ onMounted(() => {
   background-color: rgba(99, 102, 241, 0.7);
 }
 
-/* Hide scrollbar arrows */
 .custom-scrollbar::-webkit-scrollbar-button {
   display: none;
 }
 
-/* Dark mode scrollbar */
 @media (prefers-color-scheme: dark) {
   .custom-scrollbar {
     scrollbar-color: rgba(139, 92, 246, 0.6) transparent;
