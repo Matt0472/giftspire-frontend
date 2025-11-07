@@ -19,7 +19,7 @@ export interface RegisterRequest {
 // Backend login response: returns access_token and token_expires_at
 export interface LoginResponse {
   access_token: string
-  token_expires_at: string | null
+  token_expires_at: string
 }
 
 // Backend /api/init response: returns user data
